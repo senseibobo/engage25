@@ -15,6 +15,14 @@ run/main_scene="uid://b7vgpd4kpouig"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+TimeManager="*res://global/time_manager.gd"
+
+[global_group]
+
+navigation_mesh_source_group=""
+
 [input]
 
 move_left={

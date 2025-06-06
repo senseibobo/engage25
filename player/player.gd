@@ -2,9 +2,16 @@ class_name Player
 extends CharacterBody3D
 
 
+static var instance: Player
+
+
 @export var camera: Camera3D
 @export var movement_speed: float = 3.0
 @export var gravity: float = 9.0
+
+
+func _enter_tree():
+	instance = self
 
 
 func _ready():

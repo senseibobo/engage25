@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7vgpd4kpouig"]
+[gd_scene load_steps=10 format=3 uid="uid://b7vgpd4kpouig"]
 
 [ext_resource type="PackedScene" uid="uid://kg818nwbxmg8" path="res://player/player.tscn" id="1_f3sb7"]
+[ext_resource type="PackedScene" uid="uid://cilul41id8eno" path="res://enemy/enemy.tscn" id="2_fj7yv"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_f3sb7"]
 
@@ -17,11 +18,18 @@ size = Vector3(20, 0.5, 20)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_f3sb7"]
 data = PackedVector3Array(-10, 0.25, 10, 10, 0.25, 10, -10, -0.25, 10, 10, 0.25, 10, 10, -0.25, 10, -10, -0.25, 10, 10, 0.25, -10, -10, 0.25, -10, 10, -0.25, -10, -10, 0.25, -10, -10, -0.25, -10, 10, -0.25, -10, 10, 0.25, 10, 10, 0.25, -10, 10, -0.25, 10, 10, 0.25, -10, 10, -0.25, -10, 10, -0.25, 10, -10, 0.25, -10, -10, 0.25, 10, -10, -0.25, -10, -10, 0.25, 10, -10, -0.25, 10, -10, -0.25, -10, 10, 0.25, 10, -10, 0.25, 10, 10, 0.25, -10, -10, 0.25, 10, -10, 0.25, -10, 10, 0.25, -10, -10, -0.25, 10, 10, -0.25, 10, -10, -0.25, -10, 10, -0.25, 10, 10, -0.25, -10, -10, -0.25, -10)
 
+[sub_resource type="Environment" id="Environment_f3sb7"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_fj7yv"]
+vertices = PackedVector3Array(-9.5, -0.00526202, -9.5, -9.5, -0.00526202, 9.5, 9.5, -0.00526202, 9.5, 9.5, -0.00526202, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+geometry_source_geometry_mode = 1
+
 [node name="World" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." groups=["navigation_mesh_source_group"]]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.755262, 0)
@@ -30,3 +38,15 @@ mesh = SubResource("BoxMesh_aqk2v")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.755262, 0)
 shape = SubResource("ConcavePolygonShape3D_f3sb7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+layers = 3
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_f3sb7")
+
+[node name="Enemy" parent="." instance=ExtResource("2_fj7yv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29503, -0.505262, -4.87155)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_fj7yv")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqvsewesggndk"]
+
+[ext_resource type="Script" uid="uid://dj5tccawht4nd" path="res://shot/shot.gd" id="1_txuba"]
+[ext_resource type="PackedScene" uid="uid://ccr3s1h0h101e" path="res://shot/impact.tscn" id="2_3ab70"]
+[ext_resource type="Texture2D" uid="uid://duaxd6870wfp8" path="res://icon.svg" id="2_8uifj"]
+
+[node name="Shot" type="Node3D" node_paths=PackedStringArray("raycast")]
+script = ExtResource("1_txuba")
+raycast = NodePath("RayCast3D")
+impact_scene = ExtResource("2_3ab70")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -40)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-5.44902e-07, 0, -0.869938, 0, 0.118131, 0, 12.4659, 0, -3.80262e-08, 0, 0, -8.027)
+texture = ExtResource("2_8uifj")

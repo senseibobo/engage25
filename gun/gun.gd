@@ -2,10 +2,13 @@ class_name Gun
 extends Node3D
 
 
+@export var shoot_position: Marker3D
 @export var animation_player: AnimationPlayer
 @export var crosshair: Control
 
+@export var shot_instance_scene: PackedScene
 
+var target_point: Vector3
 var free_aim: bool = false
 
 
@@ -33,7 +36,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func aim_at_screen_point(screen_point: Vector2):
 	crosshair.position = screen_point
 	var target_point_found: bool = false
-	var target_point: Vector3
 	
 	var camera: Camera3D = get_viewport().get_camera_3d()
 	
@@ -58,7 +60,12 @@ func aim_at_screen_point(screen_point: Vector2):
 
 
 func shoot():
+	animation_player.stop()
 	animation_player.play(&"shoot")
+	var pos: Vector3 = shoot_position.global_position
+	var shot_instance: Shot = shot_instance_scene.instantiate()
+	get_tree().current_scene.add_child(shot_instance)
+	shot_instance.setup(pos, target_point)
 
 
 func start_free_aim():

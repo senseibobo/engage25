@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccr3s1h0h101e"]
+
+[ext_resource type="Script" uid="uid://ctmvbfafheiq6" path="res://shot/impact.gd" id="1_a5h3b"]
+[ext_resource type="Texture2D" uid="uid://duaxd6870wfp8" path="res://icon.svg" id="1_qdcku"]
+
+[node name="Impact" type="Node3D"]
+script = ExtResource("1_a5h3b")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+layers = 2
+billboard = 1
+texture = ExtResource("1_qdcku")

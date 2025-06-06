@@ -42,4 +42,4 @@ script = ExtResource("2_rkbax")
 main_camera = NodePath("../../../../Camera3D")
 
 [node name="Gun" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("3_g1dw6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48688, -0.231769, -0.51766)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292426, -0.231769, -0.51766)
