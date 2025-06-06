@@ -13,9 +13,10 @@ height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_y5vj3"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_1wwld"]
 
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer")]
+collision_layer = 2
 script = ExtResource("1_2mvqj")
 animation_player = NodePath("stickman/AnimationPlayer")
 nav_agent = NodePath("NavigationAgent3D")
@@ -36,7 +37,7 @@ curve = SubResource("Curve3D_2mvqj")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
-mesh = SubResource("ImmediateMesh_y5vj3")
+mesh = SubResource("ImmediateMesh_1wwld")
 script = ExtResource("2_1wwld")
 metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
 

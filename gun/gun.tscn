@@ -220,11 +220,12 @@ _data = {
 &"shoot": SubResource("Animation_1vrot")
 }
 
-[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair")]
+[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair", "barrel")]
 script = ExtResource("1_1vrot")
 shoot_position = NodePath("GunMesh/ShootPosition")
 animation_player = NodePath("AnimationPlayer")
 crosshair = NodePath("Crosshair")
+barrel = NodePath("GunMesh/Barrel")
 shot_instance_scene = ExtResource("2_qhldj")
 
 [node name="GunMesh" type="MeshInstance3D" parent="."]
@@ -234,7 +235,7 @@ mesh = SubResource("ArrayMesh_n10sn")
 skeleton = NodePath("")
 
 [node name="Barrel" type="Node3D" parent="GunMesh"]
-transform = Transform3D(1, 0, 0, 0, -0.649448, 0.760406, 0, -0.760406, -0.649448, 0.0275596, -0.0113481, 9.97654e-08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0275596, -0.0113481, 9.97654e-08)
 
 [node name="BarrelMesh" type="MeshInstance3D" parent="GunMesh/Barrel"]
 transform = Transform3D(1, 2.84217e-14, 2.27374e-13, 0, 1, 1.47392e-12, 0, 1.47392e-12, 1, -0.0265869, 0.00910346, 0.00044035)

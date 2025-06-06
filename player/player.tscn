@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://kg818nwbxmg8"]
+[gd_scene load_steps=6 format=3 uid="uid://kg818nwbxmg8"]
 
 [ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://du5nohp5f2fbn" path="res://player/gun_camera.gd" id="2_rkbax"]
 [ext_resource type="PackedScene" uid="uid://dsujgalqiiro8" path="res://gun/gun.tscn" id="3_g1dw6"]
+[ext_resource type="PackedScene" uid="uid://c1mdub8ij2efb" path="res://watch/watch.tscn" id="4_yw30f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 radius = 0.3
@@ -42,4 +43,7 @@ script = ExtResource("2_rkbax")
 main_camera = NodePath("../../../../Camera3D")
 
 [node name="Gun" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("3_g1dw6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292426, -0.231769, -0.51766)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.402, -0.232, -0.518)
+
+[node name="Watch" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("4_yw30f")]
+transform = Transform3D(0.948324, 0, 0.317305, 0, 1, 0, -0.317305, 0, 0.948324, -0.512, -0.27, -0.525)

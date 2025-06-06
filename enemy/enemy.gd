@@ -27,8 +27,10 @@ var full_path_distance: float
 
 
 func _ready():
+	path_3d.curve = path_3d.curve.duplicate()
 	TimeManager.normal_state_started.connect(_on_normal_state_started)
 	TimeManager.slowed_state_started.connect(_on_slowed_state_started)
+	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
 
 
 func _physics_process(delta):
@@ -52,6 +54,9 @@ func _process_aim(delta):
 
 
 func hit():
+	line_renderer.queue_free()
+	collision_layer = 0
+	collision_mask = 0
 	rotate_to_player()
 	state = State.DEAD
 	animation_player.play(&"DIEE")
@@ -63,13 +68,16 @@ func rotate_to_player():
 	rotation.z = 0
 
 
-func start_path(destination: Vector3):
+func start_path():
+	if state == State.DEAD: return
+	var attempt_pos: Vector3 = global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+	var destination: Vector3 = \
+		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
 	path_3d.curve.clear_points()
 	nav_agent.target_position = destination
 	nav_agent.get_next_path_position()
 	path = nav_agent.get_current_navigation_path()
 	line_renderer.points = Array(path)
-	print(path)
 	for point: Vector3 in path:
 		path_3d.curve.add_point(point)
 	path_3d.curve.get_baked_length()
@@ -77,6 +85,7 @@ func start_path(destination: Vector3):
 		
 
 func _update_position():
+	if state == State.DEAD: return
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	var t: float = TimeManager.current_time/TimeManager.normal_total_time
 	var S: float = t - fmod(t, step_time)
@@ -100,13 +109,17 @@ func _on_normal_state_started():
 	if state in [State.NONE, State.AIM]:
 		state = State.WALK
 		animation_player.play(&"Walk")
-		var attempt_pos: Vector3 = global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
-		var destination: Vector3 = \
-			NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
-		start_path(destination)
+		start_path()
 
 
 func _on_slowed_state_started():
 	if state == State.WALK:
+		print(global_position)
 		animation_player.play(&"Shoot")
 		state = State.AIM
+
+
+func _on_fast_forward_state_started():
+	await TimeManager.bell_rung
+	start_path()
+	

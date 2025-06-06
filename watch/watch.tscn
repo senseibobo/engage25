@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3 uid="uid://c1mdub8ij2efb"]
+
+[ext_resource type="Script" uid="uid://6sglgvg76ui8" path="res://watch/watch.gd" id="1_atswf"]
+[ext_resource type="PackedScene" uid="uid://xsnekqm721sm" path="res://watch/watch.glb" id="1_y6y76"]
+
+[sub_resource type="Animation" id="Animation_2udqx"]
+resource_name = "rewind"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("watch2/watch/left_button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.0160856, 0, 7.03122e-10), Vector3(-0.0160856, -0.0328148, -0.0107279), Vector3(-0.0160856, 0, 7.03122e-10)]
+}
+
+[sub_resource type="Animation" id="Animation_7ove0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("watch2/watch/left_button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0160856, 0, 7.03122e-10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("watch2/watch/right_button:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0160856, 0, 7.03122e-10)]
+}
+
+[sub_resource type="Animation" id="Animation_pl8tq"]
+resource_name = "fast_forward"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("watch2/watch/right_button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.0160856, 0, 7.03122e-10), Vector3(-0.0160856, -0.034077, 0.0145143), Vector3(-0.0160856, 0, 7.03122e-10)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwfyd"]
+_data = {
+&"RESET": SubResource("Animation_7ove0"),
+&"fast_forward": SubResource("Animation_pl8tq"),
+&"rewind": SubResource("Animation_2udqx")
+}
+
+[node name="Watch" type="Node3D" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_atswf")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="watch2" parent="." instance=ExtResource("1_y6y76")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="watch" parent="watch2" index="0"]
+layers = 2
+
+[node name="left_button" parent="watch2/watch" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0160856, 0, 7.03122e-10)
+layers = 2
+
+[node name="right_button" parent="watch2/watch" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0160856, 0, 7.03122e-10)
+layers = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_gwfyd")
+}
+
+[editable path="watch2"]

@@ -9,12 +9,15 @@ static var instance: Player
 @export var movement_speed: float = 3.0
 @export var gravity: float = 9.0
 
+var distance_traveled: float = 0.0
+
 
 func _enter_tree():
 	instance = self
 
 
 func _ready():
+	
 	pass#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
@@ -32,15 +35,15 @@ func _process_walking(delta: float):
 	velocity.z = velocity_xz.z
 	velocity.y -= gravity * delta
 	
+	distance_traveled += (Vector3(1,0,1)*velocity).length()*delta*3.0
+	camera.h_offset = sin(distance_traveled)*0.03
+	camera.v_offset = cos(distance_traveled*2.0)*0.03
+	
 	move_and_slide()
 
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.x -= event.relative.y/100.0
+		camera.rotation_degrees.x -= event.relative.y/20.0
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, -80.0, 80.0)
-		rotation_degrees.y -= event.relative.x/100.0
-	elif event.is_action_pressed("rewind"):
-		TimeManager.start_rewind_state()
-	elif event.is_action_pressed("fast_forward"):
-		pass
+		rotation_degrees.y -= event.relative.x/20.0

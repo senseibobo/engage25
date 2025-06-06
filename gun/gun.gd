@@ -5,6 +5,7 @@ extends Node3D
 @export var shoot_position: Marker3D
 @export var animation_player: AnimationPlayer
 @export var crosshair: Control
+@export var barrel: Node3D
 
 @export var shot_instance_scene: PackedScene
 
@@ -13,22 +14,19 @@ var free_aim: bool = false
 
 
 func _ready():
-	start_free_aim()
+	TimeManager.normal_state_started.connect(stop_free_aim)
+	TimeManager.slowed_state_started.connect(start_free_aim)
 
 
 func _process(delta):
 	aim_at_screen_point(get_viewport().get_mouse_position())
-	if Input.is_action_just_pressed("ui_accept"):
-		start_free_aim()
-	elif Input.is_action_just_pressed("ui_cancel"):
-		stop_free_aim()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if free_aim: get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and free_aim:
 			shoot()
 
 
@@ -60,8 +58,11 @@ func aim_at_screen_point(screen_point: Vector2):
 
 
 func shoot():
+	var tween: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(barrel, "rotation:x", barrel.rotation.x + PI/3, 0.25*Engine.time_scale)
 	animation_player.stop()
 	animation_player.play(&"shoot")
+	animation_player.speed_scale = 1.0/Engine.time_scale
 	var pos: Vector3 = shoot_position.global_position
 	var shot_instance: Shot = shot_instance_scene.instantiate()
 	get_tree().current_scene.add_child(shot_instance)

@@ -11,6 +11,7 @@ impact_scene = ExtResource("2_3ab70")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -40)
+collision_mask = 3
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(-5.44902e-07, 0, -0.869938, 0, 0.118131, 0, 12.4659, 0, -3.80262e-08, 0, 0, -8.027)
