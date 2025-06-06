@@ -17,6 +17,8 @@ func trigger():
 	if raycast.is_colliding():
 		print("petar")
 		var collider: Node = raycast.get_collider()
+		if collider is Enemy:
+			collider.hit()
 		var impact: Node3D = impact_scene.instantiate()
 		get_tree().current_scene.add_child(impact)
 		impact.global_position = raycast.get_collision_point()

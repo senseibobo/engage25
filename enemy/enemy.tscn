@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=10 format=3 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
+[ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
 [ext_resource type="PackedScene" uid="uid://cuyv7nb4q6ra1" path="res://enemy/stickman.glb" id="2_ofsxj"]
 [ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="3_ppra6"]
 [ext_resource type="PackedScene" uid="uid://84qjmolqrdxk" path="res://enemy/cowboyjacket.glb" id="4_p200p"]
@@ -12,12 +13,15 @@ height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "nav_agent", "path_3d", "path_follow")]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_y5vj3"]
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer")]
 script = ExtResource("1_2mvqj")
 animation_player = NodePath("stickman/AnimationPlayer")
 nav_agent = NodePath("NavigationAgent3D")
 path_3d = NodePath("Path3D")
 path_follow = NodePath("Path3D/PathFollow3D")
+line_renderer = NodePath("Path3D/LineRenderer3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -31,8 +35,16 @@ curve = SubResource("Curve3D_2mvqj")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
+[node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
+mesh = SubResource("ImmediateMesh_y5vj3")
+script = ExtResource("2_1wwld")
+metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
+
 [node name="stickman" parent="." instance=ExtResource("2_ofsxj")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="Circle" parent="stickman/rig/Skeleton3D" index="0"]
+lod_bias = 128.0
 
 [node name="HandAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="1"]
 transform = Transform3D(-0.0693201, -0.991522, 0.109903, 0.988366, -0.0832108, -0.127309, 0.135375, 0.0997994, 0.985756, -0.692153, 1.33295, -0.00654114)

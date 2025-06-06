@@ -5,7 +5,6 @@ extends CharacterBody3D
 enum State {
 	NONE,
 	WALK,
-	REWIND,
 	FASTFORWARD,
 	AIM,
 	DEAD
@@ -17,6 +16,7 @@ enum State {
 @export var path_3d: Path3D
 @export var path_follow: PathFollow3D
 @export var gravity: float = 9.0
+@export var line_renderer: LineRenderer
 
 
 var state: State = State.NONE
@@ -38,12 +38,23 @@ func _physics_process(delta):
 
 
 func _process_walk(delta):
-	rotate_to_player()
-	_update_position()
+	#rotate_to_player()
+	var step_time: float = 0.4166666/TimeManager.normal_total_time
+	animation_player.seek(
+		fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length))
+	var diff = _update_position()
+	#if diff.length() > 0.01:
+		#look_at(global_position + diff*Vector3(1,0,1))
 
 
 func _process_aim(delta):
 	rotate_to_player()
+
+
+func hit():
+	rotate_to_player()
+	state = State.DEAD
+	animation_player.play(&"DIEE")
 
 
 func rotate_to_player():
@@ -57,6 +68,7 @@ func start_path(destination: Vector3):
 	nav_agent.target_position = destination
 	nav_agent.get_next_path_position()
 	path = nav_agent.get_current_navigation_path()
+	line_renderer.points = Array(path)
 	print(path)
 	for point: Vector3 in path:
 		path_3d.curve.add_point(point)
@@ -65,11 +77,18 @@ func start_path(destination: Vector3):
 		
 
 func _update_position():
-	path_follow.progress_ratio = TimeManager.current_time/TimeManager.normal_total_time
+	var step_time: float = 0.4166666/TimeManager.normal_total_time
+	var t: float = TimeManager.current_time/TimeManager.normal_total_time
+	var S: float = t - fmod(t, step_time)
+	var D: float = fmod(t, step_time)
+	t = S + lerp(D,step_time,D/step_time)
+	t = clamp(t,0,1)
+	path_follow.progress_ratio = t
 	var destination: Vector3 = path_follow.global_position
 	var diff: Vector3 = destination - global_position
-	diff.y = -0.1
+	diff.y = -0.0001
 	var collision = move_and_collide(diff)
+	return diff
 
 
 func _process_movement(delta):
@@ -78,11 +97,16 @@ func _process_movement(delta):
 	
 
 func _on_normal_state_started():
-	state = State.WALK
-	animation_player.play(&"Walk")
-	start_path(global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0)
+	if state in [State.NONE, State.AIM]:
+		state = State.WALK
+		animation_player.play(&"Walk")
+		var attempt_pos: Vector3 = global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+		var destination: Vector3 = \
+			NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
+		start_path(destination)
 
 
 func _on_slowed_state_started():
-	animation_player.play(&"Shoot")
-	state = State.AIM
+	if state == State.WALK:
+		animation_player.play(&"Shoot")
+		state = State.AIM

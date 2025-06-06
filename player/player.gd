@@ -40,4 +40,7 @@ func _unhandled_input(event: InputEvent):
 		camera.rotation_degrees.x -= event.relative.y/100.0
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, -80.0, 80.0)
 		rotation_degrees.y -= event.relative.x/100.0
-		
+	elif event.is_action_pressed("rewind"):
+		TimeManager.start_rewind_state()
+	elif event.is_action_pressed("fast_forward"):
+		pass
