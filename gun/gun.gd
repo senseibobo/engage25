@@ -1,0 +1,74 @@
+class_name Gun
+extends Node3D
+
+
+@export var animation_player: AnimationPlayer
+@export var crosshair: Control
+
+
+var free_aim: bool = false
+
+
+func _ready():
+	start_free_aim()
+
+
+func _process(delta):
+	aim_at_screen_point(get_viewport().get_mouse_position())
+	if Input.is_action_just_pressed("ui_accept"):
+		start_free_aim()
+	elif Input.is_action_just_pressed("ui_cancel"):
+		stop_free_aim()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if free_aim: get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			shoot()
+
+
+
+func aim_at_screen_point(screen_point: Vector2):
+	crosshair.position = screen_point
+	var target_point_found: bool = false
+	var target_point: Vector3
+	
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var params := PhysicsRayQueryParameters3D.new()
+	var camera_normal: Vector3 = camera.project_ray_normal(screen_point)
+	params.from = camera.project_ray_origin(screen_point)
+	params.to = params.from + camera_normal*10000.0
+	
+	var result: Dictionary = space_state.intersect_ray(params)
+	if "position" in result:
+		target_point = result["position"]
+		target_point_found = true
+	else:
+		var plane := Plane(camera_normal, params.from + camera_normal*40.0)
+		var point = plane.intersects_ray(params.from, camera_normal)
+		if point:
+			target_point = point
+			target_point_found = true
+	if target_point_found:
+		look_at(target_point)
+
+
+func shoot():
+	animation_player.play(&"shoot")
+
+
+func start_free_aim():
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
+	Input.warp_mouse(get_viewport().size/2.0)
+	free_aim = true
+
+
+func stop_free_aim():
+	Input.warp_mouse(get_viewport().size/2.0)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	free_aim = false
+	aim_at_screen_point(get_viewport().size/2.0)

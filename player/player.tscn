@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://kg818nwbxmg8"]
+
+[ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://du5nohp5f2fbn" path="res://player/gun_camera.gd" id="2_rkbax"]
+[ext_resource type="PackedScene" uid="uid://dsujgalqiiro8" path="res://gun/gun.tscn" id="3_g1dw6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
+radius = 0.3
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_oul6g")
+camera = NodePath("Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_gv5m4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="GunViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="GunCamera" type="Camera3D" parent="CanvasLayer/SubViewportContainer/GunViewport" node_paths=PackedStringArray("main_camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+cull_mask = 1048574
+script = ExtResource("2_rkbax")
+main_camera = NodePath("../../../../Camera3D")
+
+[node name="Gun" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("3_g1dw6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48688, -0.231769, -0.51766)
