@@ -17,7 +17,7 @@ height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_xoplw"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_78jik"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
 render_priority = 0
@@ -56,7 +56,7 @@ curve = SubResource("Curve3D_2mvqj")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
-mesh = SubResource("ImmediateMesh_xoplw")
+mesh = SubResource("ImmediateMesh_78jik")
 script = ExtResource("2_1wwld")
 metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
 

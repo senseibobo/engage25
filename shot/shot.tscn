@@ -1,13 +1,60 @@
-[gd_scene load_steps=4 format=3 uid="uid://bqvsewesggndk"]
+[gd_scene load_steps=8 format=3 uid="uid://bqvsewesggndk"]
 
 [ext_resource type="Script" uid="uid://dj5tccawht4nd" path="res://shot/shot.gd" id="1_txuba"]
 [ext_resource type="PackedScene" uid="uid://ccr3s1h0h101e" path="res://shot/impact.tscn" id="2_3ab70"]
-[ext_resource type="Texture2D" uid="uid://duaxd6870wfp8" path="res://icon.svg" id="2_8uifj"]
+[ext_resource type="Texture2D" uid="uid://cgofk0pru4hg0" path="res://shot/shotsprite/beam.png" id="3_3ab70"]
 
-[node name="Shot" type="Node3D" node_paths=PackedStringArray("raycast")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uh7xu"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.733333)
+albedo_texture = ExtResource("3_3ab70")
+uv1_scale = Vector3(2.98, 1.185, 1)
+uv1_offset = Vector3(-1.355, 0, 0)
+proximity_fade_distance = 0.4
+
+[sub_resource type="Animation" id="Animation_uh7xu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:material_override:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.98, 1.185, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3ab70"]
+resource_name = "shoot"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:material_override:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.298948),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.98, 1.185, 1), Vector3(4.89, 1.185, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vmyk2"]
+_data = {
+&"RESET": SubResource("Animation_uh7xu"),
+&"shoot": SubResource("Animation_3ab70")
+}
+
+[node name="Shot" type="Node3D" node_paths=PackedStringArray("raycast", "anim_player")]
 script = ExtResource("1_txuba")
 raycast = NodePath("RayCast3D")
 impact_scene = ExtResource("2_3ab70")
+anim_player = NodePath("AnimationPlayer")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -40)
@@ -16,5 +63,14 @@ hit_from_inside = true
 collide_with_areas = true
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(-5.44902e-07, 0, -0.869938, 0, 0.118131, 0, 12.4659, 0, -3.80262e-08, 0, 0, -8.027)
-texture = ExtResource("2_8uifj")
+transform = Transform3D(-5.44902e-07, 0, -0.869938, 0, 0.129683, 0, 12.4659, 0, -3.80262e-08, 0, 0, -15.6364)
+material_override = SubResource("StandardMaterial3D_uh7xu")
+cast_shadow = 0
+texture = ExtResource("3_3ab70")
+region_rect = Rect2(0.96, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vmyk2")
+}
+autoplay = "shoot"
