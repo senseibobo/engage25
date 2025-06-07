@@ -46,7 +46,7 @@ func _process(_delta):
 	
 	mesh.clear_surfaces()
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
-	
+	var fullLength:float = 0;
 	for i in range(points.size() - 1):
 		var A:Vector3 = points[i]
 		var B:Vector3 = points[i+1]
@@ -70,21 +70,29 @@ func _process(_delta):
 		
 		if tile_texture:
 			var ABLen = AB.length()
+			
 			var ABFloor = floor(ABLen)
 			var ABFrac = ABLen - ABFloor
 			
-			mesh.surface_set_uv(Vector2(ABFloor, 0))
+			mesh.surface_set_uv(Vector2(fullLength, 0))
 			mesh.surface_add_vertex(AtoABStart)
-			mesh.surface_set_uv(Vector2(-ABFrac, 0))
+			
+			mesh.surface_set_uv(Vector2(ABLen+fullLength, 0))
 			mesh.surface_add_vertex(BtoABEnd)
-			mesh.surface_set_uv(Vector2(ABFloor, 1))
+			
+			mesh.surface_set_uv(Vector2(fullLength, 1))
 			mesh.surface_add_vertex(AfromABStart)
-			mesh.surface_set_uv(Vector2(-ABFrac, 0))
+			
+			mesh.surface_set_uv(Vector2(ABLen+fullLength, 0))
 			mesh.surface_add_vertex(BtoABEnd)
-			mesh.surface_set_uv(Vector2(-ABFrac, 1))
+			
+			mesh.surface_set_uv(Vector2(ABLen+fullLength, 1))
 			mesh.surface_add_vertex(BfromABEnd)
-			mesh.surface_set_uv(Vector2(ABFloor, 1))
+			
+			mesh.surface_set_uv(Vector2(fullLength, 1))
 			mesh.surface_add_vertex(AfromABStart)
+			
+			fullLength+= ABLen;
 		else:
 			mesh.surface_set_uv(Vector2(1, 0))
 			mesh.surface_add_vertex(AtoABStart)
