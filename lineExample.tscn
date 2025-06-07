@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b25ad6jv8mba"]
+[gd_scene load_steps=6 format=3 uid="uid://dt48k78avghin"]
 
 [ext_resource type="Shader" uid="uid://bmuek6vsl4cap" path="res://Line.gdshader" id="1_vv5tg"]
 [ext_resource type="Texture2D" uid="uid://drmr4722ydefw" path="res://dotted.png" id="2_qvnle"]
@@ -10,14 +10,14 @@ shader = ExtResource("1_vv5tg")
 shader_parameter/tex = ExtResource("2_qvnle")
 shader_parameter/color = Color(0.847087, 0.505191, 0.227849, 1)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_ptud5"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_vv5tg"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.133767, 0, 0)
 material_override = SubResource("ShaderMaterial_q0lm1")
-mesh = SubResource("ImmediateMesh_ptud5")
+mesh = SubResource("ImmediateMesh_vv5tg")
 script = ExtResource("3_cdtns")
 points = [Vector3(-1.515, 0, 0), Vector3(-0.245, 0, 0.61), Vector3(1.105, 0, 0), Vector3(0, 0, -0.085), Vector3(0, 0.675, 0)]
 draw_crners = false

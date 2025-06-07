@@ -33,6 +33,7 @@ var full_path_distance: float
 
 
 func _ready():
+	randomize()
 	path_3d.curve = path_3d.curve.duplicate()
 	TimeManager.normal_state_started.connect(_on_normal_state_started)
 	TimeManager.slowed_state_started.connect(_on_slowed_state_started)
@@ -90,17 +91,21 @@ func rotate_to_player():
 
 func start_path():
 	if state == State.DEAD: return
-	var attempt_pos: Vector3 = global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+	var attempt_pos: Vector3 = Player.instance.global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+	print(attempt_pos)
 	var destination: Vector3 = \
 		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
 	nav_agent.target_position = destination
 	nav_agent.get_next_path_position()
 	path = nav_agent.get_current_navigation_path()
+	if path.size() == 0:
+		path = PackedVector3Array([global_position, destination])
 	set_path(path)
 	path_follow.progress = 0.0
 
 
 func set_path(new_path: PackedVector3Array):
+	print("SETTING PATH FROM ", path[path.size()-1], " TO ", new_path[path.size()-1])
 	old_path = path
 	path = new_path
 	path_3d.curve.clear_points()
@@ -188,6 +193,7 @@ func _on_player_revived():
 	if state == State.DEAD: return
 	animation_player.play(&"Walk")
 	state = State.WALK
+	print("setting to old path")
 	set_path(old_path)
 
 

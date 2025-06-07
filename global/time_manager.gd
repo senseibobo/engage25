@@ -37,6 +37,8 @@ func _ready():
 	bell_rung.connect(_on_bell_rung)
 	await get_tree().process_frame
 	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	normal_state_started.emit()
 
 
@@ -120,7 +122,6 @@ func start_fast_forward_state():
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, ^"current_time", normal_total_time, 0.9*Engine.time_scale)
 	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9*Engine.time_scale)
-	tween.tween_callback(bell_rung.emit)
 	tween.tween_callback(start_slowed_state)
 
 

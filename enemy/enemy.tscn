@@ -1,11 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=21 format=3 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
 [ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
 [ext_resource type="PackedScene" uid="uid://cidcc427dt3j2" path="res://enemy/enemy_shot/enemy_shot.tscn" id="2_o3pv7"]
 [ext_resource type="PackedScene" uid="uid://cuyv7nb4q6ra1" path="res://enemy/stickman.glb" id="2_ofsxj"]
+[ext_resource type="Shader" uid="uid://bmuek6vsl4cap" path="res://Line.gdshader" id="3_6yflr"]
 [ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="3_ppra6"]
 [ext_resource type="Shader" uid="uid://dv311u4lvjngq" path="res://enemy/shaders/StickmanBody.gdshader" id="4_78jik"]
+[ext_resource type="Texture2D" uid="uid://drmr4722ydefw" path="res://dotted.png" id="4_gf88j"]
 [ext_resource type="PackedScene" uid="uid://84qjmolqrdxk" path="res://enemy/cowboyjacket.glb" id="4_p200p"]
 [ext_resource type="Shader" uid="uid://cuvte6qy7dx3v" path="res://enemy/shaders/StickmanHed.gdshader" id="5_o3pv7"]
 [ext_resource type="PackedScene" uid="uid://eli3k4g665tk" path="res://enemy/hat.glb" id="5_pmsee"]
@@ -18,7 +20,13 @@ height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_o3pv7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbw0t"]
+render_priority = 0
+shader = ExtResource("3_6yflr")
+shader_parameter/tex = ExtResource("4_gf88j")
+shader_parameter/color = Color(0.847087, 0.505191, 0.227849, 1)
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_6yflr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
 render_priority = 0
@@ -62,8 +70,11 @@ curve = SubResource("Curve3D_2mvqj")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
-mesh = SubResource("ImmediateMesh_o3pv7")
+material_override = SubResource("ShaderMaterial_tbw0t")
+mesh = SubResource("ImmediateMesh_6yflr")
 script = ExtResource("2_1wwld")
+start_thickness = 0.4
+end_thickness = 0.4
 metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
 
 [node name="stickman" parent="." instance=ExtResource("2_ofsxj")]

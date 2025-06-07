@@ -97,7 +97,7 @@ stretch = true
 [node name="GunViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(1280, 544)
+size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
 [node name="GunCamera" type="Camera3D" parent="CanvasLayer/SubViewportContainer/GunViewport" node_paths=PackedStringArray("main_camera")]
