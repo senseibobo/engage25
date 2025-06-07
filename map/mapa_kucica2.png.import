@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://bf70npe15crhg"
+path.s3tc="res://.godot/imported/mapa_kucica2.png-6834c369d9ba1a6a47976641f5c1b41e.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "6b44a41f9b74d2986b5129db88f13168"
+}
+
+[deps]
+
+source_file="res://map/mapa_kucica2.png"
+dest_files=["res://.godot/imported/mapa_kucica2.png-6834c369d9ba1a6a47976641f5c1b41e.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

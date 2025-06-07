@@ -6,6 +6,7 @@ extends Node3D
 @export var animation_player: AnimationPlayer
 @export var crosshair: Control
 @export var barrel: Node3D
+@export var shake_camera: Camera3D
 
 @export var cock_player: AudioStreamPlayer
 @export var spin_player: AudioStreamPlayer
@@ -18,6 +19,7 @@ var free_aim: bool = false
 var cock_timer: float = 0.0
 var cocking: bool = false
 var reloading: bool = false
+var mouse_move: float
 
 
 func _ready():
@@ -34,6 +36,8 @@ func _process(delta):
 		rotation = Vector3()
 		return
 	aim_at_screen_point(get_viewport().get_mouse_position())
+	if(!free_aim):
+		sway(delta)
 	cock_timer -= delta/Engine.time_scale
 	if cocking and cock_timer <= 0:
 		cocking = false
@@ -42,6 +46,7 @@ func _process(delta):
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
+		mouse_move = -event.relative.x
 		if free_aim: get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and free_aim:
@@ -84,6 +89,7 @@ func shoot():
 	animation_player.stop()
 	animation_player.play(&"shoot")
 	animation_player.speed_scale = 1.0/Engine.time_scale
+	shake_camera.add_trauma()
 	var pos: Vector3 = shoot_position.global_position
 	var shot_instance: Shot = shot_instance_scene.instantiate()
 	get_tree().current_scene.add_child(shot_instance)
@@ -106,3 +112,11 @@ func stop_free_aim():
 	animation_player.stop()
 	animation_player.play(&"reload")
 	aim_at_screen_point(get_viewport().size/2.0)
+
+func sway(delta: float):
+	if(mouse_move > 2):
+		position = position.lerp(Vector3(0.3, -0.232, -0.518), 5.0*get_physics_process_delta_time())
+	elif(mouse_move < -2):
+		position = position.lerp(Vector3(0.5, -0.232, -0.518), 5.0*get_physics_process_delta_time())
+	else:
+		position = position.lerp(Vector3(0.402, -0.232, -0.518), 5.0*get_physics_process_delta_time())
