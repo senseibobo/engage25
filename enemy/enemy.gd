@@ -20,6 +20,8 @@ enum State {
 @export var gravity: float = 9.0
 @export var line_renderer: LineRenderer
 @export var shoot_player: AudioStreamPlayer3D
+@export var enemy_shot_scene: PackedScene
+@export var visible_notifier: VisibleOnScreenNotifier3D
 
 
 var state: State = State.NONE
@@ -46,7 +48,7 @@ func _physics_process(delta):
 
 
 func _process_walk(delta):
-	#rotate_to_player()
+	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	animation_player.seek(
 		fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length))
@@ -68,6 +70,16 @@ func hit():
 	hitbox.queue_free()
 	animation_player.speed_scale = 0.0
 	animation_player.play(&"DIEE")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	check_enemies_shootable()
+
+
+static func check_enemies_shootable():
+	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
+		if enemy is Enemy:
+			if enemy.is_shootable(): return
+	TimeManager.start_enemy_shoot_state()
 
 
 func rotate_to_player():
@@ -109,8 +121,8 @@ func _update_position():
 	path_follow.progress_ratio = t
 	var destination: Vector3 = path_follow.global_position
 	var diff: Vector3 = destination - global_position
-	diff.y = -0.0001
 	var collision = move_and_collide(diff)
+	move_and_collide(Vector3.DOWN*0.5)
 	return diff
 
 
@@ -139,7 +151,6 @@ func _on_slowed_state_started():
 func _on_fast_forward_state_started():
 	await TimeManager.bell_rung
 	start_path()
-	
 
 
 func _on_hitbox_got_hit() -> void:
@@ -159,10 +170,18 @@ func shoot():
 	params.from = gun.global_position
 	params.to = Player.instance.global_position + Vector3.UP*1.5
 	var result: Dictionary = space_state.intersect_ray(params)
+	var target_pos: Vector3 = params.to
 	if result.size() > 0:
 		var collider: Node = result["collider"]
+		target_pos = result["position"]
 		if collider is Player:
+			target_pos = Player.instance.camera.global_position + Vector3.ONE.rotated(Vector3.UP, randf()*TAU)*0.1
 			collider.hit()
+	var enemy_shot: EnemyShot = enemy_shot_scene.instantiate()
+	get_tree().current_scene.add_child(enemy_shot)
+	enemy_shot.global_position = params.from
+	enemy_shot.look_at(params.to)
+	enemy_shot.scale.x = params.from.distance_to(target_pos)
 
 
 func _on_player_revived():
@@ -170,3 +189,7 @@ func _on_player_revived():
 	animation_player.play(&"Walk")
 	state = State.WALK
 	set_path(old_path)
+
+
+func is_shootable():
+	return visible_notifier.is_on_screen() and not state == State.DEAD

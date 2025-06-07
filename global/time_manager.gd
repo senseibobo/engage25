@@ -25,6 +25,7 @@ var time_passed: float
 var normal_total_time: float = 5.0
 var slowed_total_time: float = 3.0
 var enemy_shoot_total_time: float = 2.0
+var high_noon_time: float = normal_total_time * 6 * 3
 
 
 func _ready():
@@ -66,6 +67,11 @@ func start_slowed_state():
 	state = State.SLOWED
 	Engine.time_scale = 0.01
 	current_time = 0.0
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	Enemy.check_enemies_shootable()
 
 
 func start_enemy_shoot_state():

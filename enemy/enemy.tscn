@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=18 format=3 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
 [ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
+[ext_resource type="PackedScene" uid="uid://cidcc427dt3j2" path="res://enemy/enemy_shot/enemy_shot.tscn" id="2_o3pv7"]
 [ext_resource type="PackedScene" uid="uid://cuyv7nb4q6ra1" path="res://enemy/stickman.glb" id="2_ofsxj"]
 [ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="3_ppra6"]
 [ext_resource type="Shader" uid="uid://dv311u4lvjngq" path="res://enemy/shaders/StickmanBody.gdshader" id="4_78jik"]
@@ -17,7 +18,7 @@ height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_78jik"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_o3pv7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
 render_priority = 0
@@ -31,7 +32,7 @@ shader = ExtResource("5_o3pv7")
 radius = 0.3
 height = 1.8
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player")]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player", "visible_notifier") groups=["enemy"]]
 collision_layer = 4
 script = ExtResource("1_2mvqj")
 hitbox = NodePath("Hitbox")
@@ -42,6 +43,11 @@ path_3d = NodePath("Path3D")
 path_follow = NodePath("Path3D/PathFollow3D")
 line_renderer = NodePath("Path3D/LineRenderer3D")
 shoot_player = NodePath("ShootPlayer")
+enemy_shot_scene = ExtResource("2_o3pv7")
+visible_notifier = NodePath("VisibleOnScreenNotifier3D")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.315, -0.01, -1, 0.62, 1.875, 2)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -56,7 +62,7 @@ curve = SubResource("Curve3D_2mvqj")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
-mesh = SubResource("ImmediateMesh_78jik")
+mesh = SubResource("ImmediateMesh_o3pv7")
 script = ExtResource("2_1wwld")
 metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
 

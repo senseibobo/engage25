@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cidcc427dt3j2"]
+
+[ext_resource type="Script" uid="uid://dovefkkqpc8wg" path="res://enemy/enemy_shot/enemy_shot.gd" id="1_h38aq"]
+[ext_resource type="Texture2D" uid="uid://cgofk0pru4hg0" path="res://shot/shotsprite/beam.png" id="1_tnyfe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tnyfe"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.733333)
+albedo_texture = ExtResource("1_tnyfe")
+uv1_scale = Vector3(0.335, 1.185, 1)
+uv1_offset = Vector3(-1.465, 0, 0)
+proximity_fade_distance = 0.4
+distance_fade_min_distance = 0.8
+distance_fade_max_distance = 1.0
+
+[node name="EnemyShot" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 11.115, 0, 0, 0)
+script = ExtResource("1_h38aq")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-1.67813e-08, 0, -1, 0, 1, 0, 0.383912, 0, -4.37114e-08, 0, 0, -0.491567)
+material_override = SubResource("StandardMaterial3D_tnyfe")
+cast_shadow = 0
+texture = ExtResource("1_tnyfe")
+region_rect = Rect2(0.96, 0, 0, 0)
