@@ -55,5 +55,8 @@ stream = SubResource("AudioStreamRandomizer_p47bv")
 [node name="standbottle2" parent="." instance=ExtResource("7_811q2")]
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 0, -0.650498, 0)
 
-[node name="svraka" parent="." instance=ExtResource("8_tifc7")]
+[node name="svraka" parent="." node_paths=PackedStringArray("audio_player", "dialogue") instance=ExtResource("8_tifc7")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -2.28763, -0.534768, -0.0407117)
+audio_player = NodePath("../AudioStreamPlayer")
+shoot_dialogue = &"Don\'t shoot me, you inbred degenerate. Shoot bottles, spineless slave."
+dialogue = NodePath("../CanvasLayer/Dialogue")
