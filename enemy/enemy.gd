@@ -52,6 +52,7 @@ func _physics_process(delta):
 
 func _process_walk(delta):
 	if not active: return
+	if state == State.DEAD: return
 	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	animation_player.seek(

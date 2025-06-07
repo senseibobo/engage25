@@ -8,5 +8,6 @@ func _ready() -> void:
 
 func activate_enemies(body):
 	if body is Player:
+		queue_free()
 		for enemy in enemies:
 			enemy.activate()
