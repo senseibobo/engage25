@@ -137,6 +137,8 @@ func _on_normal_state_ended():
 	elif Enemy.any_enemies_can_shoot():
 		start_enemy_shoot_state()
 		bell_rung.emit()
+	else:
+		next_time_started.emit()
 
 
 func _on_bell_rung():

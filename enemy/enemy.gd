@@ -253,6 +253,7 @@ func can_shoot():
 
 
 func _on_next_time_started():
+	if not active: return
 	start_path()
 
 
@@ -260,3 +261,6 @@ func activate():
 	await TimeManager.next_time_started
 	active = true
 	state = State.WALK
+	_on_normal_state_started()
+	start_path()
+	animation_player.play(&"Walk")
