@@ -9,6 +9,7 @@ static var instance: Player
 @export var movement_speed: float = 3.0
 @export var gravity: float = 9.0
 @export var animation_player: AnimationPlayer
+@export var color_filter: ColorRect
 
 var dead: bool = false
 var distance_traveled: float = 0.0
@@ -19,7 +20,9 @@ func _enter_tree():
 
 
 func _ready():
-	pass#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	TimeManager.connect("bell_rung", _turn_filter_on)
+	TimeManager.connect("normal_state_started", _turn_filter_off)
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _process(delta: float) -> void:
@@ -62,3 +65,9 @@ func hit():
 func revive():
 	dead = false
 	animation_player.play_backwards(&"death")
+
+func _turn_filter_on():
+	color_filter.visible = true
+
+func _turn_filter_off():
+	color_filter.visible = false
