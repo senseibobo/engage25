@@ -5526,7 +5526,7 @@ _data = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8yupo"]
-size = Vector3(6.90131, 2.95886, 4.48267)
+size = Vector3(2.87695, 2.95886, 4.48267)
 
 [node name="svraka" type="Node3D" node_paths=PackedStringArray("anim_player")]
 script = ExtResource("1_31hto")

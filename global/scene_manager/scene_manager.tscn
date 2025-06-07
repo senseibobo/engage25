@@ -34,7 +34,7 @@ stretch = true
 
 [node name="MainViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(1280, 720)
+size = Vector2i(2, 2)
 render_target_update_mode = 4
 
 [node name="World" parent="VBoxContainer/SubViewportContainer/MainViewport" instance=ExtResource("2_tlsch")]
