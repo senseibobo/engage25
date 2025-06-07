@@ -20,8 +20,8 @@ enum State {
 @export var line_renderer: LineRenderer
 @export var shoot_player: AudioStreamPlayer3D
 @export var enemy_shot_scene: PackedScene
-@export var visible_notifier: VisibleOnScreenNotifier3D
 @export var active: bool = false
+@export var visible_notifier: VisibleOnScreenNotifier3D
 
 
 var state: State = State.NONE
@@ -104,7 +104,9 @@ static func check_enemies_shootable():
 static func any_enemies_shootable():
 	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
 		if enemy is Enemy or enemy is TutorialBottle:
-			if enemy is Enemy: if not enemy.active: continue
+			if enemy is Enemy: 
+				if not enemy.active: 
+					continue
 			if enemy.is_shootable(): 
 				print(enemy.name, " is still shootable")
 				return true
@@ -231,6 +233,8 @@ func shoot():
 		if collider is Player:
 			target_pos = Player.instance.camera.global_position + Vector3.ONE.rotated(Vector3.UP, randf()*TAU)*0.1
 			collider.hit()
+		elif collider is Enemy:
+			collider.hit()
 	var enemy_shot: EnemyShot = enemy_shot_scene.instantiate()
 	get_tree().current_scene.add_child(enemy_shot)
 	enemy_shot.global_position = params.from
@@ -248,11 +252,40 @@ func _on_player_revived():
 
 
 func is_shootable():
-	return active and visible_notifier.is_on_screen() and not state == State.DEAD
+	print("OVDE VVVVV")
+	print(active)
+	print(is_visible_raycast())
+	print(visible_notifier.is_on_screen())
+	print(not state == State.DEAD)
+	print("OVDE ^^^^")
+	return \
+		active and \
+		is_visible_raycast() and \
+		visible_notifier.is_on_screen() and \
+		not state == State.DEAD
+
+
+func is_visible_raycast():
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var params := PhysicsRayQueryParameters3D.new()
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	params.collision_mask = 9
+	params.hit_back_faces = true
+	params.hit_from_inside = true
+	params.from = global_position + Vector3.UP*0.9
+	params.to = Player.instance.global_position + Vector3.UP*0.9
+	var result = space_state.intersect_ray(params)
+	if result.size() == 0:
+		return false
+	if not result["collider"] is Player:
+		return false
+	return true
+	
 
 
 func can_shoot():
-	return active and state in [State.WALK, State.AIM]
+	return is_visible_raycast() and active and state in [State.WALK, State.AIM]
 
 
 func _on_next_time_started():
@@ -261,7 +294,8 @@ func _on_next_time_started():
 
 
 func activate():
-	await TimeManager.next_time_started
+	
+	#await TimeManager.next_time_started
 	active = true
 	state = State.WALK
 	_on_normal_state_started()

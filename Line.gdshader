@@ -2,7 +2,7 @@ shader_type spatial;
 render_mode unshaded;
 
 uniform sampler2D tex;
-uniform vec3 color : source_color;
+uniform vec4 color: source_color;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -11,12 +11,12 @@ void vertex() {
 void fragment() {
 	vec2 newUV = vec2(UV.x+TIME,UV.y);
 	    //ALBEDO.x = UV.x;//vec3(0.51,0.5,0.01);
-		vec4 cola = texture(tex,newUV).rgba;
+	vec4 cola = texture(tex,newUV).rgba;
     ALBEDO = cola.rgb;
-	ALBEDO *= color;
+	ALBEDO *= color.rgb;
 	ALBEDO.xyz *= mod(UV.x+TIME*1.5,1.8)/(3.6/2.0);
-	ALPHA_SCISSOR_THRESHOLD =0.01;
-    ALPHA = cola.a;
+	//ALPHA_SCISSOR_THRESHOLD =0.01;
+    ALPHA = cola.a * color.a;
 }
 
 //void light() {

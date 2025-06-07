@@ -97,6 +97,8 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "animation_player", "black_and_white_filter", "rewind_effect")]
+collision_layer = 8
+collision_mask = 9
 script = ExtResource("1_oul6g")
 camera = NodePath("Camera3D")
 animation_player = NodePath("AnimationPlayer")

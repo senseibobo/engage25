@@ -138,13 +138,17 @@ func start_fast_forward_state():
 
 
 func _on_normal_state_ended():
+	print("normal state ended")
 	if Enemy.any_enemies_shootable():
+		print("some enemies shootable")
 		start_slowed_state()
 		bell_rung.emit()
 	elif Enemy.any_enemies_can_shoot():
+		print("some enemies can shoot")
 		start_enemy_shoot_state()
 		bell_rung.emit()
 	else:
+		print("nothing")
 		next_time_started.emit()
 
 

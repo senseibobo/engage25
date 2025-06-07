@@ -12,7 +12,7 @@ var count: int
 var iterator: int = 0
 
 func _ready() -> void:
-	spawn()
+	spawn.call_deferred()
 	next_dialogue()
 	count = positions.size()
 
@@ -20,7 +20,7 @@ func spawn():
 	for position in positions:
 		var bottle = bottle_scene.instantiate()
 		bottle.connect(&"destroyed_bottle", _on_destroy_bottle)
-		add_child(bottle)
+		get_tree().current_scene.add_child(bottle)
 		bottle.position = position
 
 func next_dialogue():

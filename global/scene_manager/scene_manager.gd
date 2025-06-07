@@ -5,14 +5,24 @@ extends Control
 @export var r1: ColorRect
 @export var r2: ColorRect
 
+var tween: Tween
 
 
 func _ready():
-	get_tree().create_timer(2.0).timeout.connect(add_borders)
+	TimeManager.bell_rung.connect(add_borders)
+	TimeManager.normal_state_started.connect(remove_borders)
 
 
 func add_borders():
-	print("adding borders")
-	var tween: Tween = create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(r1, "custom_minimum_size:y", 130.0, 1.0)
-	tween.tween_property(r2, "custom_minimum_size:y", 130.0, 1.0)
+	if tween and tween.is_running(): tween.kill()
+	tween = create_tween().set_parallel().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT).set_ignore_time_scale()
+	tween.tween_property(r1, "custom_minimum_size:y", 100.0, 1.4)
+	tween.tween_property(r2, "custom_minimum_size:y", 100.0, 1.4)
+
+
+func remove_borders():
+	if tween and tween.is_running(): tween.kill()
+	tween = create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT).set_ignore_time_scale()
+	tween.tween_property(r1, "custom_minimum_size:y", 0, 0.6)
+	tween.tween_property(r2, "custom_minimum_size:y", 0, 0.6)
+	

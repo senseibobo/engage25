@@ -51,9 +51,9 @@ func _process_walking(delta: float):
 func _unhandled_input(event: InputEvent):
 	if dead: return
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.x -= event.relative.y/20.0
+		camera.rotation_degrees.x -= event.relative.y/10.0
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, -80.0, 80.0)
-		rotation_degrees.y -= event.relative.x/20.0
+		rotation_degrees.y -= event.relative.x/10.0
 
 
 func hit():

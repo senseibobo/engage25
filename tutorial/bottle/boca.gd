@@ -23,6 +23,24 @@ func _on_hitbox_got_hit() -> void:
 
 
 func is_shootable():
-	var shootable = not broken and visible_notifier.is_on_screen()
-	print(shootable, " A A A  ", not broken, " A A A ", visible_notifier.is_on_screen())
+	var shootable = not broken and visible_notifier.is_on_screen() and is_shootable_raycast()
+	print(shootable, " A A A  ", not broken, " A A A ", visible_notifier.is_on_screen()," ", name)
 	return shootable
+
+
+func is_shootable_raycast():
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var params := PhysicsRayQueryParameters3D.new()
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	params.collision_mask = 9
+	params.hit_back_faces = true
+	params.hit_from_inside = true
+	params.from = global_position + Vector3.UP*0.1
+	params.to = Player.instance.global_position + Vector3.UP*0.9
+	var result = space_state.intersect_ray(params)
+	if result.size() == 0:
+		return false
+	if not result["collider"] is Player:
+		return false
+	return true
