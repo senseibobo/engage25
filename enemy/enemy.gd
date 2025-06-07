@@ -294,7 +294,6 @@ func _on_next_time_started():
 
 
 func activate():
-	
 	#await TimeManager.next_time_started
 	active = true
 	state = State.WALK

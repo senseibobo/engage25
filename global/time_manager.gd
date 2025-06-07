@@ -130,10 +130,11 @@ func start_fast_forward_state():
 	Engine.time_scale = 0.1
 	state = State.FAST_FORWARD
 	fast_forward_state_started.emit()
-	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, ^"current_time", normal_total_time, 0.9*Engine.time_scale)
-	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9*Engine.time_scale)
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).set_ignore_time_scale()
+	tween.tween_property(self, ^"current_time", normal_total_time, 0.9)
+	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9)
 	slowed_total_time = slowed_base_time + slowed_bonus_time * (1.0-current_time/normal_total_time)
+	tween.tween_property(Engine, "time_scale", 1.0, 0.0)
 	tween.tween_callback(_on_normal_state_ended)
 
 
@@ -149,6 +150,8 @@ func _on_normal_state_ended():
 		bell_rung.emit()
 	else:
 		print("nothing")
+		if state != State.NORMAL:
+			state = State.NORMAL
 		next_time_started.emit()
 
 

@@ -20,7 +20,7 @@ func spawn():
 	for position in positions:
 		var bottle = bottle_scene.instantiate()
 		bottle.connect(&"destroyed_bottle", _on_destroy_bottle)
-		get_tree().current_scene.add_child(bottle)
+		add_child(bottle)
 		bottle.position = position
 
 func next_dialogue():
