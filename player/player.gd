@@ -67,7 +67,11 @@ func revive():
 	animation_player.play_backwards(&"death")
 
 func _turn_filter_on():
+	#var tween = create_tween()
+	#tween.tween_property(color_filter, "modulate", Vector4(1.0, 1.0, 1.0, 1.0), 1)
 	color_filter.visible = true
 
 func _turn_filter_off():
+	#var tween = create_tween()
+	#tween.tween_property(color_filter, "modulate", Vector4(1.0, 1.0, 1.0, 0.0), 1)
 	color_filter.visible = false
