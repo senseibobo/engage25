@@ -46,7 +46,7 @@ func _ready():
 
 
 func _process(delta: float) -> void:
-	if Player.instance.dead: return
+	if Player.instance and Player.instance.dead: return
 	match state:
 		State.NORMAL:
 			current_time += delta/Engine.time_scale
