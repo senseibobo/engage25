@@ -7,6 +7,7 @@ signal slowed_state_started
 signal rewind_state_started
 signal fast_forward_state_started
 signal enemy_shoot_state_started
+signal player_revived
 
 
 enum State {
@@ -34,6 +35,7 @@ func _ready():
 
 
 func _process(delta: float) -> void:
+	if Player.instance.dead: return
 	match state:
 		State.NORMAL:
 			current_time += delta/Engine.time_scale
@@ -72,6 +74,7 @@ func start_enemy_shoot_state():
 
 
 func start_rewind_state():
+	print("REWINDING")
 	Engine.time_scale = 0.1
 	state = State.REWIND
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -96,3 +99,10 @@ func _on_bell_rung():
 	add_child(player)
 	player.play()
 	player.finished.connect(player.queue_free)
+
+
+func revive_player():
+	current_time = normal_total_time
+	start_rewind_state()
+	Player.instance.revive()
+	player_revived.emit()

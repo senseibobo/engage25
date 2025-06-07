@@ -26,6 +26,9 @@ func _ready():
 
 
 func _process(delta):
+	if Player.instance.dead:
+		rotation = Vector3(PI/2.0,0,0)
+		return
 	if reloading: 
 		rotation = Vector3()
 		return

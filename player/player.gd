@@ -10,6 +10,7 @@ static var instance: Player
 @export var gravity: float = 9.0
 @export var animation_player: AnimationPlayer
 
+var dead: bool = false
 var distance_traveled: float = 0.0
 
 
@@ -22,6 +23,7 @@ func _ready():
 
 
 func _process(delta: float) -> void:
+	if dead: return
 	_process_walking(delta)
 
 
@@ -43,7 +45,20 @@ func _process_walking(delta: float):
 
 
 func _unhandled_input(event: InputEvent):
+	if dead: return
 	if event is InputEventMouseMotion:
 		camera.rotation_degrees.x -= event.relative.y/20.0
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, -80.0, 80.0)
 		rotation_degrees.y -= event.relative.x/20.0
+
+
+func hit():
+	if dead: return
+	animation_player.play(&"death")
+	dead = true
+	Engine.time_scale = 0.01
+	animation_player.speed_scale = 1.0/Engine.time_scale
+
+func revive():
+	dead = false
+	animation_player.play_backwards(&"death")

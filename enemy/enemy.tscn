@@ -31,10 +31,11 @@ up_vector_enabled = true
 radius = 0.3
 height = 1.8
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player")]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player")]
 collision_layer = 4
 script = ExtResource("1_2mvqj")
 hitbox = NodePath("Hitbox")
+gun = NodePath("stickman/rig/Skeleton3D/HandAttachment/revolver2")
 animation_player = NodePath("stickman/AnimationPlayer")
 nav_agent = NodePath("NavigationAgent3D")
 path_3d = NodePath("Path3D")

@@ -12,6 +12,7 @@ enum State {
 
 
 @export var hitbox: Hitbox
+@export var gun: Node3D
 @export var animation_player: AnimationPlayer
 @export var nav_agent: NavigationAgent3D
 @export var path_3d: Path3D
@@ -23,6 +24,7 @@ enum State {
 
 var state: State = State.NONE
 var path: PackedVector3Array
+var old_path: PackedVector3Array
 var current_path_percentage: float = 0.0
 var current_path_index: int = 0
 var full_path_distance: float
@@ -34,6 +36,7 @@ func _ready():
 	TimeManager.slowed_state_started.connect(_on_slowed_state_started)
 	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
 	TimeManager.enemy_shoot_state_started.connect(_on_enemy_shoot_state_started)
+	TimeManager.player_revived.connect(_on_player_revived)
 
 
 func _physics_process(delta):
@@ -78,15 +81,21 @@ func start_path():
 	var attempt_pos: Vector3 = global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
 	var destination: Vector3 = \
 		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
-	path_3d.curve.clear_points()
 	nav_agent.target_position = destination
 	nav_agent.get_next_path_position()
 	path = nav_agent.get_current_navigation_path()
-	line_renderer.points = Array(path)
+	set_path(path)
+	path_follow.progress = 0.0
+
+
+func set_path(new_path: PackedVector3Array):
+	old_path = path
+	path = new_path
+	path_3d.curve.clear_points()
+	line_renderer.points = Array(new_path)
 	for point: Vector3 in path:
 		path_3d.curve.add_point(point)
 	path_3d.curve.get_baked_length()
-	path_follow.progress = 0.0
 
 
 func _update_position():
@@ -121,6 +130,7 @@ func _on_normal_state_started():
 
 func _on_slowed_state_started():
 	if state == State.WALK:
+		animation_player.stop()
 		animation_player.play(&"Shoot")
 		animation_player.speed_scale = 0.0
 		state = State.AIM
@@ -137,7 +147,8 @@ func _on_hitbox_got_hit() -> void:
 
 
 func _on_enemy_shoot_state_started():
-	shoot()
+	if state != State.DEAD:
+		shoot()
 
 
 func shoot():
@@ -145,5 +156,17 @@ func shoot():
 	shoot_player.play()
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var params := PhysicsRayQueryParameters3D.new()
-	
-	space_state.intersect_ray(params)
+	params.from = gun.global_position
+	params.to = Player.instance.global_position + Vector3.UP*1.5
+	var result: Dictionary = space_state.intersect_ray(params)
+	if result.size() > 0:
+		var collider: Node = result["collider"]
+		if collider is Player:
+			collider.hit()
+
+
+func _on_player_revived():
+	if state == State.DEAD: return
+	animation_player.play(&"Walk")
+	state = State.WALK
+	set_path(old_path)

@@ -13,10 +13,15 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("rewind"):
-		_on_rewind_pressed()
-	elif event.is_action_pressed("fast_forward"):
-		_on_fast_forward_pressed()
+	if not Player.instance.dead:
+		if event.is_action_pressed("rewind"):
+			_on_rewind_pressed()
+		elif event.is_action_pressed("fast_forward"):
+			_on_fast_forward_pressed()
+	else:
+		if event.is_action_pressed("rewind"):
+			used = true
+			TimeManager.revive_player()
 
 
 func _on_rewind_pressed():
