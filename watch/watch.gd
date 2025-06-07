@@ -3,13 +3,16 @@ extends Node3D
 
 
 @export var animation_player: AnimationPlayer
-
+@export var short_hand: Node3D
+@export var long_hand: Node3D
 
 var used: bool = false
 
 
 func _process(delta: float) -> void:
 	animation_player.speed_scale = 1.0/Engine.time_scale
+	short_hand.rotation.x = -(TimeManager.time_passed/TimeManager.normal_total_time)*PI/3.0
+	long_hand.rotation.x = (short_hand.rotation.x/3.0)
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -67,7 +67,7 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 
 lod_bias = 128.0
 
 [node name="HandAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="1"]
-transform = Transform3D(-0.0693201, -0.991522, 0.109903, 0.988366, -0.0832108, -0.127309, 0.135375, 0.0997994, 0.985756, -0.692153, 1.33295, -0.00654114)
+transform = Transform3D(-0.983912, -0.0789341, 0.155319, 0.133917, 0.0984127, 0.992856, -0.033337, 0.995883, -0.0626855, -0.257245, 0.90928, 0.216912)
 bone_name = "DEF-hand.R"
 bone_idx = 174
 
@@ -75,7 +75,7 @@ bone_idx = 174
 transform = Transform3D(-0.0145276, 0.0198379, 0.999697, 0.970766, 0.239848, 0.00934753, -0.23959, 0.970608, -0.0227423, 0.012982, 0.129356, 0.0916709)
 
 [node name="TorsoAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="2"]
-transform = Transform3D(1, 1.42109e-14, 2.38419e-07, 1.1546e-07, 0.874915, -0.484276, -2.08596e-07, 0.484275, 0.874916, 0, 1.37236, -0.00943485)
+transform = Transform3D(1, 1.42109e-14, 2.38419e-07, 1.1546e-07, 0.874915, -0.484276, -2.08596e-07, 0.484275, 0.874916, 0.0269323, 1.16616, -0.00943489)
 bone_name = "DEF-spine.004"
 bone_idx = 5
 
@@ -83,7 +83,7 @@ bone_idx = 5
 transform = Transform3D(-0.0396919, 0.000413286, -0.999212, 0.470384, 0.882272, -0.0183203, 0.881569, -0.470741, -0.0352135, -0.0140792, -0.206312, 0.116019)
 
 [node name="HeadAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="3"]
-transform = Transform3D(1, -1.42109e-13, 2.38419e-07, 3.22409e-13, 1, -5.96046e-07, -2.38419e-07, 4.17233e-07, 1, 4.86309e-16, 1.42919, 0.0204423)
+transform = Transform3D(1, -1.13687e-13, 2.38419e-07, 3.17968e-13, 1, -7.15256e-07, -2.38419e-07, 5.06639e-07, 1, 0.0269323, 1.22299, 0.0204423)
 bone_name = "DEF-spine.006"
 bone_idx = 7
 

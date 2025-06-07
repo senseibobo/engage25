@@ -1,7 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1mdub8ij2efb"]
+[gd_scene load_steps=11 format=3 uid="uid://c1mdub8ij2efb"]
 
 [ext_resource type="Script" uid="uid://6sglgvg76ui8" path="res://watch/watch.gd" id="1_atswf"]
 [ext_resource type="PackedScene" uid="uid://xsnekqm721sm" path="res://watch/watch.glb" id="1_y6y76"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_atswf"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_2udqx"]
+material = SubResource("StandardMaterial3D_atswf")
+size = Vector2(0.01, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2udqx"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_atswf"]
+material = SubResource("StandardMaterial3D_2udqx")
+size = Vector2(0.005, 0.07)
 
 [sub_resource type="Animation" id="Animation_7ove0"]
 length = 0.001
@@ -67,9 +81,11 @@ _data = {
 &"rewind": SubResource("Animation_2udqx")
 }
 
-[node name="Watch" type="Node3D" node_paths=PackedStringArray("animation_player")]
+[node name="Watch" type="Node3D" node_paths=PackedStringArray("animation_player", "short_hand", "long_hand")]
 script = ExtResource("1_atswf")
 animation_player = NodePath("AnimationPlayer")
+short_hand = NodePath("watch2/watch/ShortHand")
+long_hand = NodePath("watch2/watch/LongHand")
 
 [node name="watch2" parent="." instance=ExtResource("1_y6y76")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
@@ -84,6 +100,22 @@ layers = 2
 [node name="right_button" parent="watch2/watch" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0160856, 0, 7.03122e-10)
 layers = 2
+
+[node name="ShortHand" type="Node3D" parent="watch2/watch" index="2"]
+
+[node name="ShortHand" type="MeshInstance3D" parent="watch2/watch/ShortHand"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.053529, 0)
+layers = 2
+mesh = SubResource("QuadMesh_2udqx")
+skeleton = NodePath("../..")
+
+[node name="LongHand" type="Node3D" parent="watch2/watch" index="3"]
+
+[node name="LongHand" type="MeshInstance3D" parent="watch2/watch/LongHand"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.0387685, 0)
+layers = 2
+mesh = SubResource("QuadMesh_atswf")
+skeleton = NodePath("../..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -26,6 +26,7 @@ func _ready():
 
 
 func _process(delta):
+	animation_player.speed_scale = 1.0/Engine.time_scale
 	if Player.instance.dead:
 		rotation = Vector3(PI/2.0,0,0)
 		return

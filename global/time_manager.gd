@@ -21,6 +21,7 @@ enum State {
 
 var state: State = State.NORMAL
 var current_time: float 
+var time_passed: float
 var normal_total_time: float = 5.0
 var slowed_total_time: float = 3.0
 var enemy_shoot_total_time: float = 2.0
@@ -39,6 +40,7 @@ func _process(delta: float) -> void:
 	match state:
 		State.NORMAL:
 			current_time += delta/Engine.time_scale
+			time_passed += delta/Engine.time_scale
 			if current_time >= normal_total_time: 
 				bell_rung.emit()
 				start_slowed_state()
@@ -79,6 +81,7 @@ func start_rewind_state():
 	state = State.REWIND
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, ^"current_time", 0.0, 1.5*Engine.time_scale)
+	tween.parallel().tween_property(self,^"time_passed",time_passed-current_time, 1.5*Engine.time_scale )
 	tween.tween_callback(start_normal_state)
 	rewind_state_started.emit()
 
@@ -89,6 +92,7 @@ func start_fast_forward_state():
 	fast_forward_state_started.emit()
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, ^"current_time", normal_total_time, 0.9*Engine.time_scale)
+	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9*Engine.time_scale)
 	tween.tween_callback(bell_rung.emit)
 	tween.tween_callback(start_slowed_state)
 
