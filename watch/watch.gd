@@ -2,12 +2,16 @@ class_name Watch
 extends Node3D
 
 
+@export var tick_player: AudioStreamPlayer
 @export var animation_player: AnimationPlayer
 @export var short_hand: Sprite2D
 @export var long_hand: Sprite2D
 
 var used: bool = false
 
+
+func _ready():
+	TimeManager.tick.connect(_on_tick)
 
 func _process(delta: float) -> void:
 	animation_player.speed_scale = 1.0/Engine.time_scale
@@ -41,3 +45,7 @@ func _on_fast_forward_pressed():
 	if TimeManager.state == TimeManager.State.NORMAL:
 		animation_player.play(&"fast_forward")
 		TimeManager.start_fast_forward_state()
+
+
+func _on_tick():
+	tick_player.play()

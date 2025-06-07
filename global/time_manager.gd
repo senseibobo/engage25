@@ -8,6 +8,9 @@ signal rewind_state_started
 signal fast_forward_state_started
 signal enemy_shoot_state_started
 signal player_revived
+signal tick
+signal tick_forward
+signal tick_backward
 
 
 enum State {
@@ -26,6 +29,7 @@ var normal_total_time: float = 5.0
 var slowed_total_time: float = 3.0
 var enemy_shoot_total_time: float = 2.0
 var high_noon_time: float = normal_total_time * 6 * 3
+var old_time_passed: float
 
 
 func _ready():
@@ -53,7 +57,14 @@ func _process(delta: float) -> void:
 			if current_time >= enemy_shoot_total_time: start_normal_state()
 		State.REWIND: pass
 			#if current_time <= 0: start_normal_state()
-
+	if int(old_time_passed) < int(time_passed):
+		tick.emit() 
+		tick_forward.emit()
+	elif int(time_passed) < int(old_time_passed):
+		tick.emit()
+		tick_backward.emit()
+	old_time_passed = time_passed
+	
 
 func start_normal_state():
 	normal_state_started.emit()

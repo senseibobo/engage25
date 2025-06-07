@@ -110,9 +110,10 @@ func stop_free_aim():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	free_aim = false
 	print("batonga")
-	animation_player.speed_scale = 1.0
-	animation_player.stop()
-	animation_player.play(&"reload")
+	if bullets_left < 6:
+		animation_player.speed_scale = 1.0
+		animation_player.stop()
+		animation_player.play(&"reload")
 	aim_at_screen_point(get_viewport().size/2.0)
 
 func sway(delta: float):
