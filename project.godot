@@ -22,7 +22,7 @@ TimeManager="*res://global/time_manager.gd"
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=544
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
 [editor_plugins]

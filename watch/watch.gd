@@ -15,7 +15,11 @@ func _ready():
 
 func _process(delta: float) -> void:
 	animation_player.speed_scale = 1.0/Engine.time_scale
-	long_hand.rotation = (TimeManager.time_passed/TimeManager.normal_total_time)*PI/3.0
+	var tp = TimeManager.time_passed
+	var D = fmod(tp, 1.0)
+	var S = tp - D
+	tp = S + ease(D,0.03)
+	long_hand.rotation = (tp/TimeManager.normal_total_time)*PI/3.0
 	short_hand.rotation = (TimeManager.time_passed/TimeManager.high_noon_time)*TAU
 
 

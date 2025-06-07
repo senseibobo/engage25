@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7g5s71xl8d3e"]
+
+[ext_resource type="Script" uid="uid://bonx3i3uflwn7" path="res://global/scene_manager/scene_manager.gd" id="1_ifo8e"]
+[ext_resource type="PackedScene" uid="uid://b7vgpd4kpouig" path="res://world.tscn" id="2_tlsch"]
+
+[node name="SceneManager" type="Control" node_paths=PackedStringArray("r1", "r2")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ifo8e")
+r1 = NodePath("VBoxContainer/ColorRect")
+r2 = NodePath("VBoxContainer/ColorRect2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+stretch = true
+
+[node name="MainViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="World" parent="VBoxContainer/SubViewportContainer/MainViewport" instance=ExtResource("2_tlsch")]
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)

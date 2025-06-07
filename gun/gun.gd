@@ -37,7 +37,7 @@ func _process(delta):
 		rotation = Vector3()
 		return
 	aim_at_screen_point(get_viewport().get_mouse_position())
-	if(!free_aim):
+	if not free_aim:
 		sway(delta)
 	cock_timer -= delta/Engine.time_scale
 	if cocking and cock_timer <= 0:
@@ -66,6 +66,8 @@ func aim_at_screen_point(screen_point: Vector2):
 	
 	params.from = camera.project_ray_origin(screen_point)
 	params.to = params.from + camera_normal*10000.0
+	params.collide_with_areas = true
+	params.collide_with_bodies = true
 	
 	var result: Dictionary = space_state.intersect_ray(params)
 	if "position" in result:

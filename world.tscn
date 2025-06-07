@@ -39,6 +39,7 @@ sun = NodePath("DirectionalLight3D")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.813152, 0.582052, 0, -0.582052, 0.813152, 0, 0, 0)
 layers = 3
+shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_f3sb7")

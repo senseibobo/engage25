@@ -48,9 +48,10 @@ shadow_mesh = SubResource("ArrayMesh_as4vp")
 [sub_resource type="BoxShape3D" id="BoxShape3D_n74ty"]
 size = Vector3(2.13786, 4.52818, 1)
 
-[node name="boca" type="Node3D" groups=["enemy"]]
+[node name="boca" type="Node3D" node_paths=PackedStringArray("visible_notifier") groups=["enemy"]]
 script = ExtResource("1_6y1yd")
 particle_scene = ExtResource("2_m67qt")
+visible_notifier = NodePath("VisibleOnScreenNotifier3D")
 
 [node name="Cylinder" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
@@ -67,5 +68,8 @@ metadata/_custom_type_script = "uid://7sp71apr4hr2"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0778274, 0.0622329, 0)
 shape = SubResource("BoxShape3D_n74ty")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.145541, -0.51742, -0.144857, 0.291082, 1.03484, 0.289715)
 
 [connection signal="got_hit" from="Hitbox" to="." method="_on_hitbox_got_hit"]

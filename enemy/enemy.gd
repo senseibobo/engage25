@@ -77,7 +77,7 @@ func hit():
 
 static func check_enemies_shootable():
 	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
-		if enemy is Enemy:
+		if enemy is Enemy or enemy is TutorialBottle:
 			if enemy.is_shootable(): return
 	TimeManager.start_enemy_shoot_state()
 
