@@ -21,6 +21,7 @@ enum State {
 @export var shoot_player: AudioStreamPlayer3D
 @export var enemy_shot_scene: PackedScene
 @export var visible_notifier: VisibleOnScreenNotifier3D
+@export var active: bool = false
 
 
 var state: State = State.NONE
@@ -43,12 +44,14 @@ func _ready():
 
 
 func _physics_process(delta):
+	if not active: return
 	match state:
 		State.WALK: _process_walk(delta)
 		State.AIM: _process_aim(delta)
 
 
 func _process_walk(delta):
+	if not active: return
 	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	animation_player.seek(
@@ -68,6 +71,7 @@ func _process_walk(delta):
 
 
 func _process_aim(delta):
+	if not active: return
 	rotate_to_player()
 
 
@@ -99,6 +103,7 @@ static func check_enemies_shootable():
 static func any_enemies_shootable():
 	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
 		if enemy is Enemy or enemy is TutorialBottle:
+			if enemy is Enemy: if not enemy.active: continue
 			if enemy.is_shootable(): 
 				print(enemy.name, " is still shootable")
 				return true
@@ -113,12 +118,14 @@ static func any_enemies_can_shoot():
 
 
 func rotate_to_player():
+	if not active: return
 	look_at(Player.instance.global_position)
 	rotation.x = 0
 	rotation.z = 0
 
 
 func start_path():
+	if not active: return
 	if state == State.DEAD: return
 	var attempt_pos: Vector3 = Player.instance.global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
 	print(attempt_pos)
@@ -134,6 +141,7 @@ func start_path():
 
 
 func set_path(new_path: PackedVector3Array):
+	if not active: return
 	print("SETTING PATH FROM ", path[path.size()-1], " TO ", new_path[path.size()-1])
 	old_path = path
 	path = new_path
@@ -145,6 +153,7 @@ func set_path(new_path: PackedVector3Array):
 
 
 func _update_position():
+	if not active: return
 	if state == State.DEAD: return
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	var t: float = TimeManager.current_time/TimeManager.normal_total_time
@@ -161,11 +170,13 @@ func _update_position():
 
 
 func _process_movement(delta):
+	if not active: return
 	velocity.y -= gravity*delta
 	move_and_slide()
 	
 
 func _on_normal_state_started():
+	if not active: return
 	if state in [State.NONE, State.AIM]:
 		line_renderer.visible = true
 		state = State.WALK
@@ -175,6 +186,7 @@ func _on_normal_state_started():
 
 
 func _on_slowed_state_started():
+	if not active: return
 	if state == State.WALK:
 		line_renderer.visible = false
 		animation_player.stop()
@@ -184,20 +196,24 @@ func _on_slowed_state_started():
 
 
 func _on_fast_forward_state_started():
+	if not active: return
 	await TimeManager.bell_rung
 	start_path()
 
 
 func _on_hitbox_got_hit() -> void:
+	if not active: return
 	hit()
 
 
 func _on_enemy_shoot_state_started():
+	if not active: return
 	if state != State.DEAD:
 		shoot()
 
 
 func shoot():
+	if not active: return
 	animation_player.speed_scale = 1.0/Engine.time_scale
 	shoot_player.play()
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
@@ -220,6 +236,7 @@ func shoot():
 
 
 func _on_player_revived():
+	if not active: return
 	if state == State.DEAD: return
 	animation_player.play(&"Walk")
 	state = State.WALK
@@ -228,12 +245,18 @@ func _on_player_revived():
 
 
 func is_shootable():
-	return visible_notifier.is_on_screen() and not state == State.DEAD
+	return active and visible_notifier.is_on_screen() and not state == State.DEAD
 
 
 func can_shoot():
-	return state in [State.WALK, State.AIM]
+	return active and state in [State.WALK, State.AIM]
 
 
 func _on_next_time_started():
 	start_path()
+
+
+func activate():
+	await TimeManager.next_time_started
+	active = true
+	state = State.WALK
