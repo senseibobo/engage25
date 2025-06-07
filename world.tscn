@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b7vgpd4kpouig"]
+[gd_scene load_steps=18 format=3 uid="uid://b7vgpd4kpouig"]
 
 [ext_resource type="Script" uid="uid://8ncpskd1s7rt" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://kg818nwbxmg8" path="res://player/player.tscn" id="1_f3sb7"]
@@ -41,6 +41,15 @@ size = Vector3(18.7781, 7.47949, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_dwbse"]
 size = Vector3(27.4133, 13.1115, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_gbfbk"]
+size = Vector3(1, 5.69897, 16.7185)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ioo17"]
+size = Vector3(1, 6.07288, 35.9819)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wse8f"]
+size = Vector3(24.7391, 5.12207, 1)
+
 [node name="World" type="Node3D" node_paths=PackedStringArray("sun")]
 script = ExtResource("1_aqk2v")
 sun = NodePath("DirectionalLight3D")
@@ -67,16 +76,49 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7065, -1.95383, 2.58832)
 [node name="Enemies1" type="Node3D" parent="."]
 
 [node name="Enemy" parent="Enemies1" instance=ExtResource("5_dwbse")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -153.644, -3.4504, -194.072)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -156.566, -3.4504, -169.929)
 
 [node name="Enemy2" parent="Enemies1" instance=ExtResource("5_dwbse")]
-transform = Transform3D(0.795378, 0, -0.606113, 0, 1, 0, 0.606113, 0, 0.795378, -171.32, -2.90927, -199.859)
+transform = Transform3D(0.795378, 0, -0.606113, 0, 1, 0, 0.606113, 0, 0.795378, -175.803, -2.90927, -198.671)
+
+[node name="Enemies2" type="Node3D" parent="."]
+
+[node name="Enemy" parent="Enemies2" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -135.652, -3.1071, -175.763)
+
+[node name="Enemy2" parent="Enemies2" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -137.349, -4.32046, -146.842)
+
+[node name="Enemy3" parent="Enemies2" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -144.889, -2.47243, -132.557)
+
+[node name="Enemy4" parent="Enemies2" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -106.128, -2.47243, -155.177)
+
+[node name="Enemies3" type="Node3D" parent="."]
+
+[node name="Enemy" parent="Enemies3" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.3282, -2.73474, -156.986)
+
+[node name="Enemy2" parent="Enemies3" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.3473, -2.73474, -139.957)
+
+[node name="Enemies4" type="Node3D" parent="."]
+
+[node name="Enemy" parent="Enemies4" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.13024, -5.311, -48.2754)
+
+[node name="Enemy2" parent="Enemies4" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2818, -5.311, -48.2754)
+
+[node name="Enemy3" parent="Enemies4" instance=ExtResource("5_dwbse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.9317, -5.311, -73.8873)
 
 [node name="Enemy" parent="." instance=ExtResource("5_dwbse")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -162.782, -3.43826, -229.747)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -156.434, -3.43826, -229.747)
 
 [node name="TriggerEnemy" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -170.954, -5.72478, -252.465)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -170.954, -5.72478, -259.43)
 collision_layer = 0
 script = ExtResource("6_dwbse")
 enemies = [NodePath("../Enemy")]
@@ -96,3 +138,33 @@ metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64684, 4.34528, 0)
 shape = SubResource("BoxShape3D_dwbse")
+
+[node name="TriggerEnemy3" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -153.646, -1.76566, -169.988)
+script = ExtResource("6_dwbse")
+enemies = [NodePath("../Enemies2/Enemy"), NodePath("../Enemies2/Enemy2"), NodePath("../Enemies2/Enemy3"), NodePath("../Enemies2/Enemy4")]
+metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy3"]
+transform = Transform3D(0.913041, 0, -0.407868, 0, 1, 0, 0.407868, 0, 0.913041, 0, 0.379272, 1.65295)
+shape = SubResource("BoxShape3D_gbfbk")
+
+[node name="TriggerEnemy4" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.4094, 0, -157.124)
+script = ExtResource("6_dwbse")
+enemies = [NodePath("../Enemies3/Enemy"), NodePath("../Enemies3/Enemy2")]
+metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.69305, -7.28198)
+shape = SubResource("BoxShape3D_ioo17")
+
+[node name="TriggerEnemy5" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.8834, -1.02478, -95.2862)
+script = ExtResource("6_dwbse")
+enemies = [NodePath("../Enemies4/Enemy"), NodePath("../Enemies4/Enemy2"), NodePath("../Enemies4/Enemy3")]
+metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy5"]
+transform = Transform3D(0.860875, 0, 0.508816, 0, 1, 0, -0.508816, 0, 0.860875, 0.813416, -2.06104, 0)
+shape = SubResource("BoxShape3D_wse8f")
