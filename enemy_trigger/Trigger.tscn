@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dvphq5bo5gsx1" path="res://enemy_trigger/trigger.gd" id="1_8chfh"]
 
 [node name="Trigger" type="Area3D"]
+collision_layer = 0
 script = ExtResource("1_8chfh")
 
 [connection signal="area_entered" from="." to="." method="activate_enemies"]
