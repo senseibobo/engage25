@@ -39,6 +39,9 @@ func _ready():
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	normal_state_started.emit()
 
 
@@ -108,8 +111,8 @@ func start_rewind_state():
 	print("REWINDING")
 	Engine.time_scale = 0.1
 	state = State.REWIND
-	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, ^"current_time", 0.0, 1.5*Engine.time_scale)
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, ^"current_time", 0.0, 4.5*Engine.time_scale)
 	tween.parallel().tween_property(self,^"time_passed",time_passed-current_time, 1.5*Engine.time_scale )
 	tween.tween_callback(start_normal_state)
 	rewind_state_started.emit()

@@ -36,7 +36,10 @@ func _process(delta):
 	if reloading: 
 		rotation = Vector3()
 		return
-	aim_at_screen_point(get_viewport().get_mouse_position())
+	if free_aim:
+		aim_at_screen_point(get_viewport().get_mouse_position())
+	else:
+		rotation = Vector3(-PI*0.35, 0.0,0.0)
 	if not free_aim:
 		sway(delta)
 	cock_timer -= delta/Engine.time_scale
@@ -95,8 +98,10 @@ func shoot():
 	animation_player.speed_scale = 1.0/Engine.time_scale
 	shake_camera.add_trauma()
 	var pos: Vector3 = shoot_position.global_position
+	
 	var shot_instance: Shot = shot_instance_scene.instantiate()
 	get_tree().current_scene.add_child(shot_instance)
+	
 	shot_instance.setup(pos, target_point)
 
 

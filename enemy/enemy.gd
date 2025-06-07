@@ -54,6 +54,7 @@ func _process_walk(delta):
 	animation_player.seek(
 		fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length))
 	var diff = _update_position()
+	line_renderer.points = Array(nav_agent.get_current_navigation_path())
 	#if diff.length() > 0.01:
 		#look_at(global_position + diff*Vector3(1,0,1))
 
