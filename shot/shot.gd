@@ -21,5 +21,5 @@ func trigger():
 		var impact: Node3D = impact_scene.instantiate()
 		get_tree().current_scene.add_child(impact)
 		impact.global_position = raycast.get_collision_point()
-	await get_tree().create_timer(0.4, false).timeout
+	await get_tree().create_timer(0.4, false, false, true).timeout
 	queue_free()
