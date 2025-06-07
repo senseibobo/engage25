@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbaq6ntj8x6pd"]
+
+[ext_resource type="Script" uid="uid://biidbxm6kto66" path="res://tutorial/tutorial.gd" id="1_kcami"]
+[ext_resource type="PackedScene" uid="uid://cbi72xwm3ennj" path="res://tutorial/bottle/boca.tscn" id="2_burua"]
+
+[node name="Tutorial" type="Node3D" node_paths=PackedStringArray("dialogue")]
+script = ExtResource("1_kcami")
+positions = Array[Vector3]([Vector3(-0.983906, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0)])
+dialogues = Array[StringName]([&"Dumb human. Wait 10 seconds to shoot. Use the clock", &"Great. You can hit a bottle. Try to fast forward with E.", &"Congratulations. You are ready to die in time."])
+bottle_scene = ExtResource("2_burua")
+dialogue = NodePath("CanvasLayer/Dialogue")
+
+[node name="Position1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.983906, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Dialogue" type="Label" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -109.0
+offset_right = 20.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 0

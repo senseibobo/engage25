@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2teeqbf3iail"]
+
+[ext_resource type="Script" uid="uid://ciafctdgulwp2" path="res://tutorial/bottle_impact/bottle_particles.gd" id="1_n3fne"]
+[ext_resource type="AudioStream" uid="uid://dot6j7jeooosl" path="res://tutorial/bottle/flasarazbija.mp3" id="2_0niau"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fvia3"]
+radial_velocity_min = 4.99998
+radial_velocity_max = 4.99998
+gravity = Vector3(0, 0, 0)
+scale_over_velocity_max = 310.34
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n3fne"]
+shading_mode = 0
+albedo_color = Color(0.490013, 0.191444, 1.44392e-07, 1)
+billboard_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0niau"]
+material = SubResource("StandardMaterial3D_n3fne")
+size = Vector2(0.3, 0.3)
+orientation = 2
+
+[node name="BottleParticles" type="GPUParticles3D"]
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fvia3")
+draw_pass_1 = SubResource("PlaneMesh_0niau")
+script = ExtResource("1_n3fne")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_0niau")
+autoplay = true
