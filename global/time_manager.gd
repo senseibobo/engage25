@@ -7,6 +7,7 @@ signal slowed_state_started
 signal rewind_state_started
 signal rewind_finished
 signal fast_forward_state_started
+signal fast_forward_state_ended
 signal enemy_shoot_state_started
 signal player_revived
 signal tick
@@ -73,7 +74,7 @@ func _process(delta: float) -> void:
 				next_time_started.emit()
 				start_normal_state()
 		State.REWIND: pass
-			#if current_time <= 0: start_normal_state()
+			#if current_time <= 0: start_normal_sAudioStreamPlayertate()
 	if int(old_time_passed) < int(time_passed):
 		tick.emit() 
 		tick_forward.emit()
@@ -136,6 +137,7 @@ func start_fast_forward_state():
 	slowed_total_time = slowed_base_time + slowed_bonus_time * (1.0-current_time/normal_total_time)
 	tween.tween_property(Engine, "time_scale", 1.0, 0.0)
 	tween.tween_callback(_on_normal_state_ended)
+	tween.tween_callback(fast_forward_state_ended.emit)
 
 
 func _on_normal_state_ended():

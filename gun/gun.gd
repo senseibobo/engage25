@@ -11,6 +11,7 @@ extends Node3D
 @export var cock_player: AudioStreamPlayer
 @export var spin_player: AudioStreamPlayer
 @export var shoot_player: AudioStreamPlayer
+@export var reload_player: AudioStreamPlayer
 
 @export var shot_instance_scene: PackedScene
 
@@ -125,6 +126,7 @@ func stop_free_aim():
 		animation_player.speed_scale = 1.0
 		animation_player.stop()
 		animation_player.play(&"reload")
+		reload_player.play()
 		bullets_left = 6
 	aim_at_screen_point(get_viewport().size/2.0)
 

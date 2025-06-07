@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=28 format=3 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
 [ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
@@ -13,6 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://eli3k4g665tk" path="res://enemy/hat.glb" id="5_pmsee"]
 [ext_resource type="Script" uid="uid://7sp71apr4hr2" path="res://shot/hitbox/hitbox.gd" id="7_y5vj3"]
 [ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="8_5ffra"]
+[ext_resource type="AudioStream" uid="uid://cqc5el6mnhy8w" path="res://enemy/audios/smrt1.mp3" id="14_c6eq3"]
+[ext_resource type="AudioStream" uid="uid://6ti86krusn1y" path="res://enemy/audios/smrt2.mp3" id="15_34gv7"]
+[ext_resource type="AudioStream" uid="uid://b2fvfb6x0orj7" path="res://enemy/audios/smrt3.mp3" id="16_pg32h"]
+[ext_resource type="AudioStream" uid="uid://cwy7rhl05m1cw" path="res://enemy/audios/smrt4.mp3" id="17_nfy00"]
+[ext_resource type="AudioStream" uid="uid://cwar4hgmxkui1" path="res://enemy/audios/smrt5.mp3" id="18_iocd2"]
+[ext_resource type="AudioStream" uid="uid://dcoucr5gh677l" path="res://enemy/audios/smrt7.mp3" id="19_05kf6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_scxef"]
 radius = 0.3
@@ -26,7 +32,7 @@ shader = ExtResource("3_6yflr")
 shader_parameter/tex = ExtResource("4_gf88j")
 shader_parameter/color = Color(0.847059, 0.505882, 0.227451, 0.533333)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_6yflr"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_c6eq3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
 render_priority = 0
@@ -40,7 +46,17 @@ shader = ExtResource("5_o3pv7")
 radius = 0.3
 height = 1.8
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player", "visible_notifier") groups=["enemy"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_gf88j"]
+playback_mode = 1
+streams_count = 6
+stream_0/stream = ExtResource("14_c6eq3")
+stream_1/stream = ExtResource("15_34gv7")
+stream_2/stream = ExtResource("16_pg32h")
+stream_3/stream = ExtResource("17_nfy00")
+stream_4/stream = ExtResource("18_iocd2")
+stream_5/stream = ExtResource("19_05kf6")
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player", "death_player", "visible_notifier") groups=["enemy"]]
 collision_layer = 4
 script = ExtResource("1_2mvqj")
 hitbox = NodePath("Hitbox")
@@ -51,6 +67,7 @@ path_3d = NodePath("Path3D")
 path_follow = NodePath("Path3D/PathFollow3D")
 line_renderer = NodePath("Path3D/LineRenderer3D")
 shoot_player = NodePath("ShootPlayer")
+death_player = NodePath("DeathPlayer")
 enemy_shot_scene = ExtResource("2_o3pv7")
 visible_notifier = NodePath("VisibleOnScreenNotifier3D")
 
@@ -71,7 +88,7 @@ curve = SubResource("Curve3D_2mvqj")
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
 material_override = SubResource("ShaderMaterial_tbw0t")
-mesh = SubResource("ImmediateMesh_6yflr")
+mesh = SubResource("ImmediateMesh_c6eq3")
 script = ExtResource("2_1wwld")
 start_thickness = 0.3
 end_thickness = 0.3
@@ -119,6 +136,10 @@ shape = SubResource("CapsuleShape3D_e355f")
 
 [node name="ShootPlayer" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("8_5ffra")
+
+[node name="DeathPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_gf88j")
+volume_db = 4.685
 
 [connection signal="got_hit" from="Hitbox" to="." method="_on_hitbox_got_hit"]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://dsujgalqiiro8"]
+[gd_scene load_steps=20 format=4 uid="uid://dsujgalqiiro8"]
 
 [ext_resource type="Script" uid="uid://bq8a5iwhxxk7f" path="res://gun/gun.gd" id="1_1vrot"]
 [ext_resource type="Texture2D" uid="uid://crgvxuy76dx8p" path="res://gun/revolver_revolvernavy.webp" id="2_0qvfs"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://v80dfye5mb03" path="res://gun/crosshair.png" id="4_u0xb8"]
 [ext_resource type="AudioStream" uid="uid://c5p1urk7mxr7" path="res://sounds/revolver_spin.ogg" id="5_u0xb8"]
 [ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="6_o2n5o"]
+[ext_resource type="AudioStream" uid="uid://b5av3y8uuk0h5" path="res://gun/reload.mp3" id="8_o2n5o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdffl"]
 resource_name = "revolvertelo"
@@ -301,7 +302,7 @@ _data = {
 &"shoot": SubResource("Animation_1vrot")
 }
 
-[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair", "barrel", "cock_player", "spin_player", "shoot_player")]
+[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair", "barrel", "cock_player", "spin_player", "shoot_player", "reload_player")]
 script = ExtResource("1_1vrot")
 shoot_position = NodePath("GunMesh/ShootPosition")
 animation_player = NodePath("AnimationPlayer")
@@ -310,6 +311,7 @@ barrel = NodePath("GunMesh/Barrel")
 cock_player = NodePath("CockPlayer")
 spin_player = NodePath("SpinPlayer")
 shoot_player = NodePath("ShootPlayer")
+reload_player = NodePath("ReloadPlayer")
 shot_instance_scene = ExtResource("2_qhldj")
 
 [node name="GunMesh" type="MeshInstance3D" parent="."]
@@ -375,5 +377,8 @@ stream = ExtResource("5_u0xb8")
 
 [node name="ShootPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_o2n5o")
+
+[node name="ReloadPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_o2n5o")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

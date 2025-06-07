@@ -19,6 +19,7 @@ enum State {
 @export var gravity: float = 9.0
 @export var line_renderer: LineRenderer
 @export var shoot_player: AudioStreamPlayer3D
+@export var death_player: AudioStreamPlayer
 @export var enemy_shot_scene: PackedScene
 @export var active: bool = false
 @export var visible_notifier: VisibleOnScreenNotifier3D
@@ -85,6 +86,7 @@ func hit():
 	hitbox.queue_free()
 	animation_player.speed_scale = 0.0
 	animation_player.play(&"DIEE")
+	death_player.play()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	check_enemies_shootable()
