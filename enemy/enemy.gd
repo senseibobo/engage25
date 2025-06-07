@@ -54,7 +54,15 @@ func _process_walk(delta):
 	animation_player.seek(
 		fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length))
 	var diff = _update_position()
-	line_renderer.points = Array(nav_agent.get_current_navigation_path())
+	var new_path: Array = []
+	new_path.append(global_position + Vector3.UP*0.5)
+	nav_agent.get_next_path_position()
+	var start_index = nav_agent.get_current_navigation_path_index()
+	var end_index = nav_agent.get_current_navigation_path().size()
+	for i in range(start_index, end_index):
+		new_path.append(path[i])
+	new_path.reverse()
+	line_renderer.points = new_path
 	#if diff.length() > 0.01:
 		#look_at(global_position + diff*Vector3(1,0,1))
 
@@ -139,6 +147,7 @@ func _process_movement(delta):
 
 func _on_normal_state_started():
 	if state in [State.NONE, State.AIM]:
+		line_renderer.visible = true
 		state = State.WALK
 		animation_player.play(&"Walk")
 		start_path()
@@ -148,6 +157,7 @@ func _on_normal_state_started():
 
 func _on_slowed_state_started():
 	if state == State.WALK:
+		line_renderer.visible = false
 		animation_player.stop()
 		animation_player.play(&"Shoot")
 		animation_player.speed_scale = 0.0

@@ -26,6 +26,7 @@ var mouse_move: float
 func _ready():
 	TimeManager.normal_state_started.connect(stop_free_aim)
 	TimeManager.slowed_state_started.connect(start_free_aim)
+	TimeManager.player_revived.connect(stop_free_aim)
 
 
 func _process(delta):
@@ -121,17 +122,13 @@ func stop_free_aim():
 		animation_player.speed_scale = 1.0
 		animation_player.stop()
 		animation_player.play(&"reload")
+		bullets_left = 6
 	aim_at_screen_point(get_viewport().size/2.0)
 
 func sway(delta: float):
 	if(mouse_move > 2):
-		position = position.lerp(Vector3(0.3, -0.232, -0.518), 5.0*get_physics_process_delta_time())
+		position = position.lerp(Vector3(0.3, -0.232, -0.518), 5.0*delta)
 	elif(mouse_move < -2):
-		position = position.lerp(Vector3(0.5, -0.232, -0.518), 5.0*get_physics_process_delta_time())
+		position = position.lerp(Vector3(0.5, -0.232, -0.518), 5.0*delta)
 	else:
-		position = position.lerp(Vector3(0.402, -0.232, -0.518), 5.0*get_physics_process_delta_time())
-
-
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == &"reload":
-		bullets_left = 6
+		position = position.lerp(Vector3(0.402, -0.232, -0.518), 5.0*delta)

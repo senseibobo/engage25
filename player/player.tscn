@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://kg818nwbxmg8"]
+[gd_scene load_steps=15 format=3 uid="uid://kg818nwbxmg8"]
 
 [ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cetbv3vt66fb0" path="res://player/camera.gd" id="2_qjkh3"]
@@ -6,12 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://dsujgalqiiro8" path="res://gun/gun.tscn" id="3_g1dw6"]
 [ext_resource type="PackedScene" uid="uid://c1mdub8ij2efb" path="res://watch/watch.tscn" id="4_yw30f"]
 [ext_resource type="Shader" uid="uid://b3d30cifegkn2" path="res://player/shader/player.gdshader" id="6_g6k8r"]
+[ext_resource type="Script" uid="uid://dn5pmstdbe6j4" path="res://player/black_and_white_filter.gd" id="7_boad6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
-radius = 0.3
+radius = 0.45
 height = 1.8
 
 [sub_resource type="Gradient" id="Gradient_g6k8r"]
+offsets = PackedFloat32Array(0, 0.234177, 0.803797)
+colors = PackedColorArray(0, 0, 0, 1, 0.072165, 0.072165, 0.072165, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_boad6"]
 gradient = SubResource("Gradient_g6k8r")
@@ -20,6 +23,7 @@ gradient = SubResource("Gradient_g6k8r")
 shader = ExtResource("6_g6k8r")
 shader_parameter/flip = false
 shader_parameter/gradient = SubResource("GradientTexture1D_boad6")
+shader_parameter/strength = 0.0
 
 [sub_resource type="Animation" id="Animation_qjkh3"]
 length = 0.001
@@ -81,11 +85,11 @@ _data = {
 &"death": SubResource("Animation_yw30f")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "animation_player", "color_filter")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "animation_player", "black_and_white_filter")]
 script = ExtResource("1_oul6g")
 camera = NodePath("Camera3D")
 animation_player = NodePath("AnimationPlayer")
-color_filter = NodePath("CanvasLayer/ColorRect")
+black_and_white_filter = NodePath("CanvasLayer/BlackAndWhiteFilter")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -125,8 +129,7 @@ shake_camera = NodePath("../../../../../Camera3D")
 [node name="Watch" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("4_yw30f")]
 transform = Transform3D(0.948324, 0, 0.317305, 0, 1, 0, -0.317305, 0, 0.948324, -0.512, -0.27, -0.525)
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-visible = false
+[node name="BlackAndWhiteFilter" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_boad6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,6 +137,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("7_boad6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

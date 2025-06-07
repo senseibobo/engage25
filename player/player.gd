@@ -9,7 +9,7 @@ static var instance: Player
 @export var movement_speed: float = 3.0
 @export var gravity: float = 9.0
 @export var animation_player: AnimationPlayer
-@export var color_filter: ColorRect
+@export var black_and_white_filter: BlackAndWhiteFilter
 
 var dead: bool = false
 var distance_traveled: float = 0.0
@@ -20,7 +20,7 @@ func _enter_tree():
 
 
 func _ready():
-	TimeManager.connect("bell_rung", _turn_filter_on)
+	TimeManager.connect("slowed_state_started", _turn_filter_on)
 	TimeManager.connect("normal_state_started", _turn_filter_off)
 	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -59,15 +59,18 @@ func hit():
 	if dead: return
 	animation_player.play(&"death")
 	dead = true
+	black_and_white_filter.fade_in()
 	Engine.time_scale = 0.01
 	animation_player.speed_scale = 1.0/Engine.time_scale
 
 func revive():
+	black_and_white_filter.fade_out()
 	dead = false
 	animation_player.play_backwards(&"death")
 
 func _turn_filter_on():
-	color_filter.visible = true
+	print("fade in")
+	black_and_white_filter.fade_in()
 
 func _turn_filter_off():
-	color_filter.visible = false
+	black_and_white_filter.fade_out()

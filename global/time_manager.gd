@@ -35,23 +35,18 @@ var old_time_passed: float
 func _ready():
 	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 	bell_rung.connect(_on_bell_rung)
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	normal_state_started.emit()
+	await get_tree().create_timer(0.2).timeout
+	normal_state_started.emit.call_deferred()
 
 
 func _process(delta: float) -> void:
 	if Player.instance.dead: return
 	match state:
 		State.NORMAL:
-			current_time += delta/Engine.time_scale
 			time_passed += delta/Engine.time_scale
-			if current_time >= normal_total_time: 
+			var old_current_time = current_time
+			current_time = fmod(time_passed, normal_total_time)
+			if old_current_time > current_time: 
 				bell_rung.emit()
 				start_slowed_state()
 		State.SLOWED:
@@ -131,6 +126,7 @@ func start_fast_forward_state():
 func _on_bell_rung():
 	var player := AudioStreamPlayer.new()
 	player.stream = preload("res://sounds/bell.mp3")
+	player.volume_db = 8
 	add_child(player)
 	player.play()
 	player.finished.connect(player.queue_free)
