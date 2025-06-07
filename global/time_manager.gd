@@ -6,24 +6,28 @@ signal normal_state_started
 signal slowed_state_started
 signal rewind_state_started
 signal fast_forward_state_started
+signal enemy_shoot_state_started
 
 
 enum State {
 	NORMAL,
+	ENEMY_SHOOT,
 	REWIND,
 	FAST_FORWARD,
 	SLOWED
 }
 
 
-
 var state: State = State.NORMAL
 var current_time: float 
 var normal_total_time: float = 5.0
 var slowed_total_time: float = 3.0
+var enemy_shoot_total_time: float = 2.0
 
 
 func _ready():
+	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
+	bell_rung.connect(_on_bell_rung)
 	await get_tree().process_frame
 	await get_tree().process_frame
 	normal_state_started.emit()
@@ -38,7 +42,10 @@ func _process(delta: float) -> void:
 				start_slowed_state()
 		State.SLOWED:
 			current_time += delta/Engine.time_scale
-			if current_time >= slowed_total_time: start_normal_state()
+			if current_time >= slowed_total_time: start_enemy_shoot_state()
+		State.ENEMY_SHOOT:
+			current_time += delta/Engine.time_scale
+			if current_time >= enemy_shoot_total_time: start_normal_state()
 		State.REWIND: pass
 			#if current_time <= 0: start_normal_state()
 
@@ -53,6 +60,13 @@ func start_normal_state():
 func start_slowed_state():
 	slowed_state_started.emit()
 	state = State.SLOWED
+	Engine.time_scale = 0.01
+	current_time = 0.0
+
+
+func start_enemy_shoot_state():
+	enemy_shoot_state_started.emit()
+	state = State.ENEMY_SHOOT
 	Engine.time_scale = 0.01
 	current_time = 0.0
 
@@ -74,3 +88,11 @@ func start_fast_forward_state():
 	tween.tween_property(self, ^"current_time", normal_total_time, 0.9*Engine.time_scale)
 	tween.tween_callback(bell_rung.emit)
 	tween.tween_callback(start_slowed_state)
+
+
+func _on_bell_rung():
+	var player := AudioStreamPlayer.new()
+	player.stream = preload("res://sounds/bell.mp3")
+	add_child(player)
+	player.play()
+	player.finished.connect(player.queue_free)

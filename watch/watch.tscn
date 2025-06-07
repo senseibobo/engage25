@@ -3,21 +3,6 @@
 [ext_resource type="Script" uid="uid://6sglgvg76ui8" path="res://watch/watch.gd" id="1_atswf"]
 [ext_resource type="PackedScene" uid="uid://xsnekqm721sm" path="res://watch/watch.glb" id="1_y6y76"]
 
-[sub_resource type="Animation" id="Animation_2udqx"]
-resource_name = "rewind"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("watch2/watch/left_button:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.166667, 0.333333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(-0.0160856, 0, 7.03122e-10), Vector3(-0.0160856, -0.0328148, -0.0107279), Vector3(-0.0160856, 0, 7.03122e-10)]
-}
-
 [sub_resource type="Animation" id="Animation_7ove0"]
 length = 0.001
 tracks/0/type = "value"
@@ -58,6 +43,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(-0.0160856, 0, 7.03122e-10), Vector3(-0.0160856, -0.034077, 0.0145143), Vector3(-0.0160856, 0, 7.03122e-10)]
+}
+
+[sub_resource type="Animation" id="Animation_2udqx"]
+resource_name = "rewind"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("watch2/watch/left_button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.0160856, 0, 7.03122e-10), Vector3(-0.0160856, -0.0328148, -0.0107279), Vector3(-0.0160856, 0, 7.03122e-10)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gwfyd"]

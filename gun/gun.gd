@@ -7,10 +7,17 @@ extends Node3D
 @export var crosshair: Control
 @export var barrel: Node3D
 
+@export var cock_player: AudioStreamPlayer
+@export var spin_player: AudioStreamPlayer
+@export var shoot_player: AudioStreamPlayer
+
 @export var shot_instance_scene: PackedScene
 
 var target_point: Vector3
 var free_aim: bool = false
+var cock_timer: float = 0.0
+var cocking: bool = false
+var reloading: bool = false
 
 
 func _ready():
@@ -19,7 +26,14 @@ func _ready():
 
 
 func _process(delta):
+	if reloading: 
+		rotation = Vector3()
+		return
 	aim_at_screen_point(get_viewport().get_mouse_position())
+	cock_timer -= delta/Engine.time_scale
+	if cocking and cock_timer <= 0:
+		cocking = false
+		cock_player.play()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -58,6 +72,9 @@ func aim_at_screen_point(screen_point: Vector2):
 
 
 func shoot():
+	cock_timer = 0.12
+	cocking = true
+	shoot_player.play()
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(barrel, "rotation:x", barrel.rotation.x + PI/3, 0.25*Engine.time_scale)
 	animation_player.stop()
@@ -71,12 +88,17 @@ func shoot():
 
 func start_free_aim():
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
-	Input.warp_mouse(get_viewport().size/2.0)
+	Input.warp_mouse(get_window().size/2.0)
 	free_aim = true
 
 
 func stop_free_aim():
-	Input.warp_mouse(get_viewport().size/2.0)
+	barrel.rotation.x = 0.0
+	Input.warp_mouse(get_window().size/2.0)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	free_aim = false
+	print("batonga")
+	animation_player.speed_scale = 1.0
+	animation_player.stop()
+	animation_player.play(&"reload")
 	aim_at_screen_point(get_viewport().size/2.0)

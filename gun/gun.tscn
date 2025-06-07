@@ -1,8 +1,11 @@
-[gd_scene load_steps=14 format=4 uid="uid://dsujgalqiiro8"]
+[gd_scene load_steps=18 format=4 uid="uid://dsujgalqiiro8"]
 
 [ext_resource type="Script" uid="uid://bq8a5iwhxxk7f" path="res://gun/gun.gd" id="1_1vrot"]
 [ext_resource type="Texture2D" uid="uid://crgvxuy76dx8p" path="res://gun/revolver_revolvernavy.webp" id="2_0qvfs"]
 [ext_resource type="PackedScene" uid="uid://bqvsewesggndk" path="res://shot/shot.tscn" id="2_qhldj"]
+[ext_resource type="AudioStream" uid="uid://dd2ulae01f7x2" path="res://sounds/cock.ogg" id="4_sf843"]
+[ext_resource type="AudioStream" uid="uid://c5p1urk7mxr7" path="res://sounds/revolver_spin.ogg" id="5_u0xb8"]
+[ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="6_o2n5o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdffl"]
 resource_name = "revolvertelo"
@@ -162,6 +165,30 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GunMesh/Barrel/BarrelMesh:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0265869, 0.00910346, 0.00044035)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("GunMesh/Barrel/BarrelMesh:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.47392e-12, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_1vrot"]
 resource_name = "shoot"
@@ -214,18 +241,74 @@ tracks/3/keys = {
 "values": [Vector3(0, 0, 0), Vector3(-1.9026e-06, 4.87189e-07, 0.549412), Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_sf843"]
+resource_name = "reload"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GunMesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.5, 0.533333, 0.7, 1.16667, 1.26667, 1.33333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.00191385, 0.00470597), Vector3(0.0705813, 0.072032, 0.00470597), Vector3(-0.154834, -0.0270997, 0.00470597), Vector3(-0.204422, -0.123524, 0.00470597), Vector3(-0.204422, -0.0765388, 0.00470597), Vector3(-0.204422, -0.123524, 0.00470597), Vector3(-0.154834, -0.0270997, 0.00470597), Vector3(0, -0.00191385, 0.00470597)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GunMesh:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.5, 0.533333, 0.7, 1.16667, 1.26667, 1.33333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(0.478517, 1.5708, 2.04667e-06), Vector3(-1.0472, 1.5708, -6.27001e-06), Vector3(-1.38347, 1.5708, -7.54979e-08), Vector3(-1.19557, 1.5708, -5.32181e-08), Vector3(-1.38347, 1.5708, -7.54979e-08), Vector3(-1.0472, 1.5708, -6.27001e-06), Vector3(0, 1.5708, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GunMesh/Barrel/BarrelMesh:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.533333, 1.3, 1.33333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.0265869, 0.00910346, 0.00044035), Vector3(-0.0265869, 0.00910346, 0.00044035), Vector3(-0.0265869, 0.00200182, -0.0370257), Vector3(-0.0265869, 0.00200182, -0.0370257), Vector3(-0.0265869, 0.00910346, 0.00044035)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GunMesh/Barrel/BarrelMesh:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.466667, 0.533333, 1.3, 1.33333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1.47392e-12, 0, 0), Vector3(1.47392e-12, 0, 0), Vector3(-1.0472, -4.82399e-08, 1.84515e-08), Vector3(-1.0472, -4.82399e-08, 1.84515e-08), Vector3(1.47392e-12, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0qvfs"]
 _data = {
 &"RESET": SubResource("Animation_qhldj"),
+&"reload": SubResource("Animation_sf843"),
 &"shoot": SubResource("Animation_1vrot")
 }
 
-[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair", "barrel")]
+[node name="Gun" type="Node3D" node_paths=PackedStringArray("shoot_position", "animation_player", "crosshair", "barrel", "cock_player", "spin_player", "shoot_player")]
 script = ExtResource("1_1vrot")
 shoot_position = NodePath("GunMesh/ShootPosition")
 animation_player = NodePath("AnimationPlayer")
 crosshair = NodePath("Crosshair")
 barrel = NodePath("GunMesh/Barrel")
+cock_player = NodePath("CockPlayer")
+spin_player = NodePath("SpinPlayer")
+shoot_player = NodePath("ShootPlayer")
 shot_instance_scene = ExtResource("2_qhldj")
 
 [node name="GunMesh" type="MeshInstance3D" parent="."]
@@ -238,7 +321,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0275596, -0.0113481, 9.97654e-08)
 
 [node name="BarrelMesh" type="MeshInstance3D" parent="GunMesh/Barrel"]
-transform = Transform3D(1, 2.84217e-14, 2.27374e-13, 0, 1, 1.47392e-12, 0, 1.47392e-12, 1, -0.0265869, 0.00910346, 0.00044035)
+transform = Transform3D(1, 0, 0, 0, 1, -1.47392e-12, 0, 1.47392e-12, 1, -0.0265869, 0.00910346, 0.00044035)
 layers = 2
 mesh = SubResource("ArrayMesh_s7061")
 skeleton = NodePath("")
@@ -255,6 +338,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211336, 0, 9.23777e-09)
 libraries = {
 &"": SubResource("AnimationLibrary_0qvfs")
 }
+playback_default_blend_time = 0.1
 
 [node name="Crosshair" type="Control" parent="."]
 layout_mode = 3
@@ -265,8 +349,17 @@ mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Crosshair"]
 layout_mode = 1
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 1.0
-offset_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 mouse_filter = 2
+
+[node name="CockPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_sf843")
+
+[node name="SpinPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_u0xb8")
+
+[node name="ShootPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_o2n5o")

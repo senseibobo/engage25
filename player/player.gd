@@ -8,6 +8,7 @@ static var instance: Player
 @export var camera: Camera3D
 @export var movement_speed: float = 3.0
 @export var gravity: float = 9.0
+@export var animation_player: AnimationPlayer
 
 var distance_traveled: float = 0.0
 
@@ -17,7 +18,6 @@ func _enter_tree():
 
 
 func _ready():
-	
 	pass#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 

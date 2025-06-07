@@ -15,9 +15,8 @@ func setup(pos: Vector3, direction: Vector3):
 func trigger():
 	raycast.force_raycast_update()
 	if raycast.is_colliding():
-		print("petar")
 		var collider: Node = raycast.get_collider()
-		if collider is Enemy:
+		if collider is Hitbox:
 			collider.hit()
 		var impact: Node3D = impact_scene.instantiate()
 		get_tree().current_scene.add_child(impact)

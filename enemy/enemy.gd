@@ -11,12 +11,14 @@ enum State {
 }
 
 
+@export var hitbox: Hitbox
 @export var animation_player: AnimationPlayer
 @export var nav_agent: NavigationAgent3D
 @export var path_3d: Path3D
 @export var path_follow: PathFollow3D
 @export var gravity: float = 9.0
 @export var line_renderer: LineRenderer
+@export var shoot_player: AudioStreamPlayer3D
 
 
 var state: State = State.NONE
@@ -31,6 +33,7 @@ func _ready():
 	TimeManager.normal_state_started.connect(_on_normal_state_started)
 	TimeManager.slowed_state_started.connect(_on_slowed_state_started)
 	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
+	TimeManager.enemy_shoot_state_started.connect(_on_enemy_shoot_state_started)
 
 
 func _physics_process(delta):
@@ -59,6 +62,8 @@ func hit():
 	collision_mask = 0
 	rotate_to_player()
 	state = State.DEAD
+	hitbox.queue_free()
+	animation_player.speed_scale = 0.0
 	animation_player.play(&"DIEE")
 
 
@@ -82,7 +87,7 @@ func start_path():
 		path_3d.curve.add_point(point)
 	path_3d.curve.get_baked_length()
 	path_follow.progress = 0.0
-		
+
 
 func _update_position():
 	if state == State.DEAD: return
@@ -110,12 +115,14 @@ func _on_normal_state_started():
 		state = State.WALK
 		animation_player.play(&"Walk")
 		start_path()
+	elif state == State.DEAD:
+		animation_player.speed_scale = randf_range(0.8,1.3)
 
 
 func _on_slowed_state_started():
 	if state == State.WALK:
-		print(global_position)
 		animation_player.play(&"Shoot")
+		animation_player.speed_scale = 0.0
 		state = State.AIM
 
 
@@ -123,3 +130,20 @@ func _on_fast_forward_state_started():
 	await TimeManager.bell_rung
 	start_path()
 	
+
+
+func _on_hitbox_got_hit() -> void:
+	hit()
+
+
+func _on_enemy_shoot_state_started():
+	shoot()
+
+
+func shoot():
+	animation_player.speed_scale = 1.0/Engine.time_scale
+	shoot_player.play()
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var params := PhysicsRayQueryParameters3D.new()
+	
+	space_state.intersect_ray(params)

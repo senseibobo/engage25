@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mblnkohmbep2"
-path.s3tc="res://.godot/imported/line.png-a6a863fad281b74fcd94be1b502fd872.s3tc.ctex"
+uid="uid://cww12p2166pwp"
+path.s3tc="res://.godot/imported/boca_zajecarsko.jpg-2d0dff807b9a8d9aa7e99eb31bd2198b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "6f1776d252b1aa652a31086652d9c245"
+}
 
 [deps]
 
-source_file="res://demo/line.png"
-dest_files=["res://.godot/imported/line.png-a6a863fad281b74fcd94be1b502fd872.s3tc.ctex"]
+source_file="res://objects/bottle/boca_zajecarsko.jpg"
+dest_files=["res://.godot/imported/boca_zajecarsko.jpg-2d0dff807b9a8d9aa7e99eb31bd2198b.s3tc.ctex"]
 
 [params]
 

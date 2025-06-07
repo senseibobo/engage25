@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=13 format=3 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
 [ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
@@ -6,23 +6,41 @@
 [ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="3_ppra6"]
 [ext_resource type="PackedScene" uid="uid://84qjmolqrdxk" path="res://enemy/cowboyjacket.glb" id="4_p200p"]
 [ext_resource type="PackedScene" uid="uid://eli3k4g665tk" path="res://enemy/hat.glb" id="5_pmsee"]
+[ext_resource type="Script" uid="uid://7sp71apr4hr2" path="res://shot/hitbox/hitbox.gd" id="7_y5vj3"]
+[ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="8_5ffra"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_scxef"]
 radius = 0.3
 height = 1.8
 
 [sub_resource type="Curve3D" id="Curve3D_2mvqj"]
+resource_local_to_scene = false
+resource_name = ""
+closed = false
+bake_interval = 0.2
+_data = {
+"points": PackedVector3Array(),
+"tilts": PackedFloat32Array()
+}
+point_count = 0
+up_vector_enabled = true
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_1wwld"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_5ffra"]
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer")]
-collision_layer = 2
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e355f"]
+radius = 0.3
+height = 1.8
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player")]
+collision_layer = 4
 script = ExtResource("1_2mvqj")
+hitbox = NodePath("Hitbox")
 animation_player = NodePath("stickman/AnimationPlayer")
 nav_agent = NodePath("NavigationAgent3D")
 path_3d = NodePath("Path3D")
 path_follow = NodePath("Path3D/PathFollow3D")
 line_renderer = NodePath("Path3D/LineRenderer3D")
+shoot_player = NodePath("ShootPlayer")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -37,7 +55,7 @@ curve = SubResource("Curve3D_2mvqj")
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
-mesh = SubResource("ImmediateMesh_1wwld")
+mesh = SubResource("ImmediateMesh_5ffra")
 script = ExtResource("2_1wwld")
 metadata/_custom_type_script = "uid://bgcqn6tjnhu6h"
 
@@ -70,5 +88,18 @@ bone_idx = 7
 
 [node name="hat" parent="stickman/rig/Skeleton3D/HeadAttachment" instance=ExtResource("5_pmsee")]
 transform = Transform3D(-4.37114e-08, 3.38813e-21, 1, 0, 1, -3.38813e-21, -1, 0, -4.37114e-08, -4.88498e-15, 0.334602, 9.31323e-09)
+
+[node name="Hitbox" type="Area3D" parent="."]
+script = ExtResource("7_y5vj3")
+metadata/_custom_type_script = "uid://7sp71apr4hr2"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_e355f")
+
+[node name="ShootPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_5ffra")
+
+[connection signal="got_hit" from="Hitbox" to="." method="_on_hitbox_got_hit"]
 
 [editable path="stickman"]

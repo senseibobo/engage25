@@ -20,7 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_rewind_pressed():
-	if not used:
+	if not used and TimeManager.state == TimeManager.State.NORMAL:
 		animation_player.play(&"rewind")
 		TimeManager.start_rewind_state()
 		used = true
@@ -30,6 +30,6 @@ func _on_rewind_pressed():
 
 
 func _on_fast_forward_pressed():
-	if not used:
+	if TimeManager.state == TimeManager.State.NORMAL:
 		animation_player.play(&"fast_forward")
 		TimeManager.start_fast_forward_state()
