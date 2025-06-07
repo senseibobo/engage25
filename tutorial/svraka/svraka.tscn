@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=4 uid="uid://c2rw74chblkkn"]
+[gd_scene load_steps=14 format=4 uid="uid://c2rw74chblkkn"]
 
 [ext_resource type="Script" uid="uid://i31qkkbcykry" path="res://tutorial/svraka/svraka.gd" id="1_31hto"]
 [ext_resource type="Texture2D" uid="uid://cxb63o80kkedn" path="res://tutorial/svraka/svraka_Gavran-4.jpg" id="1_qpeed"]
 [ext_resource type="PackedScene" uid="uid://86wu7l23m5ga" path="res://tutorial/svraka/svraka.glb" id="2_31hto"]
+[ext_resource type="Script" uid="uid://7sp71apr4hr2" path="res://shot/hitbox/hitbox.gd" id="4_cfhel"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iteb2"]
 resource_name = "crow"
@@ -5524,6 +5525,9 @@ _data = {
 &"Talk": SubResource("Animation_x5vv3")
 }
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_8yupo"]
+size = Vector3(6.90131, 2.95886, 4.48267)
+
 [node name="svraka" type="Node3D" node_paths=PackedStringArray("anim_player")]
 script = ExtResource("1_31hto")
 anim_player = NodePath("AnimationPlayer")
@@ -7940,7 +7944,6 @@ bones/48/scale = Vector3(1, 1, 1)
 bones/49/rotation = Quaternion(0.300165, 0.000217759, 6.85669e-05, 0.953887)
 bones/49/scale = Vector3(1, 1, 1)
 bones/50/rotation = Quaternion(0.316251, -0.000634177, -6.69744e-05, 0.948675)
-bones/50/scale = Vector3(1, 1, 1)
 bones/51/scale = Vector3(1, 1, 1.00003)
 bones/56/rotation = Quaternion(0.236589, 0.96834, 0.0790532, -0.00970205)
 bones/59/rotation = Quaternion(-6.06264e-07, 0.996619, 0.0821632, -7.52438e-08)
@@ -7956,7 +7959,6 @@ bones/107/scale = Vector3(1, 1, 1.00001)
 bones/109/scale = Vector3(1, 1, 1)
 bones/111/rotation = Quaternion(1.1176e-07, -0.000325439, -6.41892e-09, 1)
 bones/111/scale = Vector3(1, 1, 1)
-bones/113/scale = Vector3(1, 1, 1)
 bones/114/rotation = Quaternion(-2.75671e-07, 0.000111409, 2.0711e-08, 1)
 bones/114/scale = Vector3(1, 1, 1)
 bones/116/rotation = Quaternion(-6.46322e-08, 0.500546, 0.86571, -3.84655e-08)
@@ -7964,7 +7966,6 @@ bones/116/scale = Vector3(1, 1, 1)
 bones/117/rotation = Quaternion(0.300165, 0.000217759, 6.85669e-05, 0.953887)
 bones/117/scale = Vector3(1, 1, 1)
 bones/118/rotation = Quaternion(0.316251, -0.000634173, -6.69682e-05, 0.948675)
-bones/118/scale = Vector3(1, 1, 1)
 bones/119/scale = Vector3(1, 1, 1.00003)
 bones/121/rotation = Quaternion(0.154058, 0.984697, 0.0809437, -0.00927998)
 bones/150/rotation = Quaternion(0.154058, 0.984697, 0.0809409, -0.00928045)
@@ -7977,7 +7978,6 @@ bones/175/scale = Vector3(1, 1, 1.00002)
 bones/177/scale = Vector3(1, 1, 1)
 bones/179/rotation = Quaternion(1.11758e-07, -0.000325438, 9.97105e-10, 1)
 bones/179/scale = Vector3(1, 1, 1)
-bones/181/scale = Vector3(1, 1, 1)
 bones/182/rotation = Quaternion(-2.79397e-07, 0.000111411, -9.74508e-10, 1)
 bones/182/scale = Vector3(1, 1, 1)
 bones/185/rotation = Quaternion(0.98904, 0, 0, -0.147646)
@@ -8053,6 +8053,15 @@ bones/335/rotation = Quaternion(3.64677e-06, -0.0523451, 0.998629, -1.9115e-07)
 bones/336/position = Vector3(-0.213361, 0.491162, -1.15702)
 bones/336/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 
+[node name="Hitbox" type="Area3D" parent="."]
+script = ExtResource("4_cfhel")
+metadata/_custom_type_script = "uid://7sp71apr4hr2"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.279877, 0.979431, -0.919312)
+shape = SubResource("BoxShape3D_8yupo")
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="got_hit" from="Hitbox" to="." method="_on_hitbox_got_hit"]
 
 [editable path="svraka"]
