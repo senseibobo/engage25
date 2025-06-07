@@ -358,6 +358,7 @@ offset_bottom = 4.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Crosshair"]
+modulate = Color(0.868985, 0.868985, 0.868985, 1)
 texture_filter = 1
 layout_mode = 0
 offset_left = -32.0

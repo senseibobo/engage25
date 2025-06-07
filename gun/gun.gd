@@ -24,6 +24,7 @@ var mouse_move: float
 
 
 func _ready():
+	crosshair.visible = false
 	TimeManager.normal_state_started.connect(stop_free_aim)
 	TimeManager.slowed_state_started.connect(start_free_aim)
 	TimeManager.player_revived.connect(stop_free_aim)
@@ -107,12 +108,14 @@ func shoot():
 
 
 func start_free_aim():
+	crosshair.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	Input.warp_mouse(get_window().size/2.0)
 	free_aim = true
 
 
 func stop_free_aim():
+	crosshair.visible = false
 	barrel.rotation.x = 0.0
 	Input.warp_mouse(get_window().size/2.0)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

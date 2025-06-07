@@ -6,9 +6,17 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rkkas"]
 texture = ExtResource("2_ev0to")
+texture_margin_left = 60.0
+texture_margin_top = 60.0
+texture_margin_right = 60.0
+texture_margin_bottom = 60.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m1wwu"]
 texture = ExtResource("3_1fdq0")
+texture_margin_left = 60.0
+texture_margin_top = 60.0
+texture_margin_right = 60.0
+texture_margin_bottom = 60.0
 
 [resource]
 Button/colors/font_color = Color(0, 0, 0, 1)

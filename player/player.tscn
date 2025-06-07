@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://kg818nwbxmg8"]
+[gd_scene load_steps=18 format=3 uid="uid://kg818nwbxmg8"]
 
 [ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cetbv3vt66fb0" path="res://player/camera.gd" id="2_qjkh3"]
@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dsujgalqiiro8" path="res://gun/gun.tscn" id="3_g1dw6"]
 [ext_resource type="PackedScene" uid="uid://c1mdub8ij2efb" path="res://watch/watch.tscn" id="4_yw30f"]
 [ext_resource type="Shader" uid="uid://b3d30cifegkn2" path="res://player/shader/player.gdshader" id="6_g6k8r"]
-[ext_resource type="Script" path="res://player/black_and_white_filter.gd" id="7_boad6"]
+[ext_resource type="Script" uid="uid://dn5pmstdbe6j4" path="res://player/black_and_white_filter.gd" id="7_boad6"]
+[ext_resource type="Script" uid="uid://da8ktba01nc6d" path="res://player/rewind_effect.gd" id="8_rgyib"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 radius = 0.45
@@ -100,7 +101,7 @@ script = ExtResource("1_oul6g")
 camera = NodePath("Camera3D")
 animation_player = NodePath("AnimationPlayer")
 black_and_white_filter = NodePath("CanvasLayer/BlackAndWhiteFilter")
-rewind_effect = NodePath("CanvasLayer/TextureRect")
+rewind_effect = NodePath("CanvasLayer/RewindEffect")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -150,14 +151,17 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("7_boad6")
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="RewindEffect" type="TextureRect" parent="CanvasLayer" node_paths=PackedStringArray("camera")]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("GradientTexture2D_rgyib")
+script = ExtResource("8_rgyib")
+camera = NodePath("../../Camera3D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

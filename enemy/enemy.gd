@@ -5,7 +5,6 @@ extends CharacterBody3D
 enum State {
 	NONE,
 	WALK,
-	FASTFORWARD,
 	AIM,
 	DEAD
 }
@@ -40,6 +39,7 @@ func _ready():
 	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
 	TimeManager.enemy_shoot_state_started.connect(_on_enemy_shoot_state_started)
 	TimeManager.player_revived.connect(_on_player_revived)
+	TimeManager.next_time_started.connect(_on_next_time_started)
 
 
 func _physics_process(delta):
@@ -86,10 +86,30 @@ func hit():
 
 
 static func check_enemies_shootable():
+	if not any_enemies_shootable():
+		if any_enemies_can_shoot():
+			TimeManager.start_enemy_shoot_state()
+		else:
+			TimeManager.start_normal_state()
+	elif TimeManager.state != TimeManager.State.SLOWED:
+		TimeManager.start_slowed_state()
+		TimeManager.bell_rung.emit()
+
+
+static func any_enemies_shootable():
 	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
 		if enemy is Enemy or enemy is TutorialBottle:
-			if enemy.is_shootable(): return
-	TimeManager.start_enemy_shoot_state()
+			if enemy.is_shootable(): 
+				print(enemy.name, " is still shootable")
+				return true
+	return false
+
+
+static func any_enemies_can_shoot():
+	for enemy in TimeManager.get_tree().get_nodes_in_group(&"enemy"):
+		if enemy is Enemy:
+			if enemy.can_shoot(): return true
+	return false
 
 
 func rotate_to_player():
@@ -150,7 +170,6 @@ func _on_normal_state_started():
 		line_renderer.visible = true
 		state = State.WALK
 		animation_player.play(&"Walk")
-		start_path()
 	elif state == State.DEAD:
 		animation_player.speed_scale = randf_range(0.8,1.3)
 
@@ -210,3 +229,11 @@ func _on_player_revived():
 
 func is_shootable():
 	return visible_notifier.is_on_screen() and not state == State.DEAD
+
+
+func can_shoot():
+	return state in [State.WALK, State.AIM]
+
+
+func _on_next_time_started():
+	start_path()

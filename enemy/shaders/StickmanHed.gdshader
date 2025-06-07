@@ -11,7 +11,7 @@ float fresnel(float amount, vec3 normal, vec3 view)
 }
 
 void fragment() {
-    ALBEDO = vec3(0.01,0,0.01);
+    ALBEDO = vec3(0.9,0.3,0.05);
     ALPHA_SCISSOR_THRESHOLD =0.01;
     ALPHA = fresnel(3.0, NORMAL, VIEW);
 }
