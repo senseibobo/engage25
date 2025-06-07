@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://b7vgpd4kpouig"]
+[gd_scene load_steps=11 format=3 uid="uid://b7vgpd4kpouig"]
 
 [ext_resource type="Script" uid="uid://8ncpskd1s7rt" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://kg818nwbxmg8" path="res://player/player.tscn" id="1_f3sb7"]
-[ext_resource type="PackedScene" uid="uid://cilul41id8eno" path="res://enemy/enemy.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://dx2wcm0gjnmtb" path="res://map/city.tscn" id="4_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://cbaq6ntj8x6pd" path="res://tutorial/tutorial.tscn" id="5_036b0"]
 
@@ -50,19 +49,7 @@ navigation_mesh = SubResource("NavigationMesh_fj7yv")
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.1329, 0, 0)
 
-[node name="Enemy" parent="." instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.4279, -0.505262, -4.87155)
-
-[node name="Enemy2" parent="." instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.8974, -0.448407, -4.71126)
-
-[node name="Enemy3" parent="." instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5594, -0.448407, -3.98575)
-
-[node name="Enemy4" parent="." instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.8381, -0.448406, -4.42306)
-
 [node name="City" parent="." instance=ExtResource("4_aqk2v")]
 
 [node name="Tutorial" parent="." instance=ExtResource("5_036b0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.10945, 0.0343972, -2.15193)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.7065, -1.95383, 2.58832)

@@ -6,6 +6,7 @@ extends Node3D
 @export var bottle_scene: PackedScene
 @export var dialogue: Label
 @export var audio_player: AudioStreamPlayer
+@export var svraka: Node3D
 
 var count: int
 var iterator: int = 0
@@ -25,6 +26,7 @@ func spawn():
 func next_dialogue():
 	audio_player.play()
 	dialogue.text = dialogues[iterator]
+	svraka.play_talk()
 	if((iterator+1) == dialogues.size()):
 		iterator = 0
 	else:
