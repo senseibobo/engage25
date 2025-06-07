@@ -1,14 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbaq6ntj8x6pd"]
+[gd_scene load_steps=8 format=3 uid="uid://cbaq6ntj8x6pd"]
 
 [ext_resource type="Script" uid="uid://biidbxm6kto66" path="res://tutorial/tutorial.gd" id="1_kcami"]
 [ext_resource type="PackedScene" uid="uid://cbi72xwm3ennj" path="res://tutorial/bottle/boca.tscn" id="2_burua"]
+[ext_resource type="AudioStream" uid="uid://ckf2vy403tl6d" path="res://tutorial/svraka/svrakamuzika.wav" id="3_vy6qu"]
+[ext_resource type="AudioStream" uid="uid://bisfsmnrgw24c" path="res://tutorial/svraka/svraka1.wav" id="4_p47bv"]
+[ext_resource type="AudioStream" uid="uid://c3uk3khpih0gw" path="res://tutorial/svraka/svraka2.wav" id="5_811q2"]
+[ext_resource type="AudioStream" uid="uid://du5v7soyucall" path="res://tutorial/svraka/svraka3.wav" id="6_tifc7"]
 
-[node name="Tutorial" type="Node3D" node_paths=PackedStringArray("dialogue")]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_p47bv"]
+playback_mode = 1
+streams_count = 3
+stream_0/stream = ExtResource("4_p47bv")
+stream_1/stream = ExtResource("5_811q2")
+stream_2/stream = ExtResource("6_tifc7")
+
+[node name="Tutorial" type="Node3D" node_paths=PackedStringArray("dialogue", "audio_player")]
 script = ExtResource("1_kcami")
 positions = Array[Vector3]([Vector3(-0.983906, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0)])
 dialogues = Array[StringName]([&"Dumb human. Wait 10 seconds to shoot. Use the clock", &"Great. You can hit a bottle. Try to fast forward with E.", &"Congratulations. You are ready to die in time."])
 bottle_scene = ExtResource("2_burua")
 dialogue = NodePath("CanvasLayer/Dialogue")
+audio_player = NodePath("AudioStreamPlayer")
 
 [node name="Position1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.983906, 0, 0)
@@ -28,3 +40,11 @@ offset_right = 20.0
 offset_bottom = -86.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_vy6qu")
+volume_db = -16.762
+autoplay = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_p47bv")
