@@ -58,7 +58,7 @@ func _process_walk(delta):
 	new_path.append(global_position + Vector3.UP*0.5)
 	nav_agent.get_next_path_position()
 	var start_index = nav_agent.get_current_navigation_path_index()
-	var end_index = nav_agent.get_current_navigation_path().size()
+	var end_index = path.size()
 	for i in range(start_index, end_index):
 		new_path.append(path[i])
 	new_path.reverse()
