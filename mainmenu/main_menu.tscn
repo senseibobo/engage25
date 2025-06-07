@@ -1,0 +1,101 @@
+[gd_scene load_steps=13 format=3 uid="uid://gkpsvrws5ktm"]
+
+[ext_resource type="PackedScene" uid="uid://dx2wcm0gjnmtb" path="res://map/city.tscn" id="1_d14xc"]
+[ext_resource type="Script" uid="uid://c2b8tumcon51u" path="res://mainmenu/main_menu.gd" id="1_yylb4"]
+[ext_resource type="PackedScene" uid="uid://ds5sg4i77c0wu" path="res://tutorial/standbottles/standbottle.glb" id="2_skr7d"]
+[ext_resource type="PackedScene" uid="uid://c2rw74chblkkn" path="res://tutorial/svraka/svraka.tscn" id="3_04bgo"]
+[ext_resource type="PackedScene" uid="uid://b1gq7abqeh5xn" path="res://objects/bottle/boca.glb" id="3_7at75"]
+[ext_resource type="Theme" uid="uid://icuyfjlvjgke" path="res://mainmenu/theme/new_theme.tres" id="4_04bgo"]
+[ext_resource type="Texture2D" uid="uid://loma2y3tb5ox" path="res://mainmenu/background.png" id="4_yxufh"]
+
+[sub_resource type="Gradient" id="Gradient_skr7d"]
+colors = PackedColorArray(0.161265, 0.15403, 2.40654e-08, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aqk2v"]
+gradient = SubResource("Gradient_skr7d")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_04bgo"]
+
+[sub_resource type="Sky" id="Sky_tlwt5"]
+sky_material = SubResource("ProceduralSkyMaterial_04bgo")
+
+[sub_resource type="Environment" id="Environment_yxufh"]
+background_mode = 2
+sky = SubResource("Sky_tlwt5")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 0, 1)
+ambient_light_energy = 0.4
+adjustment_enabled = true
+adjustment_contrast = 1.1
+adjustment_saturation = 1.1
+adjustment_color_correction = SubResource("GradientTexture1D_aqk2v")
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_yylb4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.813152, 0.582052, 0, -0.582052, 0.813152, 0, 0, 0)
+layers = 3
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yxufh")
+
+[node name="City" parent="." instance=ExtResource("1_d14xc")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.741554, 0, 0.670893, 0, 1, 0, -0.670893, 0, 0.741554, 23.393, -3.091, 4.762)
+
+[node name="standbottle2" parent="." instance=ExtResource("2_skr7d")]
+transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 21.1955, -2.08128, 0)
+
+[node name="boca" parent="standbottle2" instance=ExtResource("3_7at75")]
+transform = Transform3D(-0.0137268, 0, -0.0788135, 0, 0.08, 0, 0.0788135, 0, -0.0137268, -7.90652e-09, 0.206326, 0.18088)
+
+[node name="boca2" parent="standbottle2" instance=ExtResource("3_7at75")]
+transform = Transform3D(-0.0137268, 0, -0.0788135, 0, 0.08, 0, 0.0788135, 0, -0.0137268, -2.01607e-08, 0.206326, 0.461224)
+
+[node name="boca3" parent="standbottle2" instance=ExtResource("3_7at75")]
+transform = Transform3D(-0.0137268, 0, -0.0788135, 0, 0.08, 0, 0.0788135, 0, -0.0137268, -2.99159e-08, 0.206326, 0.684396)
+
+[node name="svraka" parent="." instance=ExtResource("3_04bgo")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 20.017, -2.07045, -0.0407117)
+shoot_dialogue = &"Don\'t shoot me, you inbred degenerate. Shoot bottles, spineless slave."
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 195.0
+offset_top = -207.0
+offset_right = 530.0
+offset_bottom = 219.0
+grow_vertical = 2
+texture = ExtResource("4_yxufh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 269.0
+offset_top = -82.0
+offset_right = 360.0
+offset_bottom = 108.0
+grow_vertical = 2
+scale = Vector2(2, 2)
+theme = ExtResource("4_04bgo")
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "START"
+
+[node name="Button2" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "EXIT"
+
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]

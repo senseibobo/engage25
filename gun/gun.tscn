@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=4 uid="uid://dsujgalqiiro8"]
+[gd_scene load_steps=19 format=4 uid="uid://dsujgalqiiro8"]
 
 [ext_resource type="Script" uid="uid://bq8a5iwhxxk7f" path="res://gun/gun.gd" id="1_1vrot"]
 [ext_resource type="Texture2D" uid="uid://crgvxuy76dx8p" path="res://gun/revolver_revolvernavy.webp" id="2_0qvfs"]
 [ext_resource type="PackedScene" uid="uid://bqvsewesggndk" path="res://shot/shot.tscn" id="2_qhldj"]
 [ext_resource type="AudioStream" uid="uid://dd2ulae01f7x2" path="res://sounds/cock.ogg" id="4_sf843"]
+[ext_resource type="Texture2D" uid="uid://v80dfye5mb03" path="res://gun/crosshair.png" id="4_u0xb8"]
 [ext_resource type="AudioStream" uid="uid://c5p1urk7mxr7" path="res://sounds/revolver_spin.ogg" id="5_u0xb8"]
 [ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="6_o2n5o"]
 
@@ -348,12 +349,22 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Crosshair"]
+visible = false
 layout_mode = 1
 offset_left = -4.0
 offset_top = -4.0
 offset_right = 4.0
 offset_bottom = 4.0
 mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Crosshair"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("4_u0xb8")
 
 [node name="CockPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_sf843")

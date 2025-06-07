@@ -12,8 +12,8 @@ func _on_hitbox_got_hit() -> void:
 	particle.global_position = global_position
 	particle.emitting = true
 	emit_signal(&"destroyed_bottle")
-	queue_free()
 	await get_tree().process_frame.connect(Enemy.check_enemies_shootable)
+	queue_free()
 
 
 func is_shootable():

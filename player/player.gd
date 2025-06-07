@@ -69,7 +69,6 @@ func revive():
 	animation_player.play_backwards(&"death")
 
 func _turn_filter_on():
-	print("fade in")
 	black_and_white_filter.fade_in()
 
 func _turn_filter_off():
