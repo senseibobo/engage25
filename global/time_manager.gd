@@ -79,6 +79,16 @@ func start_enemy_shoot_state():
 	state = State.ENEMY_SHOOT
 	Engine.time_scale = 0.01
 	current_time = 0.0
+	await get_tree().process_frame
+	await get_tree().process_frame
+	check_all_enemies_dead()
+
+
+func check_all_enemies_dead():
+	for enemy in get_tree().get_nodes_in_group(&"enemy"):
+		if enemy is Enemy:
+			if not enemy.state == Enemy.State.DEAD: return
+	start_normal_state()
 
 
 func start_rewind_state():

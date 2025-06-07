@@ -14,6 +14,7 @@ extends Node3D
 
 @export var shot_instance_scene: PackedScene
 
+var bullets_left: int = 6
 var target_point: Vector3
 var free_aim: bool = false
 var cock_timer: float = 0.0
@@ -49,9 +50,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		mouse_move = -event.relative.x
 		if free_aim: get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and free_aim:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and free_aim and bullets_left > 0:
 			shoot()
-
 
 
 func aim_at_screen_point(screen_point: Vector2):
@@ -63,6 +63,7 @@ func aim_at_screen_point(screen_point: Vector2):
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var params := PhysicsRayQueryParameters3D.new()
 	var camera_normal: Vector3 = camera.project_ray_normal(screen_point)
+	
 	params.from = camera.project_ray_origin(screen_point)
 	params.to = params.from + camera_normal*10000.0
 	
@@ -81,6 +82,7 @@ func aim_at_screen_point(screen_point: Vector2):
 
 
 func shoot():
+	bullets_left -= 1
 	cock_timer = 0.12
 	cocking = true
 	shoot_player.play()
@@ -120,3 +122,8 @@ func sway(delta: float):
 		position = position.lerp(Vector3(0.5, -0.232, -0.518), 5.0*get_physics_process_delta_time())
 	else:
 		position = position.lerp(Vector3(0.402, -0.232, -0.518), 5.0*get_physics_process_delta_time())
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == &"reload":
+		bullets_left = 6
