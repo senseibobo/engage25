@@ -39,7 +39,10 @@ var old_time_passed: float
 func _ready():
 	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 	bell_rung.connect(_on_bell_rung)
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	next_time_started.emit.call_deferred()
 	normal_state_started.emit.call_deferred()
 
