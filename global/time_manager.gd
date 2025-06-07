@@ -43,12 +43,19 @@ func _ready():
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
+
+
+func restart_time():
+	time_passed = 0.0
+	current_time = 0.0
+	state = State.NORMAL
 	next_time_started.emit.call_deferred()
 	normal_state_started.emit.call_deferred()
 
 
 func _process(delta: float) -> void:
-	if Player.instance and Player.instance.dead: return
+	if not is_instance_valid(Player.instance): return
+	if Player.instance.dead: return
 	match state:
 		State.NORMAL:
 			time_passed += delta/Engine.time_scale

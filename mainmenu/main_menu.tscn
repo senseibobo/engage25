@@ -44,7 +44,9 @@ environment = SubResource("Environment_yxufh")
 [node name="City" parent="." instance=ExtResource("1_d14xc")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.741554, 0, 0.670893, 0, 1, 0, -0.670893, 0, 0.741554, 23.393, -3.091, 4.762)
+transform = Transform3D(0.741976, -0.505977, 0.439839, 0, 0.656059, 0.75471, -0.670427, -0.559976, 0.48678, -118.44, 50.563, -123.05)
+projection = 1
+size = 76.915
 
 [node name="standbottle2" parent="." instance=ExtResource("2_skr7d")]
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 21.1955, -2.08128, 0)
