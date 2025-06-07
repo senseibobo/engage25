@@ -142,11 +142,13 @@ func start_path():
 
 func set_path(new_path: PackedVector3Array):
 	if not active: return
+	if state == State.DEAD: return
 	print("SETTING PATH FROM ", path[path.size()-1], " TO ", new_path[path.size()-1])
 	old_path = path
 	path = new_path
 	path_3d.curve.clear_points()
-	line_renderer.points = Array(new_path)
+	if is_instance_valid(line_renderer):
+		line_renderer.points = Array(new_path)
 	for point: Vector3 in path:
 		path_3d.curve.add_point(point)
 	path_3d.curve.get_baked_length()
