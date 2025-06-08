@@ -16,33 +16,16 @@ stream_0/stream = ExtResource("4_p47bv")
 stream_1/stream = ExtResource("5_811q2")
 stream_2/stream = ExtResource("6_tifc7")
 
-[node name="Tutorial" type="Node3D" node_paths=PackedStringArray("dialogue", "audio_player", "svraka")]
+[node name="Tutorial" type="Node3D" node_paths=PackedStringArray("audio_player", "svraka")]
 script = ExtResource("1_kcami")
 positions = Array[Vector3]([Vector3(-0.983906, 0, 0), Vector3(0, 0, 0), Vector3(1, 0, 0)])
-dialogues = Array[StringName]([&"Dumb human. Wait 10 seconds to shoot. Use the clock", &"Great. You can hit a bottle. Try to fast forward with E.", &"Congratulations. You are ready to die in time."])
+dialogues = Array[String](["", "", ""])
 bottle_scene = ExtResource("2_burua")
-dialogue = NodePath("CanvasLayer/Dialogue")
 audio_player = NodePath("AudioStreamPlayer")
 svraka = NodePath("svraka")
 
 [node name="Position1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.983906, 0, 0)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 20
-
-[node name="Dialogue" type="Label" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -109.0
-offset_right = 20.0
-offset_bottom = -86.0
-grow_horizontal = 2
-grow_vertical = 0
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_vy6qu")
@@ -55,8 +38,7 @@ stream = SubResource("AudioStreamRandomizer_p47bv")
 [node name="standbottle2" parent="." instance=ExtResource("7_811q2")]
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 0, -0.650498, 0)
 
-[node name="svraka" parent="." node_paths=PackedStringArray("audio_player", "dialogue") instance=ExtResource("8_tifc7")]
+[node name="svraka" parent="." node_paths=PackedStringArray("audio_player") instance=ExtResource("8_tifc7")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -2.28763, -0.534768, -0.0407117)
 audio_player = NodePath("../AudioStreamPlayer")
 shoot_dialogue = &"Don\'t shoot me, you inbred degenerate. Shoot bottles, spineless slave."
-dialogue = NodePath("../CanvasLayer/Dialogue")

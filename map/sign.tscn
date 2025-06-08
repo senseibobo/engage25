@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvrkul2g4ctto"]
+
+[ext_resource type="PackedScene" uid="uid://yo3hkkqax03p" path="res://map/sign.glb" id="1_6jidf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6jidf"]
+size = Vector3(0.357422, 0.176025, 0.038147)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_23g3d"]
+size = Vector3(0.0373535, 0.346191, 0.0388184)
+
+[node name="Sign" type="Node3D"]
+
+[node name="sign" parent="." instance=ExtResource("1_6jidf")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="sign" groups=["navigation_mesh_source_group"]]
+transform = Transform3D(6.94286, 0, 0, 0, 6.94286, 0, 0, 0, 6.94286, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="sign/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.034668, 0.256714, 0.00551474)
+shape = SubResource("BoxShape3D_6jidf")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="sign/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.171631, -0.0328439)
+shape = SubResource("BoxShape3D_23g3d")

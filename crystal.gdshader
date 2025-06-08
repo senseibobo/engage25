@@ -1,14 +1,19 @@
 shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+// Varyings
+varying vec3 WorldPos;
+
+uniform sampler2D colorGradient1;
+uniform sampler2D colorGradent2;
+uniform sampler2D noise_texture;
 
 void vertex() {
-	// Called for every vertex the material is visible on.
+	
 }
 
 void fragment() {
-	// Called for every pixel the material is visible on.
+	//ALBEDO = base_color;
+	//ALPHA = transparency.x;
+	//SPECULAR = specular.x;
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the material.
-//	// Uncomment to replace the default light processing function with this one.
-//}

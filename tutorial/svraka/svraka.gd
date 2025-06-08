@@ -1,5 +1,9 @@
 extends Node3D
 
+
+signal shot
+
+
 @export var anim_player: AnimationPlayer
 @export var audio_player: AudioStreamPlayer
 @export var shoot_dialogue: StringName
@@ -24,7 +28,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 
 func _on_hitbox_got_hit() -> void:
-	dialogue.text = shoot_dialogue
+	shot.emit()
 	audio_player.play()
 	anim_player.stop()
 	for i in 3:

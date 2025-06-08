@@ -2,11 +2,19 @@ class_name SceneManager
 extends Control
 
 
+static var instance: SceneManager
+
+@export var dialogue_label: Label
+@export var dialogue_animation: AnimationPlayer
+
 @export var r1: ColorRect
 @export var r2: ColorRect
 
 var tween: Tween
 
+
+func _enter_tree():
+	instance = self
 
 func _ready():
 	TimeManager.bell_rung.connect(add_borders)
