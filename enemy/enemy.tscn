@@ -5777,7 +5777,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_34gv7")
 surface_material_override/1 = SubResource("ShaderMaterial_pg32h")
 
 [node name="HandAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="1"]
-transform = Transform3D(-0.804286, -0.260858, 0.537756, 0.146163, 0.786773, 0.594296, -0.576163, 0.559767, -0.597622, -0.417203, 1.29432, -0.360722)
+transform = Transform3D(-0.0693201, -0.991522, 0.109903, 0.988366, -0.0832108, -0.127309, 0.135375, 0.0997994, 0.985756, -0.692153, 1.33295, -0.00654114)
 bone_name = "DEF-hand.R"
 bone_idx = 174
 
@@ -5785,7 +5785,7 @@ bone_idx = 174
 transform = Transform3D(-0.0145276, 0.0198379, 0.999697, 0.970766, 0.239848, 0.00934753, -0.23959, 0.970608, -0.0227423, 0.012982, 0.129356, 0.0916709)
 
 [node name="TorsoAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="2"]
-transform = Transform3D(0.99511, 0.0477097, 0.0864868, -0.0575344, 0.991707, 0.114919, -0.0802868, -0.119333, 0.989603, 0.0205342, 1.06343, -0.843005)
+transform = Transform3D(1, 1.42109e-14, 2.38419e-07, 1.1546e-07, 0.874915, -0.484276, -2.08596e-07, 0.484275, 0.874916, 0, 1.37236, -0.00943485)
 bone_name = "DEF-spine.004"
 bone_idx = 5
 
@@ -5793,7 +5793,7 @@ bone_idx = 5
 transform = Transform3D(-0.0396919, 0.000413286, -0.999212, 0.470384, 0.882272, -0.0183203, 0.881569, -0.470741, -0.0352135, -0.0140792, -0.206312, 0.116019)
 
 [node name="HeadAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="3"]
-transform = Transform3D(0.99511, -0.000141002, 0.0987735, -0.057535, 0.812007, 0.580805, -0.0802867, -0.583648, 0.808028, 0.0234773, 1.12693, -0.852033)
+transform = Transform3D(1, -1.42109e-13, 2.38419e-07, 3.22409e-13, 1, -5.96046e-07, -2.38419e-07, 4.17233e-07, 1, 4.86309e-16, 1.42919, 0.0204423)
 bone_name = "DEF-spine.006"
 bone_idx = 7
 

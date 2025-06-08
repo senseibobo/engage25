@@ -45,7 +45,9 @@ func _ready():
 	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
 	TimeManager.enemy_shoot_state_started.connect(_on_enemy_shoot_state_started)
 	TimeManager.player_revived.connect(_on_player_revived)
+	TimeManager.slowed_state_ended.connect(_on_slowed_state_ended)
 	TimeManager.next_time_started.connect(_on_next_time_started)
+	TimeManager.start_paths.connect(start_path)
 
 
 func _physics_process(delta):
@@ -61,6 +63,7 @@ func _process_walk(delta):
 	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	var animation_position: float = fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length)
+	print(animation_position)
 	animation_player.seek(animation_position)
 	ghost.look_at(Player.instance.global_position)
 	#ghost_anim_player.seek(animation_position)
@@ -139,7 +142,6 @@ func start_path():
 	if not active: return
 	if state == State.DEAD: return
 	var attempt_pos: Vector3 = get_attempt_pos()
-	print(attempt_pos)
 	var destination: Vector3 = \
 		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
 	nav_agent.target_position = destination
@@ -223,6 +225,7 @@ func _on_normal_state_started():
 		state = State.WALK
 		ghost.visible = true
 		animation_player.play(&"Walk")
+		animation_player.speed_scale = 0.0
 	elif state == State.DEAD:
 		animation_player.speed_scale = randf_range(0.8,1.3)
 
@@ -230,6 +233,7 @@ func _on_normal_state_started():
 func _on_slowed_state_started():
 	if not active: return
 	if state == State.DEAD: return
+	mesh.layers = 1 if not is_visible_raycast() else 5
 	ghost.visible = false
 	if state == State.WALK:
 		global_position = path[-1]
@@ -248,12 +252,12 @@ func _on_slowed_state_started():
 		animation_player.play(&"Shoot")
 		animation_player.speed_scale = 0.0
 		state = State.AIM
-
+		#start_path(
 
 func _on_fast_forward_state_started():
 	if not active: return
-	await TimeManager.bell_rung
-	start_path()
+	#await TimeManager.bell_rung
+	#start_path()
 
 
 func _on_hitbox_got_hit() -> void:
@@ -285,7 +289,7 @@ func shoot():
 			collider.hit()
 		elif collider is Enemy:
 			collider.hit()
-	start_path()
+	#start_path()
 	var enemy_shot: EnemyShot = enemy_shot_scene.instantiate()
 	get_tree().current_scene.add_child(enemy_shot)
 	enemy_shot.global_position = params.from
@@ -297,9 +301,10 @@ func _on_player_revived():
 	if not active: return
 	if state == State.DEAD: return
 	animation_player.play(&"Walk")
+	animation_player.speed_scale = 0.0
 	state = State.WALK
 	#print("setting to old path")
-	set_path(old_path)
+	set_path(path)
 
 
 func is_shootable():
@@ -352,3 +357,10 @@ func activate():
 	_on_normal_state_started()
 	start_path()
 	animation_player.play(&"Walk")
+	animation_player.speed_scale = 0.0
+
+
+func _on_slowed_state_ended():
+	pass
+	#if not state == State.DEAD and active:
+		#start_path()

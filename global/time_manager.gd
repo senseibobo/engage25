@@ -19,6 +19,7 @@ signal enemy_killed
 signal player_hit
 signal game_over
 signal started_restarting
+signal start_paths
 
 
 enum State {
@@ -68,9 +69,12 @@ func _process(delta: float) -> void:
 			State.NORMAL:
 				time_passed += delta/Engine.time_scale
 				var old_current_time = current_time
-				current_time = fmod(time_passed, normal_total_time)
-				if old_current_time > current_time: 
+				var ct = fmod(time_passed, normal_total_time)
+				if old_current_time >= ct: 
+					current_time = normal_total_time
 					_on_normal_state_ended()
+				else:
+					current_time = ct
 			State.SLOWED:
 				current_time += delta/Engine.time_scale
 				if current_time >= slowed_total_time: 
@@ -79,6 +83,7 @@ func _process(delta: float) -> void:
 				current_time += delta/Engine.time_scale
 				if current_time >= enemy_shoot_total_time: 
 					next_time_started.emit()
+					start_paths.emit()
 					start_normal_state()
 			State.REWIND: pass
 				#if current_time <= 0: start_normal_sAudioStreamPlayertate()
@@ -99,6 +104,7 @@ func start_normal_state():
 
 
 func start_slowed_state():
+	print("slowed state started")
 	slowed_state_started.emit()
 	state = State.SLOWED
 	Engine.time_scale = 0.01
@@ -143,6 +149,7 @@ func start_fast_forward_state():
 	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9)
 	slowed_total_time = slowed_base_time + slowed_bonus_time * (1.0-current_time/normal_total_time)
 	tween.tween_property(Engine, "time_scale", 1.0, 0.0)
+	tween.tween_callback(start_paths.emit)
 	tween.tween_callback(_on_normal_state_ended)
 	tween.tween_callback(fast_forward_state_ended.emit)
 
@@ -161,6 +168,8 @@ func _on_normal_state_ended():
 		#print("nothing")
 		if state != State.NORMAL:
 			state = State.NORMAL
+		start_paths.emit()
+		current_time = 0.0
 		next_time_started.emit()
 
 
@@ -178,6 +187,7 @@ func _on_slowed_state_ended():
 	if Enemy.any_enemies_can_shoot():
 		start_enemy_shoot_state()
 	else:
+		start_paths.emit()
 		start_normal_state()
 
 
