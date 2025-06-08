@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://v0fhtpi14fpk"]
+
+[ext_resource type="Shader" uid="uid://oj78nh6y6qva" path="res://crystal.gdshader" id="1_xhwy6"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xhwy6")

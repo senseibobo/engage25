@@ -150,6 +150,7 @@ func start_path():
 	if new_path.size() == 0:
 		new_path = PackedVector3Array([global_position, destination])
 	set_path(new_path)
+	print("batongaaaaaaa")
 	path_follow.progress = 0.0
 
 

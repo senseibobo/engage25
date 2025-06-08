@@ -149,7 +149,7 @@ func start_fast_forward_state():
 	tween.parallel().tween_property(self,^"time_passed",time_passed + (normal_total_time-current_time), 0.9)
 	slowed_total_time = slowed_base_time + slowed_bonus_time * (1.0-current_time/normal_total_time)
 	tween.tween_property(Engine, "time_scale", 1.0, 0.0)
-	tween.tween_callback(start_paths.emit)
+	#tween.tween_callback(start_paths.emit)
 	tween.tween_callback(_on_normal_state_ended)
 	tween.tween_callback(fast_forward_state_ended.emit)
 
