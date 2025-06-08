@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c1mdub8ij2efb"]
+[gd_scene load_steps=14 format=3 uid="uid://c1mdub8ij2efb"]
 
 [ext_resource type="Script" uid="uid://6sglgvg76ui8" path="res://watch/watch.gd" id="1_atswf"]
 [ext_resource type="PackedScene" uid="uid://xsnekqm721sm" path="res://watch/watch.glb" id="1_y6y76"]
@@ -7,6 +7,10 @@
 [ext_resource type="AudioStream" uid="uid://gicqrce6asfi" path="res://sounds/clock_tick.ogg" id="4_7ove0"]
 [ext_resource type="Texture2D" uid="uid://dqsv2epvw20ih" path="res://watch/watch.png" id="4_pl8tq"]
 [ext_resource type="Texture2D" uid="uid://cpjqwiwmaoomr" path="res://watch/watch_hand_short.png" id="4_ru0ms"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6acmf"]
+radius = 0.01
+height = 0.02
 
 [sub_resource type="Animation" id="Animation_7ove0"]
 length = 0.001
@@ -75,12 +79,13 @@ _data = {
 [sub_resource type="ViewportTexture" id="ViewportTexture_atswf"]
 viewport_path = NodePath("SubViewport")
 
-[node name="Watch" type="Node3D" node_paths=PackedStringArray("tick_player", "animation_player", "short_hand", "long_hand")]
+[node name="Watch" type="Node3D" node_paths=PackedStringArray("tick_player", "animation_player", "short_hand", "long_hand", "crystals")]
 script = ExtResource("1_atswf")
 tick_player = NodePath("TickPlayer")
 animation_player = NodePath("AnimationPlayer")
 short_hand = NodePath("SubViewport/ShortHand")
 long_hand = NodePath("SubViewport/LongHand")
+crystals = [NodePath("watch2/watch/Crystals/Crystal1"), NodePath("watch2/watch/Crystals/Crystal2"), NodePath("watch2/watch/Crystals/Crystal3")]
 
 [node name="watch2" parent="." instance=ExtResource("1_y6y76")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
@@ -95,6 +100,23 @@ layers = 2
 [node name="right_button" parent="watch2/watch" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0160856, 0, 7.03122e-10)
 layers = 2
+
+[node name="Crystals" type="Node3D" parent="watch2/watch" index="2"]
+
+[node name="Crystal1" type="MeshInstance3D" parent="watch2/watch/Crystals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.103882, 0.0449829)
+mesh = SubResource("SphereMesh_6acmf")
+skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
+
+[node name="Crystal2" type="MeshInstance3D" parent="watch2/watch/Crystals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.119019, -4.37541e-10)
+mesh = SubResource("SphereMesh_6acmf")
+skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
+
+[node name="Crystal3" type="MeshInstance3D" parent="watch2/watch/Crystals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.103882, -0.0454102)
+mesh = SubResource("SphereMesh_6acmf")
+skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

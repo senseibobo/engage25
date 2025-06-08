@@ -25,6 +25,7 @@ enum State {
 @export var visible_notifier: VisibleOnScreenNotifier3D
 @export var ghost: Node3D
 @export var ghost_anim_player: AnimationPlayer
+@export var mesh: MeshInstance3D
 
 var state: State = State.NONE
 var path: PackedVector3Array
@@ -35,6 +36,7 @@ var full_path_distance: float
 
 
 func _ready():
+	mesh.layers = 1
 	ghost.visible = false
 	randomize()
 	path_3d.curve = path_3d.curve.duplicate()
@@ -82,6 +84,8 @@ func _process_aim(delta):
 
 
 func hit():
+	mesh.layers = 1
+	ghost.queue_free()
 	line_renderer.queue_free()
 	TimeManager.enemy_killed.emit()
 	collision_layer = 0
@@ -224,6 +228,7 @@ func _on_normal_state_started():
 
 func _on_slowed_state_started():
 	if not active: return
+	if state == State.DEAD: return
 	ghost.visible = false
 	if state == State.WALK:
 		global_position = path[-1]
@@ -317,8 +322,8 @@ func is_visible_raycast():
 	params.collision_mask = 9
 	params.hit_back_faces = true
 	params.hit_from_inside = true
-	params.from = global_position + Vector3.UP*0.16
-	params.to = Player.instance.global_position + Vector3.UP*0.16
+	params.from = global_position + Vector3.UP*1.6
+	params.to = Player.instance.global_position + Vector3.UP*1.6
 	var result = space_state.intersect_ray(params)
 	if result.size() == 0:
 		return false
@@ -339,6 +344,7 @@ func _on_next_time_started():
 
 func activate():
 	await TimeManager.next_time_started
+	mesh.layers = 5
 	active = true
 	state = State.WALK
 	_on_normal_state_started()

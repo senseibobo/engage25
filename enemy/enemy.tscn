@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://cilul41id8eno"]
+[gd_scene load_steps=41 format=4 uid="uid://cilul41id8eno"]
 
 [ext_resource type="Script" uid="uid://b0er2tvfh44gs" path="res://enemy/enemy.gd" id="1_2mvqj"]
 [ext_resource type="Script" uid="uid://bgcqn6tjnhu6h" path="res://addons/LineRenderer/line_renderer.gd" id="2_1wwld"]
@@ -6,8 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://cuyv7nb4q6ra1" path="res://enemy/stickman.glb" id="2_ofsxj"]
 [ext_resource type="Shader" uid="uid://bmuek6vsl4cap" path="res://Line.gdshader" id="3_6yflr"]
 [ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="3_ppra6"]
+[ext_resource type="Shader" uid="uid://dv311u4lvjngq" path="res://enemy/shaders/StickmanBody.gdshader" id="4_78jik"]
 [ext_resource type="Texture2D" uid="uid://drmr4722ydefw" path="res://dotted.png" id="4_gf88j"]
 [ext_resource type="PackedScene" uid="uid://84qjmolqrdxk" path="res://enemy/cowboyjacket.glb" id="4_p200p"]
+[ext_resource type="Shader" uid="uid://cuvte6qy7dx3v" path="res://enemy/shaders/StickmanHed.gdshader" id="5_o3pv7"]
 [ext_resource type="PackedScene" uid="uid://eli3k4g665tk" path="res://enemy/hat.glb" id="5_pmsee"]
 [ext_resource type="Shader" uid="uid://bfp5ibd3w4xyy" path="res://enemy/shaders/ghostbody.gdshader" id="7_c6eq3"]
 [ext_resource type="Script" uid="uid://7sp71apr4hr2" path="res://shot/hitbox/hitbox.gd" id="7_y5vj3"]
@@ -31,37 +33,15 @@ shader = ExtResource("3_6yflr")
 shader_parameter/tex = ExtResource("4_gf88j")
 shader_parameter/color = Color(0.847059, 0.505882, 0.227451, 0.533333)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_c6eq3"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_34gv7"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_34gv7"]
 render_priority = 0
-shader = ExtResource("7_c6eq3")
+shader = ExtResource("4_78jik")
 
-[sub_resource type="Shader" id="Shader_n2hyd"]
-code = "shader_type spatial;
-render_mode unshaded;
-
-void vertex() {
-    // Called for every vertex the material is visible on.
-}
-
-float fresnel(float amount, vec3 normal, vec3 view)
-{
-    return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
-}
-
-void fragment() {
-    ALBEDO = vec3(0.9,0.3,0.05);
-   	//ALPHA_SCISSOR_THRESHOLD =0.01;
-    ALPHA = fresnel(3.0, NORMAL, VIEW);
-	ALPHA = 1.0-step(ALPHA,0.01);
-	ALPHA*=0.15;
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gf88j"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pg32h"]
 render_priority = 0
-shader = SubResource("Shader_n2hyd")
+shader = ExtResource("5_o3pv7")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e355f"]
 radius = 0.3
@@ -791,6 +771,36 @@ bind/220/pose = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.127149, 0.840367, -0.4
 bind/221/name = &"thigh_ik_target.R"
 bind/221/bone = -1
 bind/221/pose = Transform3D(1, -1.71025e-06, 0.000914669, 0.000914669, 0.0037396, -0.999993, -1.71025e-06, 0.999993, 0.0037396, 0.126381, 0.838863, -0.434689)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6yflr"]
+render_priority = 0
+shader = ExtResource("7_c6eq3")
+
+[sub_resource type="Shader" id="Shader_n2hyd"]
+code = "shader_type spatial;
+render_mode unshaded;
+
+void vertex() {
+    // Called for every vertex the material is visible on.
+}
+
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+    return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0 )), amount);
+}
+
+void fragment() {
+    ALBEDO = vec3(0.9,0.3,0.05);
+   	//ALPHA_SCISSOR_THRESHOLD =0.01;
+    ALPHA = fresnel(3.0, NORMAL, VIEW);
+	ALPHA = 1.0-step(ALPHA,0.01);
+	ALPHA*=0.15;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gf88j"]
+render_priority = 0
+shader = SubResource("Shader_n2hyd")
 
 [sub_resource type="Animation" id="Animation_sg1cy"]
 resource_name = "DIEE"
@@ -5717,7 +5727,7 @@ _data = {
 &"Walk": SubResource("Animation_hg0wx")
 }
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player", "death_player", "visible_notifier", "ghost", "ghost_anim_player") groups=["enemy"]]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("hitbox", "gun", "animation_player", "nav_agent", "path_3d", "path_follow", "line_renderer", "shoot_player", "death_player", "visible_notifier", "ghost", "ghost_anim_player", "mesh") groups=["enemy"]]
 collision_layer = 4
 script = ExtResource("1_2mvqj")
 hitbox = NodePath("Hitbox")
@@ -5733,6 +5743,7 @@ enemy_shot_scene = ExtResource("2_o3pv7")
 visible_notifier = NodePath("VisibleOnScreenNotifier3D")
 ghost = NodePath("Ghost")
 ghost_anim_player = NodePath("Ghost/rig/AnimationPlayer")
+mesh = NodePath("stickman/rig/Skeleton3D/Circle")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
 aabb = AABB(-0.315, -0.01, -1, 0.62, 1.875, 2)
@@ -5751,7 +5762,7 @@ curve = SubResource("Curve3D_2mvqj")
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Path3D"]
 material_override = SubResource("ShaderMaterial_tbw0t")
-mesh = SubResource("ImmediateMesh_c6eq3")
+mesh = SubResource("ImmediateMesh_34gv7")
 script = ExtResource("2_1wwld")
 start_thickness = 0.3
 end_thickness = 0.3
@@ -5762,11 +5773,11 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 
 
 [node name="Circle" parent="stickman/rig/Skeleton3D" index="0"]
 lod_bias = 128.0
-surface_material_override/0 = SubResource("ShaderMaterial_6yflr")
-surface_material_override/1 = SubResource("ShaderMaterial_gf88j")
+surface_material_override/0 = SubResource("ShaderMaterial_34gv7")
+surface_material_override/1 = SubResource("ShaderMaterial_pg32h")
 
 [node name="HandAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="1"]
-transform = Transform3D(-0.0693201, -0.991522, 0.109903, 0.988366, -0.0832108, -0.127309, 0.135375, 0.0997994, 0.985756, -0.692153, 1.33295, -0.00654114)
+transform = Transform3D(-0.804286, -0.260858, 0.537756, 0.146163, 0.786773, 0.594296, -0.576163, 0.559767, -0.597622, -0.417203, 1.29432, -0.360722)
 bone_name = "DEF-hand.R"
 bone_idx = 174
 
@@ -5774,7 +5785,7 @@ bone_idx = 174
 transform = Transform3D(-0.0145276, 0.0198379, 0.999697, 0.970766, 0.239848, 0.00934753, -0.23959, 0.970608, -0.0227423, 0.012982, 0.129356, 0.0916709)
 
 [node name="TorsoAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="2"]
-transform = Transform3D(1, 1.42109e-14, 2.38419e-07, 1.1546e-07, 0.874915, -0.484276, -2.08596e-07, 0.484275, 0.874916, 0, 1.37236, -0.00943485)
+transform = Transform3D(0.99511, 0.0477097, 0.0864868, -0.0575344, 0.991707, 0.114919, -0.0802868, -0.119333, 0.989603, 0.0205342, 1.06343, -0.843005)
 bone_name = "DEF-spine.004"
 bone_idx = 5
 
@@ -5782,7 +5793,7 @@ bone_idx = 5
 transform = Transform3D(-0.0396919, 0.000413286, -0.999212, 0.470384, 0.882272, -0.0183203, 0.881569, -0.470741, -0.0352135, -0.0140792, -0.206312, 0.116019)
 
 [node name="HeadAttachment" type="BoneAttachment3D" parent="stickman/rig/Skeleton3D" index="3"]
-transform = Transform3D(1, -1.42109e-13, 2.38419e-07, 3.22409e-13, 1, -5.96046e-07, -2.38419e-07, 4.17233e-07, 1, 4.86309e-16, 1.42919, 0.0204423)
+transform = Transform3D(0.99511, -0.000141002, 0.0987735, -0.057535, 0.812007, 0.580805, -0.0802867, -0.583648, 0.808028, 0.0234773, 1.12693, -0.852033)
 bone_name = "DEF-spine.006"
 bone_idx = 7
 

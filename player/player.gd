@@ -58,6 +58,7 @@ func _unhandled_input(event: InputEvent):
 
 func hit():
 	if dead: return
+	TimeManager.player_hit.emit()
 	animation_player.play(&"death")
 	dead = true
 	black_and_white_filter.fade_in()

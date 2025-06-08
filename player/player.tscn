@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://kg818nwbxmg8"]
+[gd_scene load_steps=26 format=3 uid="uid://kg818nwbxmg8"]
 
 [ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cetbv3vt66fb0" path="res://player/camera.gd" id="2_qjkh3"]
@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://b3d30cifegkn2" path="res://player/shader/player.gdshader" id="6_g6k8r"]
 [ext_resource type="Script" uid="uid://dn5pmstdbe6j4" path="res://player/black_and_white_filter.gd" id="7_boad6"]
 [ext_resource type="Script" uid="uid://da8ktba01nc6d" path="res://player/rewind_effect.gd" id="8_rgyib"]
+[ext_resource type="Shader" uid="uid://cl8dclcy4o8ur" path="res://player/redenemies.gdshader" id="8_wodsf"]
 [ext_resource type="Shader" uid="uid://cql3s3gc4itv8" path="res://player/chromatic_aberration.gdshader" id="8_yllr7"]
 [ext_resource type="PackedScene" uid="uid://dqo8jtvrymwgq" path="res://player/bounty/bounty_label.tscn" id="9_2ieo8"]
 [ext_resource type="AudioStream" uid="uid://0s80b67kcvpd" path="res://player/162493__tasmanianpower__vinyl-rewind.wav" id="9_hg6s5"]
@@ -34,7 +35,11 @@ gradient = SubResource("Gradient_g6k8r")
 shader = ExtResource("6_g6k8r")
 shader_parameter/flip = false
 shader_parameter/gradient = SubResource("GradientTexture1D_boad6")
-shader_parameter/strength = 0.0
+shader_parameter/strength = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_32hag"]
+shader = ExtResource("8_wodsf")
+shader_parameter/alpha = 0.0
 
 [sub_resource type="Gradient" id="Gradient_boad6"]
 offsets = PackedFloat32Array(0, 0.694805)
@@ -121,7 +126,7 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-cull_mask = 1048573
+cull_mask = 1048569
 script = ExtResource("2_qjkh3")
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
@@ -155,7 +160,7 @@ render_target_update_mode = 4
 
 [node name="GunCamera" type="Camera3D" parent="CanvasLayer/SubViewportContainer/GunViewport" node_paths=PackedStringArray("main_camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-cull_mask = 1048574
+cull_mask = 1048570
 script = ExtResource("2_rkbax")
 main_camera = NodePath("../../../../Camera3D")
 
@@ -166,7 +171,7 @@ shake_camera = NodePath("../../../../../Camera3D")
 [node name="Watch" parent="CanvasLayer/SubViewportContainer/GunViewport/GunCamera" instance=ExtResource("4_yw30f")]
 transform = Transform3D(0.948324, 0, 0.317305, 0, 1, 0, -0.317305, 0, 0.948324, -0.512, -0.27, -0.525)
 
-[node name="BlackAndWhiteFilter" type="ColorRect" parent="CanvasLayer"]
+[node name="BlackAndWhiteFilter" type="ColorRect" parent="CanvasLayer" node_paths=PackedStringArray("red_enemies_viewport_container", "red_camera")]
 material = SubResource("ShaderMaterial_boad6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -175,6 +180,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("7_boad6")
+red_enemies_viewport_container = NodePath("RedEnemiesViewportContainer")
+red_camera = NodePath("RedEnemiesViewportContainer/RedEnemiesViewport/Camera3D")
+
+[node name="RedEnemiesViewportContainer" type="SubViewportContainer" parent="CanvasLayer/BlackAndWhiteFilter"]
+material = SubResource("ShaderMaterial_32hag")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="RedEnemiesViewport" type="SubViewport" parent="CanvasLayer/BlackAndWhiteFilter/RedEnemiesViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/BlackAndWhiteFilter/RedEnemiesViewportContainer/RedEnemiesViewport"]
+cull_mask = 1048572
 
 [node name="RewindEffect" type="TextureRect" parent="CanvasLayer" node_paths=PackedStringArray("camera", "rewind_player", "forward_player")]
 modulate = Color(1, 1, 1, 0)

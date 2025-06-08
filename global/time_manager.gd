@@ -16,6 +16,7 @@ signal tick_forward
 signal tick_backward
 signal next_time_started
 signal enemy_killed
+signal player_hit
 
 
 enum State {
@@ -181,3 +182,7 @@ func revive_player():
 	start_rewind_state()
 	Player.instance.revive()
 	player_revived.emit()
+
+
+func end_game():
+	pass

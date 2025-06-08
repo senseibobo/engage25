@@ -6,12 +6,16 @@ extends Node3D
 @export var animation_player: AnimationPlayer
 @export var short_hand: Sprite2D
 @export var long_hand: Sprite2D
+@export var crystals: Array[MeshInstance3D]
 
 var used: bool = false
+var crystals_left: int = 3
 
 
 func _ready():
 	TimeManager.tick.connect(_on_tick)
+	TimeManager.player_hit.connect(_on_player_hit)
+
 
 func _process(delta: float) -> void:
 	animation_player.speed_scale = 1.0/Engine.time_scale
@@ -30,7 +34,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("fast_forward"):
 			_on_fast_forward_pressed()
 	else:
-		if event.is_action_pressed("rewind"):
+		if event.is_action_pressed("rewind") and crystals_left > 0:
+			destroy_crystal(3-crystals_left)
 			used = true
 			TimeManager.revive_player()
 
@@ -53,3 +58,13 @@ func _on_fast_forward_pressed():
 
 func _on_tick():
 	tick_player.play()
+
+
+func _on_player_hit():
+	if crystals_left <= 0:
+		TimeManager.end_game()
+	
+
+func destroy_crystal(index: int):
+	crystals[index].queue_free()
+	crystals_left -= 1
