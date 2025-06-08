@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://dqo8jtvrymwgq"]
+
+[ext_resource type="FontFile" uid="uid://d2lijb6ifmajx" path="res://mainmenu/WEST____.TTF" id="1_nhq7e"]
+[ext_resource type="Script" uid="uid://dxtipv6r0f87u" path="res://player/bounty/bounty_label.gd" id="2_8dqua"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ebec5"]
+font = ExtResource("1_nhq7e")
+font_size = 60
+font_color = Color(0.828125, 0.771858, 0.164008, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.776471)
+shadow_offset = Vector2(2.93, 2.895)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yllr7"]
+font = ExtResource("1_nhq7e")
+font_size = 50
+font_color = Color(0.2304, 0.72, 0.144, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.776471)
+shadow_offset = Vector2(2.93, 2.895)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8dqua"]
+font = ExtResource("1_nhq7e")
+font_size = 35
+font_color = Color(0.69, 0.0828, 0.0929198, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.776471)
+shadow_offset = Vector2(2.93, 2.895)
+
+[node name="BountyLabel" type="Label" node_paths=PackedStringArray("amount_label", "multiplier_label")]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 366.0
+offset_bottom = 75.0
+text = "Bounty Claimed:"
+label_settings = SubResource("LabelSettings_ebec5")
+vertical_alignment = 2
+script = ExtResource("2_8dqua")
+amount_label = NodePath("Control/BountyAmount")
+multiplier_label = NodePath("Control/BountyAmount/MutliplierLabel")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_right = 254.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="BountyAmount" type="Label" parent="Control"]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 111.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "$500"
+label_settings = SubResource("LabelSettings_yllr7")
+vertical_alignment = 1
+
+[node name="MutliplierLabel" type="Label" parent="Control/BountyAmount"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -9.0
+offset_right = 30.0
+offset_bottom = 21.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "x2"
+label_settings = SubResource("LabelSettings_8dqua")

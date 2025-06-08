@@ -18,12 +18,13 @@ enum State {
 @export var path_follow: PathFollow3D
 @export var gravity: float = 9.0
 @export var line_renderer: LineRenderer
-@export var shoot_player: AudioStreamPlayer3D
+@export var shoot_player: AudioStreamPlayer
 @export var death_player: AudioStreamPlayer
 @export var enemy_shot_scene: PackedScene
 @export var active: bool = false
 @export var visible_notifier: VisibleOnScreenNotifier3D
-
+@export var ghost: Node3D
+@export var ghost_anim_player: AnimationPlayer
 
 var state: State = State.NONE
 var path: PackedVector3Array
@@ -34,6 +35,7 @@ var full_path_distance: float
 
 
 func _ready():
+	ghost.visible = false
 	randomize()
 	path_3d.curve = path_3d.curve.duplicate()
 	TimeManager.normal_state_started.connect(_on_normal_state_started)
@@ -56,8 +58,10 @@ func _process_walk(delta):
 	if state == State.DEAD: return
 	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
-	animation_player.seek(
-		fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length))
+	var animation_position: float = fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length)
+	animation_player.seek(animation_position)
+	ghost.look_at(Player.instance.global_position)
+	#ghost_anim_player.seek(animation_position)
 	var diff = _update_position()
 	var new_path: Array = []
 	new_path.append(global_position + Vector3.UP*0.5)
@@ -79,6 +83,7 @@ func _process_aim(delta):
 
 func hit():
 	line_renderer.queue_free()
+	TimeManager.enemy_killed.emit()
 	collision_layer = 0
 	collision_mask = 0
 	rotate_to_player()
@@ -94,10 +99,7 @@ func hit():
 
 static func check_enemies_shootable():
 	if not any_enemies_shootable():
-		if any_enemies_can_shoot():
-			TimeManager.start_enemy_shoot_state()
-		else:
-			TimeManager.start_normal_state()
+		TimeManager._on_slowed_state_ended()
 	elif TimeManager.state != TimeManager.State.SLOWED:
 		TimeManager.start_slowed_state()
 		TimeManager.bell_rung.emit()
@@ -132,7 +134,7 @@ func rotate_to_player():
 func start_path():
 	if not active: return
 	if state == State.DEAD: return
-	var attempt_pos: Vector3 = Player.instance.global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+	var attempt_pos: Vector3 = get_attempt_pos()
 	print(attempt_pos)
 	var destination: Vector3 = \
 		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
@@ -143,6 +145,14 @@ func start_path():
 		path = PackedVector3Array([global_position, destination])
 	set_path(path)
 	path_follow.progress = 0.0
+
+
+func get_attempt_pos(): 
+	#return Player.instance.global_position + Vector3.FORWARD.rotated(Vector3.UP, randf()*TAU)*10.0
+	var dir = -Player.instance.global_basis.z.normalized()
+	var angled_dir = dir.rotated(Vector3.UP,  randf_range(-PI/1.8, PI/1.8))
+	var distance = randf_range(5.0,10.0)
+	return Player.instance.global_position + angled_dir * distance
 
 
 func set_path(new_path: PackedVector3Array):
@@ -157,6 +167,24 @@ func set_path(new_path: PackedVector3Array):
 	for point: Vector3 in path:
 		path_3d.curve.add_point(point)
 	path_3d.curve.get_baked_length()
+	if state == State.WALK:
+		print("ghooost")
+		setup_ghost()
+
+
+func setup_ghost():
+	ghost.visible = true
+	ghost.global_position = path[-1]
+	#ghost.look_at(ghost.global_position + path[-2].direction_to(path[-1]))
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var params := PhysicsRayQueryParameters3D.new()
+	params.from = ghost.global_position
+	params.to = ghost.global_position + Vector3.DOWN*2.0
+	params.collision_mask = 1
+	var result = space_state.intersect_ray(params)
+	if result.size() > 0:
+		ghost.global_position = result["position"]
+		
 
 
 func _update_position():
@@ -171,7 +199,9 @@ func _update_position():
 	path_follow.progress_ratio = t
 	var destination: Vector3 = path_follow.global_position
 	var diff: Vector3 = destination - global_position
-	var collision = move_and_collide(diff)
+	#var collision = move_and_collide(diff)
+	#global_position = lerp(global_position, destination, 10*get_physics_process_delta_time()/Engine.time_scale)
+	global_position = destination
 	move_and_collide(Vector3.DOWN*0.5)
 	return diff
 
@@ -194,7 +224,19 @@ func _on_normal_state_started():
 
 func _on_slowed_state_started():
 	if not active: return
+	ghost.visible = false
 	if state == State.WALK:
+		global_position = path[-1]
+		
+		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+		var params := PhysicsRayQueryParameters3D.new()
+		params.from = global_position
+		params.to = global_position + Vector3.DOWN*2.0
+		params.collision_mask = 1
+		var result = space_state.intersect_ray(params)
+		if result.size() > 0:
+			global_position = result["position"]
+		
 		line_renderer.visible = false
 		animation_player.stop()
 		animation_player.play(&"Shoot")
@@ -275,8 +317,8 @@ func is_visible_raycast():
 	params.collision_mask = 9
 	params.hit_back_faces = true
 	params.hit_from_inside = true
-	params.from = global_position + Vector3.UP*0.9
-	params.to = Player.instance.global_position + Vector3.UP*0.9
+	params.from = global_position + Vector3.UP*0.16
+	params.to = Player.instance.global_position + Vector3.UP*0.16
 	var result = space_state.intersect_ray(params)
 	if result.size() == 0:
 		return false
@@ -296,7 +338,7 @@ func _on_next_time_started():
 
 
 func activate():
-	#await TimeManager.next_time_started
+	await TimeManager.next_time_started
 	active = true
 	state = State.WALK
 	_on_normal_state_started()

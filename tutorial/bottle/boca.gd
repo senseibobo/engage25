@@ -37,7 +37,7 @@ func is_shootable_raycast():
 	params.hit_back_faces = true
 	params.hit_from_inside = true
 	params.from = global_position + Vector3.UP*0.1
-	params.to = Player.instance.global_position + Vector3.UP*0.9
+	params.to = Player.instance.global_position + Vector3.UP*1.6
 	var result = space_state.intersect_ray(params)
 	if result.size() == 0:
 		return false

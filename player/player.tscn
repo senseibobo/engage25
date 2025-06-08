@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://kg818nwbxmg8"]
+[gd_scene load_steps=24 format=3 uid="uid://kg818nwbxmg8"]
 
 [ext_resource type="Script" uid="uid://cq32j6a58fu1h" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cetbv3vt66fb0" path="res://player/camera.gd" id="2_qjkh3"]
@@ -8,12 +8,20 @@
 [ext_resource type="Shader" uid="uid://b3d30cifegkn2" path="res://player/shader/player.gdshader" id="6_g6k8r"]
 [ext_resource type="Script" uid="uid://dn5pmstdbe6j4" path="res://player/black_and_white_filter.gd" id="7_boad6"]
 [ext_resource type="Script" uid="uid://da8ktba01nc6d" path="res://player/rewind_effect.gd" id="8_rgyib"]
+[ext_resource type="Shader" uid="uid://cql3s3gc4itv8" path="res://player/chromatic_aberration.gdshader" id="8_yllr7"]
+[ext_resource type="PackedScene" uid="uid://dqo8jtvrymwgq" path="res://player/bounty/bounty_label.tscn" id="9_2ieo8"]
 [ext_resource type="AudioStream" uid="uid://0s80b67kcvpd" path="res://player/162493__tasmanianpower__vinyl-rewind.wav" id="9_hg6s5"]
+[ext_resource type="Script" uid="uid://dws08475fprs3" path="res://player/chromatic_aberration.gd" id="9_kb6p2"]
 [ext_resource type="AudioStream" uid="uid://mb2hl88y6m5h" path="res://player/speedup.mp3" id="10_8t03j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 radius = 0.45
 height = 1.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wodsf"]
+shader = ExtResource("8_yllr7")
+shader_parameter/levels = 6
+shader_parameter/spread = 0.01
 
 [sub_resource type="Gradient" id="Gradient_g6k8r"]
 offsets = PackedFloat32Array(0, 0.234177, 0.803797)
@@ -116,6 +124,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 cull_mask = 1048573
 script = ExtResource("2_qjkh3")
 
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="ChromaticAberration" type="ColorRect" parent="CanvasLayer2"]
+material = SubResource("ShaderMaterial_wodsf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_kb6p2")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
@@ -168,6 +189,8 @@ script = ExtResource("8_rgyib")
 camera = NodePath("../../Camera3D")
 rewind_player = NodePath("../../RewindPlayer")
 forward_player = NodePath("../../ForwardPlayer")
+
+[node name="BountyLabel" parent="CanvasLayer" instance=ExtResource("9_2ieo8")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

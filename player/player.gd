@@ -6,7 +6,7 @@ static var instance: Player
 
 
 @export var camera: Camera3D
-@export var movement_speed: float = 7.0
+@export var movement_speed: float = 5.5
 @export var gravity: float = 9.0
 @export var animation_player: AnimationPlayer
 @export var black_and_white_filter: BlackAndWhiteFilter

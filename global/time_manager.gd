@@ -4,6 +4,7 @@ extends Node
 signal bell_rung
 signal normal_state_started
 signal slowed_state_started
+signal slowed_state_ended
 signal rewind_state_started
 signal rewind_finished
 signal fast_forward_state_started
@@ -14,6 +15,7 @@ signal tick
 signal tick_forward
 signal tick_backward
 signal next_time_started
+signal enemy_killed
 
 
 enum State {
@@ -167,6 +169,7 @@ func _on_bell_rung():
 
 
 func _on_slowed_state_ended():
+	slowed_state_ended.emit()
 	if Enemy.any_enemies_can_shoot():
 		start_enemy_shoot_state()
 	else:

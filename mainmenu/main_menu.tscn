@@ -1,12 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://gkpsvrws5ktm"]
+[gd_scene load_steps=16 format=3 uid="uid://gkpsvrws5ktm"]
 
 [ext_resource type="PackedScene" uid="uid://dx2wcm0gjnmtb" path="res://map/city.tscn" id="1_d14xc"]
 [ext_resource type="Script" uid="uid://c2b8tumcon51u" path="res://mainmenu/main_menu.gd" id="1_yylb4"]
 [ext_resource type="PackedScene" uid="uid://ds5sg4i77c0wu" path="res://tutorial/standbottles/standbottle.glb" id="2_skr7d"]
 [ext_resource type="PackedScene" uid="uid://c2rw74chblkkn" path="res://tutorial/svraka/svraka.tscn" id="3_04bgo"]
 [ext_resource type="PackedScene" uid="uid://b1gq7abqeh5xn" path="res://objects/bottle/boca.glb" id="3_7at75"]
-[ext_resource type="Theme" uid="uid://icuyfjlvjgke" path="res://mainmenu/theme/new_theme.tres" id="4_04bgo"]
-[ext_resource type="Texture2D" uid="uid://loma2y3tb5ox" path="res://mainmenu/background.png" id="4_yxufh"]
+[ext_resource type="FontFile" uid="uid://d2lijb6ifmajx" path="res://mainmenu/WEST____.TTF" id="6_7at75"]
+[ext_resource type="Script" uid="uid://dm21khr2whv3p" path="res://mainmenu/main_menu_camera.gd" id="7_yylb4"]
 
 [sub_resource type="Gradient" id="Gradient_skr7d"]
 colors = PackedColorArray(0.161265, 0.15403, 2.40654e-08, 1, 1, 1, 1, 1)
@@ -15,11 +15,15 @@ colors = PackedColorArray(0.161265, 0.15403, 2.40654e-08, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_skr7d")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_04bgo"]
+sky_top_color = Color(0.560784, 0.470588, 0.207843, 1)
+sky_horizon_color = Color(0.560784, 0.470588, 0.207843, 1)
+ground_bottom_color = Color(0.56, 0.4718, 0.2072, 1)
+ground_horizon_color = Color(0.560784, 0.470588, 0.207843, 1)
 
 [sub_resource type="Sky" id="Sky_tlwt5"]
 sky_material = SubResource("ProceduralSkyMaterial_04bgo")
 
-[sub_resource type="Environment" id="Environment_yxufh"]
+[sub_resource type="Environment" id="Environment_yylb4"]
 background_mode = 2
 sky = SubResource("Sky_tlwt5")
 ambient_light_source = 2
@@ -30,8 +34,37 @@ adjustment_contrast = 1.1
 adjustment_saturation = 1.1
 adjustment_color_correction = SubResource("GradientTexture1D_aqk2v")
 
-[node name="MainMenu" type="Node3D"]
+[sub_resource type="LabelSettings" id="LabelSettings_yylb4"]
+font = ExtResource("6_7at75")
+font_size = 145
+font_color = Color(0.828125, 0.771858, 0.164008, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.776471)
+shadow_offset = Vector2(2.93, 2.895)
+
+[sub_resource type="LabelSettings" id="LabelSettings_la1qf"]
+font = ExtResource("6_7at75")
+font_size = 50
+font_color = Color(0.828125, 0.771858, 0.164008, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.776471)
+shadow_offset = Vector2(2.93, 2.895)
+
+[sub_resource type="Curve3D" id="Curve3D_la1qf"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -7.53393, 60, 232.444, -6.98773, 0, 48.9142, 6.98773, 0, -48.9142, -24.6151, 60, 153.25, -1.55283, 0, 33.3859, 1.55283, 0, -33.3859, 14.9821, 60, -7.46858, 54.831, 0, 24.5438, -54.831, 0, -24.5438, -53.0479, 60, -120.524, 10.1747, 0, 18.8078, -10.1747, 0, -18.8078, -116.196, 60, -153.489),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+up_vector_enabled = false
+
+[node name="MainMenu" type="Node3D" node_paths=PackedStringArray("press_any_key_label")]
 script = ExtResource("1_yylb4")
+press_any_key_label = NodePath("CanvasLayer/PressAnyKeyLabel")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.813152, 0.582052, 0, -0.582052, 0.813152, 0, 0, 0)
@@ -39,14 +72,9 @@ layers = 3
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_yxufh")
+environment = SubResource("Environment_yylb4")
 
 [node name="City" parent="." instance=ExtResource("1_d14xc")]
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.741976, -0.505977, 0.439839, 0, 0.656059, 0.75471, -0.670427, -0.559976, 0.48678, -118.44, 50.563, -123.05)
-projection = 1
-size = 76.915
 
 [node name="standbottle2" parent="." instance=ExtResource("2_skr7d")]
 transform = Transform3D(-1.31134e-07, 0, 3, 0, 3, 0, -3, 0, -1.31134e-07, 21.1955, -2.08128, 0)
@@ -66,37 +94,49 @@ shoot_dialogue = &"Don\'t shoot me, you inbred degenerate. Shoot bottles, spinel
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-anchors_preset = 4
+[node name="TitleLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 195.0
-offset_top = -207.0
-offset_right = 530.0
-offset_bottom = 219.0
-grow_vertical = 2
-texture = ExtResource("4_yxufh")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/TextureRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = -281.5
+offset_top = -164.0
+offset_right = 281.5
+offset_bottom = -42.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.81, 0.81)
-pivot_offset = Vector2(167, 213)
-theme = ExtResource("4_04bgo")
-theme_override_constants/separation = 35
-alignment = 1
+text = "Time Chief"
+label_settings = SubResource("LabelSettings_yylb4")
 
-[node name="Button" type="Button" parent="CanvasLayer/TextureRect/VBoxContainer"]
-layout_mode = 2
-text = "START"
+[node name="PressAnyKeyLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -354.0
+offset_top = 30.0
+offset_right = 354.0
+offset_bottom = 98.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press Any Key to Start"
+label_settings = SubResource("LabelSettings_la1qf")
+horizontal_alignment = 1
 
-[node name="Button2" type="Button" parent="CanvasLayer/TextureRect/VBoxContainer"]
-layout_mode = 2
-text = "EXIT"
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_la1qf")
 
-[connection signal="pressed" from="CanvasLayer/TextureRect/VBoxContainer/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/TextureRect/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -42.2709, 60, -115.028)
+progress = 376.65
+rotation_mode = 0
+script = ExtResource("7_yylb4")
+
+[node name="Camera3D" type="Camera3D" parent="Path3D/PathFollow3D"]
+transform = Transform3D(0.841669, -0.407539, 0.354268, 0, 0.656059, 0.754709, -0.539994, -0.635215, 0.552185, 0, 0, 0)
+projection = 1
+size = 76.915
+
+[connection signal="intro_done" from="Path3D/PathFollow3D" to="." method="_on_path_follow_3d_intro_done"]

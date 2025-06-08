@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Engage25"
-run/main_scene="uid://b7vgpd4kpouig"
+run/main_scene="uid://gkpsvrws5ktm"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 TimeManager="*res://global/time_manager.gd"
+Transition="*res://global/transition/transition.tscn"
 
 [display]
 

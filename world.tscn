@@ -38,19 +38,19 @@ geometry_source_geometry_mode = 1
 edge_max_error = 2.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pkg7o"]
-size = Vector3(18.7781, 7.47949, 1)
+size = Vector3(18.7781, 7.47949, 8.729)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dwbse"]
-size = Vector3(27.4133, 13.1115, 1)
+size = Vector3(27.4133, 13.1115, 22.542)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gbfbk"]
-size = Vector3(1, 5.69897, 16.7185)
+size = Vector3(7.28809, 5.69897, 16.7185)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ioo17"]
 size = Vector3(1, 6.07288, 35.9819)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wse8f"]
-size = Vector3(24.7391, 5.12207, 1)
+size = Vector3(41.057, 5.12207, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ic0uy"]
 size = Vector3(1, 9.36658, 53.1863)
@@ -178,7 +178,7 @@ enemies = [NodePath("../Enemy")]
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.82141, 3.23975, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.82141, 3.23975, -3.8645)
 shape = SubResource("BoxShape3D_pkg7o")
 
 [node name="TriggerEnemy2" type="Area3D" parent="." node_paths=PackedStringArray("enemies", "audio_player")]
@@ -190,7 +190,7 @@ audio_player = NodePath("../AudioStreamPlayer")
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64684, 4.34528, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.64684, 4.34528, -10.771)
 shape = SubResource("BoxShape3D_dwbse")
 
 [node name="TriggerEnemy3" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
@@ -200,7 +200,7 @@ enemies = [NodePath("../Enemies2/Enemy"), NodePath("../Enemies2/Enemy2"), NodePa
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy3"]
-transform = Transform3D(0.913041, 0, -0.407868, 0, 1, 0, 0.407868, 0, 0.913041, 0, 0.379272, 1.65295)
+transform = Transform3D(0.715449, 0, -0.698665, 0, 1, 0, 0.698665, 0, 0.715449, -13.9778, 0.379272, -5.20609)
 shape = SubResource("BoxShape3D_gbfbk")
 
 [node name="TriggerEnemy4" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
@@ -220,7 +220,7 @@ enemies = [NodePath("../Enemies4/Enemy"), NodePath("../Enemies4/Enemy2"), NodePa
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy5"]
-transform = Transform3D(0.860875, 0, 0.508816, 0, 1, 0, -0.508816, 0, 0.860875, 0.813416, -2.06104, 0)
+transform = Transform3D(0.970691, 0, 0.24033, 0, 1, 0, -0.24033, 0, 0.970691, 7.27684, -2.06104, -13.3261)
 shape = SubResource("BoxShape3D_wse8f")
 
 [node name="TriggerEnemy6" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
@@ -230,7 +230,7 @@ enemies = [NodePath("../Enemies5/Enemy"), NodePath("../Enemies5/Enemy2"), NodePa
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3288, 3.23742)
+transform = Transform3D(0.842001, 0, -0.539476, 0, 1, 0, 0.539476, 0, 0.842001, -9.65287, 2.3288, -8.71867)
 shape = SubResource("BoxShape3D_ic0uy")
 
 [node name="TriggerEnemy7" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
@@ -240,7 +240,7 @@ enemies = [NodePath("../Enemies6/Enemy"), NodePath("../Enemies6/Enemy2"), NodePa
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.09082, 0.933655, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5925, 0.933655, -7.53827)
 shape = SubResource("BoxShape3D_k3n1d")
 
 [node name="TriggerEnemy8" type="Area3D" parent="." node_paths=PackedStringArray("enemies")]
@@ -250,7 +250,7 @@ enemies = [NodePath("../Enemies7/Enemy"), NodePath("../Enemies7/Enemy2"), NodePa
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.52298, -3.15405, 0)
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -1.80208, -3.15405, -10.659)
 shape = SubResource("BoxShape3D_2o6r5")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
