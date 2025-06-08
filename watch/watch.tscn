@@ -105,16 +105,19 @@ layers = 2
 
 [node name="Crystal1" type="MeshInstance3D" parent="watch2/watch/Crystals"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.103882, 0.0449829)
+layers = 2
 mesh = SubResource("SphereMesh_6acmf")
 skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
 
 [node name="Crystal2" type="MeshInstance3D" parent="watch2/watch/Crystals"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.119019, -4.37541e-10)
+layers = 2
 mesh = SubResource("SphereMesh_6acmf")
 skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
 
 [node name="Crystal3" type="MeshInstance3D" parent="watch2/watch/Crystals"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0100098, 0.103882, -0.0454102)
+layers = 2
 mesh = SubResource("SphereMesh_6acmf")
 skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
 

@@ -17,6 +17,8 @@ signal tick_backward
 signal next_time_started
 signal enemy_killed
 signal player_hit
+signal game_over
+signal started_restarting
 
 
 enum State {
@@ -24,7 +26,8 @@ enum State {
 	ENEMY_SHOOT,
 	REWIND,
 	FAST_FORWARD,
-	SLOWED
+	SLOWED,
+	RESTARTING
 }
 
 
@@ -50,6 +53,7 @@ func _ready():
 
 
 func restart_time():
+	Engine.time_scale = 1.0
 	time_passed = 0.0
 	current_time = 0.0
 	state = State.NORMAL
@@ -59,25 +63,25 @@ func restart_time():
 
 func _process(delta: float) -> void:
 	if not is_instance_valid(Player.instance): return
-	if Player.instance.dead: return
-	match state:
-		State.NORMAL:
-			time_passed += delta/Engine.time_scale
-			var old_current_time = current_time
-			current_time = fmod(time_passed, normal_total_time)
-			if old_current_time > current_time: 
-				_on_normal_state_ended()
-		State.SLOWED:
-			current_time += delta/Engine.time_scale
-			if current_time >= slowed_total_time: 
-				_on_slowed_state_ended()
-		State.ENEMY_SHOOT:
-			current_time += delta/Engine.time_scale
-			if current_time >= enemy_shoot_total_time: 
-				next_time_started.emit()
-				start_normal_state()
-		State.REWIND: pass
-			#if current_time <= 0: start_normal_sAudioStreamPlayertate()
+	if not Player.instance.dead:
+		match state:
+			State.NORMAL:
+				time_passed += delta/Engine.time_scale
+				var old_current_time = current_time
+				current_time = fmod(time_passed, normal_total_time)
+				if old_current_time > current_time: 
+					_on_normal_state_ended()
+			State.SLOWED:
+				current_time += delta/Engine.time_scale
+				if current_time >= slowed_total_time: 
+					_on_slowed_state_ended()
+			State.ENEMY_SHOOT:
+				current_time += delta/Engine.time_scale
+				if current_time >= enemy_shoot_total_time: 
+					next_time_started.emit()
+					start_normal_state()
+			State.REWIND: pass
+				#if current_time <= 0: start_normal_sAudioStreamPlayertate()
 	if int(old_time_passed) < int(time_passed):
 		tick.emit() 
 		tick_forward.emit()
@@ -144,17 +148,17 @@ func start_fast_forward_state():
 
 
 func _on_normal_state_ended():
-	print("normal state ended")
+	#print("normal state ended")
 	if Enemy.any_enemies_shootable():
-		print("some enemies shootable")
+		#print("some enemies shootable")
 		start_slowed_state()
 		bell_rung.emit()
 	elif Enemy.any_enemies_can_shoot():
-		print("some enemies can shoot")
+		#print("some enemies can shoot")
 		start_enemy_shoot_state()
 		bell_rung.emit()
 	else:
-		print("nothing")
+		#print("nothing")
 		if state != State.NORMAL:
 			state = State.NORMAL
 		next_time_started.emit()
@@ -185,4 +189,15 @@ func revive_player():
 
 
 func end_game():
-	pass
+	game_over.emit()
+
+
+func restart_game():
+	state = State.RESTARTING
+	started_restarting.emit()
+	var tween = create_tween().set_ignore_time_scale()
+	tween.tween_property(self, ^"time_passed", 0.0, 5.0)
+	tween.tween_callback(func():
+		restart_time()
+		state = State.NORMAL
+		Transition.transition_to(preload("res://global/scene_manager/scene_manager.tscn")))

@@ -144,10 +144,10 @@ func start_path():
 		NavigationServer3D.map_get_closest_point(nav_agent.get_navigation_map(), attempt_pos)
 	nav_agent.target_position = destination
 	nav_agent.get_next_path_position()
-	path = nav_agent.get_current_navigation_path()
-	if path.size() == 0:
-		path = PackedVector3Array([global_position, destination])
-	set_path(path)
+	var new_path: PackedVector3Array = nav_agent.get_current_navigation_path()
+	if new_path.size() == 0:
+		new_path = PackedVector3Array([global_position, destination])
+	set_path(new_path)
 	path_follow.progress = 0.0
 
 
@@ -162,9 +162,10 @@ func get_attempt_pos():
 func set_path(new_path: PackedVector3Array):
 	if not active: return
 	if state == State.DEAD: return
-	print("SETTING PATH FROM ", path[path.size()-1], " TO ", new_path[path.size()-1])
-	old_path = path
-	path = new_path
+	if path.size() > 2 and new_path.size() > 2:
+		print("SETTING PATH FROM ", path[-1], " TO ", new_path[-1])
+	old_path = path.duplicate()
+	path = new_path.duplicate()
 	path_3d.curve.clear_points()
 	if is_instance_valid(line_renderer):
 		line_renderer.points = Array(new_path)
@@ -177,7 +178,6 @@ func set_path(new_path: PackedVector3Array):
 
 
 func setup_ghost():
-	ghost.visible = true
 	ghost.global_position = path[-1]
 	#ghost.look_at(ghost.global_position + path[-2].direction_to(path[-1]))
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
@@ -218,9 +218,10 @@ func _process_movement(delta):
 
 func _on_normal_state_started():
 	if not active: return
-	if state in [State.NONE, State.AIM]:
+	if state in [State.NONE, State.AIM, State.WALK]:
 		line_renderer.visible = true
 		state = State.WALK
+		ghost.visible = true
 		animation_player.play(&"Walk")
 	elif state == State.DEAD:
 		animation_player.speed_scale = randf_range(0.8,1.3)
@@ -284,6 +285,7 @@ func shoot():
 			collider.hit()
 		elif collider is Enemy:
 			collider.hit()
+	start_path()
 	var enemy_shot: EnemyShot = enemy_shot_scene.instantiate()
 	get_tree().current_scene.add_child(enemy_shot)
 	enemy_shot.global_position = params.from
@@ -296,17 +298,17 @@ func _on_player_revived():
 	if state == State.DEAD: return
 	animation_player.play(&"Walk")
 	state = State.WALK
-	print("setting to old path")
+	#print("setting to old path")
 	set_path(old_path)
 
 
 func is_shootable():
-	print("OVDE VVVVV")
-	print(active)
-	print(is_visible_raycast())
-	print(visible_notifier.is_on_screen())
-	print(not state == State.DEAD)
-	print("OVDE ^^^^")
+	#print("OVDE VVVVV")
+	#print(active)
+	#print(is_visible_raycast())
+	#print(visible_notifier.is_on_screen())
+	#print(not state == State.DEAD)
+	#print("OVDE ^^^^")
 	return \
 		active and \
 		is_visible_raycast() and \
@@ -339,7 +341,7 @@ func can_shoot():
 
 func _on_next_time_started():
 	if not active: return
-	start_path()
+	#start_path()
 
 
 func activate():

@@ -13,7 +13,9 @@ var crystals_left: int = 3
 
 
 func _ready():
+	TimeManager.next_time_started.connect(_on_next_time_started)
 	TimeManager.tick.connect(_on_tick)
+	TimeManager.tick_backward.connect(_on_tick)
 	TimeManager.player_hit.connect(_on_player_hit)
 
 
@@ -29,15 +31,19 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not Player.instance.dead:
-		if event.is_action_pressed("rewind"):
-			_on_rewind_pressed()
-		elif event.is_action_pressed("fast_forward"):
-			_on_fast_forward_pressed()
+		if TimeManager.state == TimeManager.State.NORMAL:
+			if event.is_action_pressed("rewind"):
+				_on_rewind_pressed()
+			elif event.is_action_pressed("fast_forward"):
+				_on_fast_forward_pressed()
 	else:
-		if event.is_action_pressed("rewind") and crystals_left > 0:
-			destroy_crystal(3-crystals_left)
-			used = true
-			TimeManager.revive_player()
+		if event.is_action_pressed("rewind") and Player.instance.fully_dead:
+			if crystals_left > 0:
+				destroy_crystal(3-crystals_left)
+				used = true
+				TimeManager.revive_player()
+			else:
+				TimeManager.restart_game()
 
 
 func _on_rewind_pressed():
@@ -57,6 +63,7 @@ func _on_fast_forward_pressed():
 
 
 func _on_tick():
+	#print("TICK")
 	tick_player.play()
 
 
@@ -68,3 +75,7 @@ func _on_player_hit():
 func destroy_crystal(index: int):
 	crystals[index].queue_free()
 	crystals_left -= 1
+
+
+func _on_next_time_started():
+	used = false

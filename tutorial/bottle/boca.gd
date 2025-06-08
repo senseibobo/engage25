@@ -24,7 +24,7 @@ func _on_hitbox_got_hit() -> void:
 
 func is_shootable():
 	var shootable = not broken and visible_notifier.is_on_screen() and is_shootable_raycast()
-	print(shootable, " A A A  ", not broken, " A A A ", visible_notifier.is_on_screen()," ", name)
+	#print(shootable, " A A A  ", not broken, " A A A ", visible_notifier.is_on_screen()," ", name)
 	return shootable
 
 

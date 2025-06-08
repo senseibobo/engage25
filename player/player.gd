@@ -13,6 +13,7 @@ static var instance: Player
 @export var rewind_effect: TextureRect
 
 var dead: bool = false
+var fully_dead: bool = false
 var distance_traveled: float = 0.0
 
 
@@ -64,10 +65,13 @@ func hit():
 	black_and_white_filter.fade_in()
 	Engine.time_scale = 0.01
 	animation_player.speed_scale = 1.0/Engine.time_scale
+	await animation_player.animation_finished
+	fully_dead = true
 
 func revive():
 	black_and_white_filter.fade_out()
 	dead = false
+	fully_dead = false
 	animation_player.play_backwards(&"death")
 
 func _turn_filter_on():

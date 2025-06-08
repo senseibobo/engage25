@@ -16,7 +16,7 @@ func _ready():
 
 func transition_to(scene: PackedScene):
 	if tween and tween.is_running(): tween.kill()
-	tween = create_tween()
+	tween = create_tween().set_ignore_time_scale()
 	tween.tween_property(transition_rect, "color:a", 1.0, 0.5)
 	tween.tween_callback(transitioned.emit)
 	tween.tween_callback(switch_scene.bind(scene))

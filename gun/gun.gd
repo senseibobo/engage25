@@ -56,7 +56,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		mouse_move = -event.relative.x
 		if free_aim: get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and free_aim and bullets_left > 0:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and \
+			free_aim and bullets_left > 0 and not Player.instance.dead:
 			shoot()
 
 

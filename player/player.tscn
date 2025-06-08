@@ -214,8 +214,15 @@ mouse_filter = 2
 texture = SubResource("GradientTexture2D_rgyib")
 script = ExtResource("8_rgyib")
 camera = NodePath("../../Camera3D")
-rewind_player = NodePath("../../RewindPlayer")
-forward_player = NodePath("../../ForwardPlayer")
+rewind_player = NodePath("RewindPlayer")
+forward_player = NodePath("ForwardPlayer")
+
+[node name="RewindPlayer" type="AudioStreamPlayer" parent="CanvasLayer/RewindEffect"]
+stream = ExtResource("9_hg6s5")
+volume_db = 3.748
+
+[node name="ForwardPlayer" type="AudioStreamPlayer" parent="CanvasLayer/RewindEffect"]
+stream = ExtResource("10_8t03j")
 
 [node name="BountyLabel" parent="CanvasLayer" instance=ExtResource("9_2ieo8")]
 
@@ -223,10 +230,3 @@ forward_player = NodePath("../../ForwardPlayer")
 libraries = {
 &"": SubResource("AnimationLibrary_qjkh3")
 }
-
-[node name="RewindPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("9_hg6s5")
-volume_db = 3.748
-
-[node name="ForwardPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_8t03j")

@@ -12,6 +12,7 @@ func _ready():
 	TimeManager.rewind_finished.connect(stop)
 	TimeManager.fast_forward_state_started.connect(forward)
 	TimeManager.fast_forward_state_ended.connect(stop_forward)
+	TimeManager.started_restarting.connect(start)
 
 
 
