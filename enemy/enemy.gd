@@ -14,17 +14,13 @@ enum State {
 @export var gun: Node3D
 @export var animation_player: AnimationPlayer
 @export var nav_agent: NavigationAgent3D
-@export var path_3d: Path3D
-@export var path_follow: PathFollow3D
+@export var enemy_path: EnemyPath
 @export var gravity: float = 9.0
-@export var line_renderer: LineRenderer
 @export var shoot_player: AudioStreamPlayer
 @export var death_player: AudioStreamPlayer
 @export var enemy_shot_scene: PackedScene
 @export var active: bool = false
 @export var visible_notifier: VisibleOnScreenNotifier3D
-@export var ghost: Node3D
-@export var ghost_anim_player: AnimationPlayer
 @export var mesh: MeshInstance3D
 
 var state: State = State.NONE
@@ -37,9 +33,7 @@ var full_path_distance: float
 
 func _ready():
 	mesh.layers = 1
-	ghost.visible = false
 	randomize()
-	path_3d.curve = path_3d.curve.duplicate()
 	TimeManager.normal_state_started.connect(_on_normal_state_started)
 	TimeManager.slowed_state_started.connect(_on_slowed_state_started)
 	TimeManager.fast_forward_state_started.connect(_on_fast_forward_state_started)
@@ -48,6 +42,7 @@ func _ready():
 	TimeManager.slowed_state_ended.connect(_on_slowed_state_ended)
 	TimeManager.next_time_started.connect(_on_next_time_started)
 	TimeManager.start_paths.connect(start_path)
+	TimeManager.rewind_finished.connect(_on_rewind_finished)
 
 
 func _physics_process(delta):
@@ -63,20 +58,10 @@ func _process_walk(delta):
 	rotate_to_player()
 	var step_time: float = 0.4166666/TimeManager.normal_total_time
 	var animation_position: float = fmod(TimeManager.current_time+step_time/2.0, animation_player.current_animation_length)
-	print(animation_position)
 	animation_player.seek(animation_position)
-	ghost.look_at(Player.instance.global_position)
 	#ghost_anim_player.seek(animation_position)
 	var diff = _update_position()
-	var new_path: Array = []
-	new_path.append(global_position + Vector3.UP*0.5)
-	nav_agent.get_next_path_position()
-	var start_index = nav_agent.get_current_navigation_path_index()
-	var end_index = path.size()
-	for i in range(start_index, end_index):
-		new_path.append(path[i])
-	new_path.reverse()
-	line_renderer.points = new_path
+	enemy_path.update_line_renderer_points(nav_agent)
 	#if diff.length() > 0.01:
 		#look_at(global_position + diff*Vector3(1,0,1))
 
@@ -88,8 +73,7 @@ func _process_aim(delta):
 
 func hit():
 	mesh.layers = 1
-	ghost.queue_free()
-	line_renderer.queue_free()
+	enemy_path.queue_free()
 	TimeManager.enemy_killed.emit()
 	collision_layer = 0
 	collision_mask = 0
@@ -150,8 +134,7 @@ func start_path():
 	if new_path.size() == 0:
 		new_path = PackedVector3Array([global_position, destination])
 	set_path(new_path)
-	print("batongaaaaaaa")
-	path_follow.progress = 0.0
+	#path_follow.progress = 0.0
 
 
 func get_attempt_pos(): 
@@ -169,28 +152,12 @@ func set_path(new_path: PackedVector3Array):
 		print("SETTING PATH FROM ", path[-1], " TO ", new_path[-1])
 	old_path = path.duplicate()
 	path = new_path.duplicate()
-	path_3d.curve.clear_points()
-	if is_instance_valid(line_renderer):
-		line_renderer.points = Array(new_path)
-	for point: Vector3 in path:
-		path_3d.curve.add_point(point)
-	path_3d.curve.get_baked_length()
+	enemy_path.set_path(path)
+	print("setting path to a path with ", path.size(), " points")
 	if state == State.WALK:
-		print("ghooost")
-		setup_ghost()
+		enemy_path.setup_ghost()
 
 
-func setup_ghost():
-	ghost.global_position = path[-1]
-	#ghost.look_at(ghost.global_position + path[-2].direction_to(path[-1]))
-	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var params := PhysicsRayQueryParameters3D.new()
-	params.from = ghost.global_position
-	params.to = ghost.global_position + Vector3.DOWN*2.0
-	params.collision_mask = 1
-	var result = space_state.intersect_ray(params)
-	if result.size() > 0:
-		ghost.global_position = result["position"]
 		
 
 
@@ -203,12 +170,10 @@ func _update_position():
 	var D: float = fmod(t, step_time)
 	t = S + lerp(D,step_time,D/step_time)
 	t = clamp(t,0,1)
-	path_follow.progress_ratio = t
-	var destination: Vector3 = path_follow.global_position
-	var diff: Vector3 = destination - global_position
-	#var collision = move_and_collide(diff)
-	#global_position = lerp(global_position, destination, 10*get_physics_process_delta_time()/Engine.time_scale)
-	global_position = destination
+	var old_position: Vector3 = global_position
+	var new_position: Vector3 = enemy_path.get_position_from_progress(t)
+	global_position = new_position
+	var diff: Vector3 = new_position - old_position
 	move_and_collide(Vector3.DOWN*0.5)
 	return diff
 
@@ -222,9 +187,8 @@ func _process_movement(delta):
 func _on_normal_state_started():
 	if not active: return
 	if state in [State.NONE, State.AIM, State.WALK]:
-		line_renderer.visible = true
+		enemy_path.activate()
 		state = State.WALK
-		ghost.visible = true
 		animation_player.play(&"Walk")
 		animation_player.speed_scale = 0.0
 	elif state == State.DEAD:
@@ -235,7 +199,7 @@ func _on_slowed_state_started():
 	if not active: return
 	if state == State.DEAD: return
 	mesh.layers = 1 if not is_visible_raycast() else 5
-	ghost.visible = false
+	enemy_path.deactivate()
 	if state == State.WALK:
 		global_position = path[-1]
 		
@@ -248,7 +212,6 @@ func _on_slowed_state_started():
 		if result.size() > 0:
 			global_position = result["position"]
 		
-		line_renderer.visible = false
 		animation_player.stop()
 		animation_player.play(&"Shoot")
 		animation_player.speed_scale = 0.0
@@ -267,9 +230,9 @@ func _on_hitbox_got_hit() -> void:
 
 
 func _on_enemy_shoot_state_started():
-	if not active: return
-	if state != State.DEAD:
-		shoot()
+	if state == State.DEAD or not active: return
+	shoot()
+	enemy_path.deactivate()
 
 
 func shoot():
@@ -301,6 +264,7 @@ func shoot():
 func _on_player_revived():
 	if not active: return
 	if state == State.DEAD: return
+	print("SAD")
 	animation_player.play(&"Walk")
 	animation_player.speed_scale = 0.0
 	state = State.WALK
@@ -355,10 +319,19 @@ func activate():
 	mesh.layers = 5
 	active = true
 	state = State.WALK
+	enemy_path.activate()
 	_on_normal_state_started()
 	start_path()
 	animation_player.play(&"Walk")
 	animation_player.speed_scale = 0.0
+
+
+func _on_rewind_finished():
+	if state == State.DEAD or not active: return
+	nav_agent.target_position = Vector3()
+	nav_agent.get_next_path_position()
+	nav_agent.target_position = path[-1]
+	nav_agent.get_next_path_position()
 
 
 func _on_slowed_state_ended():

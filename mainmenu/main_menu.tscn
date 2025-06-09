@@ -129,7 +129,7 @@ horizontal_alignment = 1
 curve = SubResource("Curve3D_la1qf")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -42.2709, 60, -115.028)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -42.2708, 60, -115.029)
 progress = 376.65
 rotation_mode = 0
 script = ExtResource("7_yylb4")
