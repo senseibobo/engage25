@@ -104,7 +104,6 @@ func start_normal_state():
 
 
 func start_slowed_state():
-	print("slowed state started")
 	slowed_state_started.emit()
 	state = State.SLOWED
 	Engine.time_scale = 0.01
@@ -129,7 +128,6 @@ func check_all_enemies_dead():
 
 
 func start_rewind_state():
-	print("REWINDING")
 	Engine.time_scale = 0.1
 	state = State.REWIND
 	var tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
@@ -155,17 +153,13 @@ func start_fast_forward_state():
 
 
 func _on_normal_state_ended():
-	#print("normal state ended")
 	if Enemy.any_enemies_shootable():
-		#print("some enemies shootable")
 		start_slowed_state()
 		bell_rung.emit()
 	elif Enemy.any_enemies_can_shoot():
-		#print("some enemies can shoot")
 		start_enemy_shoot_state()
 		bell_rung.emit()
 	else:
-		#print("nothing")
 		if state != State.NORMAL:
 			state = State.NORMAL
 		start_paths.emit()

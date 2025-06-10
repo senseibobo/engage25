@@ -65,7 +65,6 @@ func _on_fast_forward_pressed():
 
 
 func _on_tick():
-	#print("TICK")
 	tick_player.play()
 
 

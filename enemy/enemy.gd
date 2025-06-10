@@ -103,7 +103,6 @@ static func any_enemies_shootable():
 				if not enemy.active: 
 					continue
 			if enemy.is_shootable(): 
-				print(enemy.name, " is still shootable")
 				return true
 	return false
 
@@ -148,17 +147,11 @@ func get_attempt_pos():
 func set_path(new_path: PackedVector3Array):
 	if not active: return
 	if state == State.DEAD: return
-	if path.size() > 2 and new_path.size() > 2:
-		print("SETTING PATH FROM ", path[-1], " TO ", new_path[-1])
 	old_path = path.duplicate()
 	path = new_path.duplicate()
 	enemy_path.set_path(path)
-	print("setting path to a path with ", path.size(), " points")
 	if state == State.WALK:
 		enemy_path.setup_ghost()
-
-
-		
 
 
 func _update_position():
@@ -264,21 +257,13 @@ func shoot():
 func _on_player_revived():
 	if not active: return
 	if state == State.DEAD: return
-	print("SAD")
 	animation_player.play(&"Walk")
 	animation_player.speed_scale = 0.0
 	state = State.WALK
-	#print("setting to old path")
 	set_path(path)
 
 
 func is_shootable():
-	#print("OVDE VVVVV")
-	#print(active)
-	#print(is_visible_raycast())
-	#print(visible_notifier.is_on_screen())
-	#print(not state == State.DEAD)
-	#print("OVDE ^^^^")
 	return \
 		active and \
 		is_visible_raycast() and \

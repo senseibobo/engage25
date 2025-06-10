@@ -122,7 +122,6 @@ func stop_free_aim():
 	Input.warp_mouse(get_window().size/2.0)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	free_aim = false
-	print("batonga")
 	if bullets_left < 6:
 		animation_player.speed_scale = 1.0
 		animation_player.stop()
