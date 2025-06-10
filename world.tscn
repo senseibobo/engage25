@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cbaq6ntj8x6pd" path="res://tutorial/tutorial.tscn" id="5_036b0"]
 [ext_resource type="PackedScene" uid="uid://cilul41id8eno" path="res://enemy/enemy.tscn" id="5_dwbse"]
 [ext_resource type="Script" uid="uid://dvphq5bo5gsx1" path="res://enemy_trigger/trigger.gd" id="6_dwbse"]
-[ext_resource type="AudioStream" uid="uid://d3wf4m7ue3jj" path="res://enemy/audios/final muzika.ogg" id="7_pkg7o"]
+[ext_resource type="AudioStream" uid="uid://bsd0114tq1tdh" path="res://enemy/audios/music_slowed.ogg" id="7_gbfbk"]
 [ext_resource type="Script" uid="uid://bxj64hsencoi7" path="res://audioplayer/audio_stream_player.gd" id="8_gbfbk"]
 
 [sub_resource type="Gradient" id="Gradient_tlwt5"]
@@ -186,7 +186,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -158.38, -2.70016, -215.568)
 collision_layer = 0
 script = ExtResource("6_dwbse")
 enemies = [NodePath("../Enemies1/Enemy"), NodePath("../Enemies1/Enemy2")]
-audio_player = NodePath("../AudioStreamPlayer")
+audio_player = NodePath("../MusicPlayer")
 metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerEnemy2"]
@@ -253,7 +253,7 @@ metadata/_custom_type_script = "uid://dvphq5bo5gsx1"
 transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, -1.80208, -3.15405, -10.659)
 shape = SubResource("BoxShape3D_2o6r5")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_pkg7o")
-volume_db = 24.0
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gbfbk")
+volume_db = 20.0
 script = ExtResource("8_gbfbk")
