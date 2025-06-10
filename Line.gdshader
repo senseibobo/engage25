@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded;
 
+uniform float percent_visible: hint_range(0.0, 1.0, 0.0) = 0.5;
 uniform sampler2D tex;
 uniform vec4 color: source_color;
 
@@ -9,12 +10,12 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 newUV = vec2(UV.x+TIME,UV.y);
+	vec2 newUV = vec2(UV.x*1.0+TIME,UV.y);
 	    //ALBEDO.x = UV.x;//vec3(0.51,0.5,0.01);
 	vec4 cola = texture(tex,newUV).rgba;
     ALBEDO = cola.rgb;
 	ALBEDO *= color.rgb;
-	ALBEDO.xyz *= mod(UV.x+TIME*1.5,1.8)/(3.6/2.0);
+	//ALBEDO.xyz *= mod(UV.x+TIME*1.5,1.8)/(3.6/2.0);
 	//ALPHA_SCISSOR_THRESHOLD =0.01;
     ALPHA = cola.a * color.a;
 }

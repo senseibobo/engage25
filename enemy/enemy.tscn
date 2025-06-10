@@ -31,10 +31,11 @@ height = 1.8
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tbw0t"]
 render_priority = 0
 shader = ExtResource("3_6yflr")
+shader_parameter/percent_visible = 0.5
 shader_parameter/tex = ExtResource("4_gf88j")
 shader_parameter/color = Color(0.847059, 0.505882, 0.227451, 0.533333)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_34gv7"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_pg32h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dy88"]
 resource_name = "STICKMAN"
@@ -5764,7 +5765,7 @@ ghost_anim_player = NodePath("Ghost/rig/AnimationPlayer")
 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="EnemyPath"]
 material_override = SubResource("ShaderMaterial_tbw0t")
-mesh = SubResource("ImmediateMesh_34gv7")
+mesh = SubResource("ImmediateMesh_pg32h")
 script = ExtResource("2_1wwld")
 start_thickness = 0.3
 end_thickness = 0.3

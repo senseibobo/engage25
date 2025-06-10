@@ -20,7 +20,10 @@ func _physics_process(delta: float) -> void:
 
 
 func activate():
-	visible = true
+	set_deferred(&"visible", true)
+	line_renderer.visible_percent = 0.0
+	var tween = create_tween()
+	tween.tween_property(line_renderer, "visible_percent", 1.0, 1.0).from(0.0)
 
 
 func deactivate():
@@ -35,12 +38,11 @@ func update_line_renderer_points(nav_agent: NavigationAgent3D):
 	var end_index = path.size()
 	for i in range(start_index, end_index):
 		new_path.append(path[i])
-	new_path.reverse()
+	#new_path.reverse()
 	line_renderer.points = new_path
 
 
 func set_path(path: PackedVector3Array):
-	print("PATHING PATHING PATHING ", " WITH ", path.size(), " POINTS")
 	self.path = path
 	curve.clear_points()
 	if is_instance_valid(line_renderer):
