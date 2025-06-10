@@ -42,6 +42,7 @@ var slowed_bonus_time: float = 2.0
 var enemy_shoot_total_time: float = 2.0
 var high_noon_time: float = normal_total_time * 6 * 3
 var old_time_passed: float
+var rewind_speed_multiplier: float = 1.0
 
 
 func _ready():
@@ -64,10 +65,11 @@ func restart_time():
 
 func _process(delta: float) -> void:
 	if not is_instance_valid(Player.instance): return
+	var scaled_delta: float = delta/Engine.time_scale
 	if not Player.instance.dead:
 		match state:
 			State.NORMAL:
-				time_passed += delta/Engine.time_scale
+				time_passed += scaled_delta
 				var old_current_time = current_time
 				var ct = fmod(time_passed, normal_total_time)
 				if old_current_time >= ct: 
@@ -76,16 +78,24 @@ func _process(delta: float) -> void:
 				else:
 					current_time = ct
 			State.SLOWED:
-				current_time += delta/Engine.time_scale
+				current_time += scaled_delta
 				if current_time >= slowed_total_time: 
 					_on_slowed_state_ended()
 			State.ENEMY_SHOOT:
-				current_time += delta/Engine.time_scale
+				current_time += scaled_delta
 				if current_time >= enemy_shoot_total_time: 
 					next_time_started.emit()
 					start_paths.emit()
 					start_normal_state()
-			State.REWIND: pass
+			State.REWIND:
+				time_passed -= scaled_delta*rewind_speed_multiplier
+				current_time -= scaled_delta*rewind_speed_multiplier
+				rewind_speed_multiplier = move_toward(rewind_speed_multiplier, 1.0, scaled_delta*3)
+				if current_time <= 0:
+					time_passed = round(time_passed/normal_total_time)*normal_total_time
+					current_time = 0.0
+					start_normal_state()
+					rewind_finished.emit()
 				#if current_time <= 0: start_normal_sAudioStreamPlayertate()
 	if int(old_time_passed) < int(time_passed):
 		tick.emit() 
@@ -130,12 +140,8 @@ func check_all_enemies_dead():
 func start_rewind_state():
 	Engine.time_scale = 0.1
 	state = State.REWIND
-	var tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, ^"current_time", 0.0, 4.5*Engine.time_scale)
-	tween.parallel().tween_property(self,^"time_passed",time_passed-current_time, 1.5*Engine.time_scale )
-	tween.tween_callback(start_normal_state)
-	tween.tween_callback(rewind_finished.emit)
 	rewind_state_started.emit()
+	rewind_speed_multiplier = 2.0
 
 
 func start_fast_forward_state():
