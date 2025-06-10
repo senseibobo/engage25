@@ -91,7 +91,7 @@ func _process(_delta):
 			var ABFloor = floor(ABLen)
 			var ABFrac = ABLen - ABFloor
 			var dir = (AB).normalized()
-			var right = Vector3(1,0,1)
+			var right = Vector3(1,0.5,1).normalized()
 			
 			var project_vector: Vector3 = right
 			

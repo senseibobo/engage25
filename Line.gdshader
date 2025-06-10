@@ -1,7 +1,6 @@
 shader_type spatial;
 render_mode unshaded;
 
-uniform float percent_visible: hint_range(0.0, 1.0, 0.0) = 0.5;
 uniform sampler2D tex;
 uniform vec4 color: source_color;
 

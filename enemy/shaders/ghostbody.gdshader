@@ -1,13 +1,17 @@
 shader_type spatial;
 render_mode unshaded;
 
+
+instance uniform float body_alpha: hint_range(0.0, 1.0) = 1.0;
+
+
 void vertex() {
     // Called for every vertex the material is visible on.
 }
 
 void fragment() {
     ALBEDO = vec3(0.9,0.3,0.05);
-	ALPHA = 0.15;
+	ALPHA = body_alpha;
 }
 
 //void light() {
