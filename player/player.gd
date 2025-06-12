@@ -22,8 +22,10 @@ func _enter_tree():
 
 
 func _ready():
-	TimeManager.connect("slowed_state_started", _turn_filter_on)
-	TimeManager.connect("normal_state_started", _turn_filter_off)
+	TimeManager.slowed_state_started.connect(_turn_filter_on)
+	TimeManager.normal_state_started.connect(_turn_filter_off)
+	TimeManager.svraka_shoot_state_started.connect(_svraka_filter_on)
+	TimeManager.svraka_shoot_state_ended.connect(_svraka_filter_off)
 	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
@@ -68,14 +70,31 @@ func hit():
 	await animation_player.animation_finished
 	fully_dead = true
 
+
 func revive():
 	black_and_white_filter.fade_out()
 	dead = false
 	fully_dead = false
 	animation_player.play_backwards(&"death")
 
+
 func _turn_filter_on():
+	black_and_white_filter.red = true
 	black_and_white_filter.fade_in()
 
+
 func _turn_filter_off():
+	black_and_white_filter.red = true
 	black_and_white_filter.fade_out()
+
+
+func _svraka_filter_on():
+	SceneManager.instance.add_borders()
+	black_and_white_filter.red = false
+	black_and_white_filter.fade_in()
+
+func _svraka_filter_off():
+	SceneManager.instance.remove_borders()
+	black_and_white_filter.red = false
+	black_and_white_filter.fade_out()
+	

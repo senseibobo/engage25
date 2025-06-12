@@ -28,6 +28,8 @@ func _ready():
 	crosshair.visible = false
 	TimeManager.normal_state_started.connect(stop_free_aim)
 	TimeManager.slowed_state_started.connect(start_free_aim)
+	TimeManager.svraka_shoot_state_started.connect(start_free_aim)
+	TimeManager.svraka_shoot_state_ended.connect(stop_free_aim)
 	TimeManager.player_revived.connect(stop_free_aim)
 
 
@@ -106,7 +108,7 @@ func shoot():
 	var shot_instance: Shot = shot_instance_scene.instantiate()
 	get_tree().current_scene.add_child(shot_instance)
 	
-	shot_instance.setup(pos, target_point)
+	shot_instance.setup(pos, target_point, false)
 
 
 func start_free_aim():

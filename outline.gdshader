@@ -1,8 +1,10 @@
 shader_type spatial;
 render_mode cull_front, unshaded;
 
+uniform float thickness = 0.002;
+
 void vertex() {
-	VERTEX += NORMAL*0.002;
+	VERTEX += NORMAL*thickness;
 }
 
 void fragment() {

@@ -46,7 +46,6 @@ func spawn():
 
 
 func _process(delta):
-	SceneManager.instance.dialogue_animation.speed_scale = 1.0 / Engine.time_scale
 	var old_timer = timer
 	timer -= delta/Engine.time_scale
 	if old_timer > 0 and timer < 0:
@@ -54,15 +53,8 @@ func _process(delta):
 
 
 func show_dialogue(text):
-	SceneManager.instance.dialogue_animation.play(&"appear")
-	audio_player.play()
-	SceneManager.instance.dialogue_label.text = text
+	SceneManager.instance.show_message(text)
 	svraka.play_talk()
-	if iterator+1 == dialogues.size():
-		iterator = 0
-	else:
-		iterator += 1
-	timer = 4.0
 
 
 func _on_destroy_bottle():

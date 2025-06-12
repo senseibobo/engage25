@@ -1,0 +1,108 @@
+[gd_scene load_steps=17 format=3 uid="uid://b2t5x1h0uvjb4"]
+
+[ext_resource type="Script" uid="uid://duc2iqpjx8gmm" path="res://watch/crystal.gd" id="1_7n37t"]
+[ext_resource type="Texture2D" uid="uid://pxa34n1tj6qh" path="res://crystal.png" id="1_k2hxf"]
+[ext_resource type="Shader" uid="uid://cbujd7fyheg2b" path="res://outline.gdshader" id="2_7n37t"]
+[ext_resource type="Script" uid="uid://7sp71apr4hr2" path="res://shot/hitbox/hitbox.gd" id="4_7vuen"]
+[ext_resource type="AudioStream" uid="uid://caw7cusvkqpoe" path="res://sounds/crystal_explosion.ogg" id="5_bibh3"]
+
+[sub_resource type="Curve" id="Curve_gvjfa"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cfcpn"]
+curve = SubResource("Curve_gvjfa")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gvjfa"]
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 0.02
+spread = 180.0
+initial_velocity_min = 0.05
+initial_velocity_max = 0.65
+gravity = Vector3(0, 0.4, 0)
+linear_accel_min = 0.00999776
+linear_accel_max = 0.399998
+scale_curve = SubResource("CurveTexture_cfcpn")
+turbulence_enabled = true
+turbulence_noise_strength = 7.64
+turbulence_noise_scale = 1.268
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6h2r4"]
+shading_mode = 0
+albedo_color = Color(0.752412, 0.726192, 0.886764, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cfcpn"]
+material = SubResource("StandardMaterial3D_6h2r4")
+size = Vector2(0.01, 0.05)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfcpn"]
+render_priority = 0
+shader = ExtResource("2_7n37t")
+shader_parameter/thickness = 0.002
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ov7et"]
+load_path = "res://.godot/imported/crystal.png-bb11b2de58776886af74e58314527ac0.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iujmo"]
+next_pass = SubResource("ShaderMaterial_cfcpn")
+albedo_texture = ExtResource("1_k2hxf")
+metallic = 1.0
+metallic_specular = 1.0
+metallic_texture = ExtResource("1_k2hxf")
+emission_enabled = true
+emission = Color(0.299548, 0.299547, 0.299547, 1)
+normal_enabled = true
+normal_texture = SubResource("CompressedTexture2D_ov7et")
+
+[sub_resource type="SphereMesh" id="SphereMesh_6acmf"]
+material = SubResource("StandardMaterial3D_iujmo")
+radius = 0.016
+height = 0.036
+radial_segments = 4
+rings = 2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bibh3"]
+radius = 0.0291973
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w4xo0"]
+random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("5_bibh3")
+
+[node name="Crystal" type="Node3D" node_paths=PackedStringArray("explode_particles", "crystal_mesh", "hitbox", "explode_player")]
+script = ExtResource("1_7n37t")
+explode_particles = NodePath("CrystalExplodeParticles")
+crystal_mesh = NodePath("CrystalMesh")
+hitbox = NodePath("Hitbox")
+explode_player = NodePath("AudioStreamPlayer3D")
+
+[node name="CrystalExplodeParticles" type="GPUParticles3D" parent="."]
+layers = 2
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 0.85
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_gvjfa")
+draw_pass_1 = SubResource("QuadMesh_cfcpn")
+
+[node name="CrystalMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_6acmf")
+skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
+
+[node name="Hitbox" type="Area3D" parent="."]
+script = ExtResource("4_7vuen")
+metadata/_custom_type_script = "uid://7sp71apr4hr2"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("SphereShape3D_bibh3")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_w4xo0")
+volume_db = 80.0
+unit_size = 100.0
+max_db = 6.0
+max_distance = 106.95
+
+[connection signal="got_hit" from="Hitbox" to="." method="_on_hitbox_got_hit"]

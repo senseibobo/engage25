@@ -377,8 +377,10 @@ stream = ExtResource("5_u0xb8")
 
 [node name="ShootPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_o2n5o")
+volume_db = -8.0
 
 [node name="ReloadPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_o2n5o")
+volume_db = -3.0
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

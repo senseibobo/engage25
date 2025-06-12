@@ -195,7 +195,6 @@ func _on_slowed_state_started():
 	enemy_path.deactivate()
 	if state == State.WALK:
 		global_position = path[-1]
-		print("went to ", global_position)
 		
 		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 		var params := PhysicsRayQueryParameters3D.new()

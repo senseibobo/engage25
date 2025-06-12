@@ -1,39 +1,13 @@
-[gd_scene load_steps=24 format=3 uid="uid://c1mdub8ij2efb"]
+[gd_scene load_steps=14 format=3 uid="uid://c1mdub8ij2efb"]
 
 [ext_resource type="Script" uid="uid://6sglgvg76ui8" path="res://watch/watch.gd" id="1_dm085"]
 [ext_resource type="PackedScene" uid="uid://xsnekqm721sm" path="res://watch/watch.glb" id="2_gvjfa"]
-[ext_resource type="Texture2D" uid="uid://pxa34n1tj6qh" path="res://crystal.png" id="3_cfcpn"]
+[ext_resource type="PackedScene" uid="uid://b2t5x1h0uvjb4" path="res://watch/crystal.tscn" id="3_dm085"]
 [ext_resource type="Texture2D" uid="uid://imsyoa10bl7i" path="res://watch/watch_hand_long.png" id="4_6h2r4"]
-[ext_resource type="Shader" uid="uid://cbujd7fyheg2b" path="res://outline.gdshader" id="4_gvjfa"]
 [ext_resource type="Texture2D" uid="uid://cpjqwiwmaoomr" path="res://watch/watch_hand_short.png" id="5_3a0bm"]
 [ext_resource type="Texture2D" uid="uid://duaxd6870wfp8" path="res://icon.svg" id="6_6klei"]
 [ext_resource type="Texture2D" uid="uid://dqsv2epvw20ih" path="res://watch/watch.png" id="7_r1tf4"]
 [ext_resource type="AudioStream" uid="uid://gicqrce6asfi" path="res://sounds/clock_tick.ogg" id="8_q31c4"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfcpn"]
-render_priority = 0
-shader = ExtResource("4_gvjfa")
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ov7et"]
-load_path = "res://.godot/imported/crystal.png-bb11b2de58776886af74e58314527ac0.s3tc.ctex"
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iujmo"]
-next_pass = SubResource("ShaderMaterial_cfcpn")
-albedo_texture = ExtResource("3_cfcpn")
-metallic = 1.0
-metallic_specular = 1.0
-metallic_texture = ExtResource("3_cfcpn")
-emission_enabled = true
-emission = Color(0.299548, 0.299547, 0.299547, 1)
-normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_ov7et")
-
-[sub_resource type="SphereMesh" id="SphereMesh_6acmf"]
-material = SubResource("StandardMaterial3D_iujmo")
-radius = 0.016
-height = 0.036
-radial_segments = 4
-rings = 2
 
 [sub_resource type="Animation" id="Animation_7ove0"]
 length = 0.001
@@ -102,44 +76,13 @@ _data = {
 [sub_resource type="ViewportTexture" id="ViewportTexture_atswf"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="Curve" id="Curve_gvjfa"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_cfcpn"]
-curve = SubResource("Curve_gvjfa")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gvjfa"]
-particle_flag_align_y = true
-emission_shape = 1
-emission_sphere_radius = 0.02
-spread = 180.0
-initial_velocity_min = 0.05
-initial_velocity_max = 0.65
-gravity = Vector3(0, 0.4, 0)
-linear_accel_min = 0.00999776
-linear_accel_max = 0.399998
-scale_curve = SubResource("CurveTexture_cfcpn")
-turbulence_enabled = true
-turbulence_noise_strength = 7.64
-turbulence_noise_scale = 1.268
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6h2r4"]
-shading_mode = 0
-albedo_color = Color(0.752412, 0.726192, 0.886764, 1)
-
-[sub_resource type="QuadMesh" id="QuadMesh_cfcpn"]
-material = SubResource("StandardMaterial3D_6h2r4")
-size = Vector2(0.01, 0.05)
-
-[node name="Watch" type="Node3D" node_paths=PackedStringArray("tick_player", "animation_player", "short_hand", "long_hand", "crystals", "crystal_explode_particles")]
+[node name="Watch" type="Node3D" node_paths=PackedStringArray("tick_player", "animation_player", "short_hand", "long_hand", "crystals")]
 script = ExtResource("1_dm085")
 tick_player = NodePath("TickPlayer")
 animation_player = NodePath("AnimationPlayer")
 short_hand = NodePath("SubViewport/ShortHand")
 long_hand = NodePath("SubViewport/LongHand")
 crystals = [NodePath("watch2/watch/Crystals/Crystal1"), NodePath("watch2/watch/Crystals/Crystal2"), NodePath("watch2/watch/Crystals/Crystal3")]
-crystal_explode_particles = NodePath("CrystalExplodeParticles")
 
 [node name="watch2" parent="." instance=ExtResource("2_gvjfa")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
@@ -157,23 +100,23 @@ layers = 2
 
 [node name="Crystals" type="Node3D" parent="watch2/watch" index="2"]
 
-[node name="Crystal1" type="MeshInstance3D" parent="watch2/watch/Crystals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0166739, 0.10223, 0.0395919)
-layers = 2
-mesh = SubResource("SphereMesh_6acmf")
-skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
+[node name="Crystal1" parent="watch2/watch/Crystals" instance=ExtResource("3_dm085")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.048848, 0.111499, 0.0300621)
 
-[node name="Crystal2" type="MeshInstance3D" parent="watch2/watch/Crystals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0166739, 0.119019, -0.00539104)
+[node name="CrystalMesh" parent="watch2/watch/Crystals/Crystal1" index="1"]
 layers = 2
-mesh = SubResource("SphereMesh_6acmf")
-skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
 
-[node name="Crystal3" type="MeshInstance3D" parent="watch2/watch/Crystals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0166739, 0.101521, -0.0508012)
+[node name="Crystal2" parent="watch2/watch/Crystals" instance=ExtResource("3_dm085")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.048848, 0.129983, -0.0242105)
+
+[node name="CrystalMesh" parent="watch2/watch/Crystals/Crystal2" index="1"]
 layers = 2
-mesh = SubResource("SphereMesh_6acmf")
-skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Watch/watch2/watch")
+
+[node name="Crystal3" parent="watch2/watch/Crystals" instance=ExtResource("3_dm085")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.048848, 0.112603, -0.0770424)
+
+[node name="CrystalMesh" parent="watch2/watch/Crystals/Crystal3" index="1"]
+layers = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -237,15 +180,7 @@ stream = ExtResource("8_q31c4")
 volume_db = 7.961
 pitch_scale = 1.4
 
-[node name="CrystalExplodeParticles" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.120236, 0.0218647)
-layers = 2
-emitting = false
-amount = 40
-one_shot = true
-explosiveness = 0.85
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_gvjfa")
-draw_pass_1 = SubResource("QuadMesh_cfcpn")
-
 [editable path="watch2"]
+[editable path="watch2/watch/Crystals/Crystal1"]
+[editable path="watch2/watch/Crystals/Crystal2"]
+[editable path="watch2/watch/Crystals/Crystal3"]

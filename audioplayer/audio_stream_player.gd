@@ -14,6 +14,8 @@ func _ready() -> void:
 	TimeManager.fast_forward_state_started.connect(volume_down)
 	TimeManager.fast_forward_state_ended.connect(volume_up)
 	TimeManager.tick.connect(update_music_pos)
+	TimeManager.game_over.connect(volume_down)
+	TimeManager.started_restarting.connect(volume_down)
 	target_volume_db = volume_db
 
 

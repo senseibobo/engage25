@@ -4,8 +4,7 @@ extends Control
 
 static var instance: SceneManager
 
-@export var dialogue_label: Label
-@export var dialogue_animation: AnimationPlayer
+@export var dialogue_label: Dialogue
 
 @export var r1: ColorRect
 @export var r2: ColorRect
@@ -33,4 +32,8 @@ func remove_borders():
 	tween = create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT).set_ignore_time_scale()
 	tween.tween_property(r1, "custom_minimum_size:y", 0, 0.6)
 	tween.tween_property(r2, "custom_minimum_size:y", 0, 0.6)
+	
+
+func show_message(message: String):
+	dialogue_label.show_message(message)
 	

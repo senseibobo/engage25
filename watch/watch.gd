@@ -6,7 +6,7 @@ extends Node3D
 @export var animation_player: AnimationPlayer
 @export var short_hand: Sprite2D
 @export var long_hand: Sprite2D
-@export var crystals: Array[MeshInstance3D]
+@export var crystals: Array[Crystal]
 @export var crystal_explode_particles: GPUParticles3D
 
 var used: bool = false
@@ -22,7 +22,6 @@ func _ready():
 
 func _process(delta: float) -> void:
 	animation_player.speed_scale = 1.0/Engine.time_scale
-	crystal_explode_particles.speed_scale = 1.0/Engine.time_scale
 	var tp = TimeManager.time_passed
 	var D = fmod(tp, 1.0)
 	var S = tp - D
@@ -74,10 +73,8 @@ func _on_player_hit():
 	
 
 func destroy_crystal(index: int):
-	crystal_explode_particles.global_position = crystals[index].global_position
-	crystal_explode_particles.emitting = true
-	crystals[index].queue_free()
 	crystals_left -= 1
+	crystals[index].explode()
 
 
 func _on_next_time_started():

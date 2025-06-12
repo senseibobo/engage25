@@ -20,6 +20,10 @@ signal player_hit
 signal game_over
 signal started_restarting
 signal start_paths
+signal svraka_shoot_state_started
+signal svraka_shoot_state_ended
+signal queue_state_started
+signal queue_state_ended
 
 
 enum State {
@@ -28,7 +32,10 @@ enum State {
 	REWIND,
 	FAST_FORWARD,
 	SLOWED,
-	RESTARTING
+	RESTARTING,
+	QUEUE,
+	SVRAKA_SHOOT,
+	HIGH_NOON
 }
 
 
@@ -39,6 +46,8 @@ var normal_total_time: float = 5.0
 var slowed_total_time: float = 3.0
 var slowed_base_time: float = 3.0
 var slowed_bonus_time: float = 2.0
+var queueing_total_time: float = 3.0
+var svraka_shoot_total_time: float = 2.5
 var enemy_shoot_total_time: float = 2.0
 var high_noon_time: float = normal_total_time * 6 * 3
 var old_time_passed: float
@@ -96,6 +105,25 @@ func _process(delta: float) -> void:
 					current_time = 0.0
 					start_normal_state()
 					rewind_finished.emit()
+			State.QUEUE:
+				time_passed = high_noon_time
+				current_time += scaled_delta
+				if current_time >= queueing_total_time:
+					current_time = queueing_total_time
+					queue_state_ended.emit()
+					start_svraka_shoot_state()
+			State.SVRAKA_SHOOT:
+				time_passed = high_noon_time
+				current_time += scaled_delta
+				if current_time >= svraka_shoot_total_time:
+					current_time = svraka_shoot_total_time
+					svraka_shoot_state_ended.emit()
+					start_queue_state()
+			State.HIGH_NOON:
+				current_time += scaled_delta
+				time_passed = high_noon_time
+				current_time = fmod(current_time,1.0)
+				
 				#if current_time <= 0: start_normal_sAudioStreamPlayertate()
 	if int(old_time_passed) < int(time_passed):
 		tick.emit() 
@@ -200,6 +228,22 @@ func revive_player():
 
 func end_game():
 	game_over.emit()
+
+
+func start_queue_state():
+	state = State.QUEUE
+	current_time = 0.0
+	queue_state_started.emit()
+
+
+func start_svraka_shoot_state():
+	state = State.SVRAKA_SHOOT
+	current_time = 0.0
+	svraka_shoot_state_started.emit()
+
+
+func start_high_noon_state():
+	state = State.HIGH_NOON
 
 
 func restart_game():

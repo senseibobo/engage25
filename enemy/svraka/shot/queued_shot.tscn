@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://72fsfevqbdoj"]
+
+[ext_resource type="Script" uid="uid://cux35e65skk6l" path="res://enemy/svraka/shot/queued_shot.gd" id="1_wkn1m"]
+[ext_resource type="PackedScene" uid="uid://bqvsewesggndk" path="res://shot/shot.tscn" id="2_erg1u"]
+[ext_resource type="Texture2D" uid="uid://drmr4722ydefw" path="res://dotted.png" id="2_wvkld"]
+
+[node name="QueuedShot" type="Node3D"]
+script = ExtResource("1_wkn1m")
+shot_scene = ExtResource("2_erg1u")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, -0.519141)
+modulate = Color(0.74, 0.0493333, 0, 0.25098)
+texture = ExtResource("2_wvkld")
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(1.91069e-15, -1, 4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 1, 0, -4.37114e-08, 0, 0, -0.519141)
+modulate = Color(0.74, 0.0493333, 0, 0.25098)
+texture = ExtResource("2_wvkld")

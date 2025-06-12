@@ -5,13 +5,14 @@ extends ColorRect
 @export var red_enemies_viewport_container: SubViewportContainer
 @export var red_camera: Camera3D
 
+var red: bool = true
 var tween: Tween
 var strength: float:
 	set(value):
 		strength = value
 		if is_instance_valid(red_enemies_viewport_container):
-			red_enemies_viewport_container.material.set_shader_parameter(&"alpha", value)
-			red_enemies_viewport_container.modulate.a = value
+			red_enemies_viewport_container.material.set_shader_parameter(&"alpha", value*int(red))
+			red_enemies_viewport_container.modulate.a = value*int(red)
 		if is_instance_valid(material):
 			material.set_shader_parameter(&"strength", strength)
 	get:
@@ -34,6 +35,7 @@ func fade_in():
 	if tween and tween.is_running(): tween.kill()
 	tween = create_tween().set_ignore_time_scale()
 	tween.tween_property(self, "strength", 1.0, 0.6)
+
 
 func fade_out():
 	if tween and tween.is_running(): tween.kill()

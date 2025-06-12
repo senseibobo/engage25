@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckm2xgcy2faek"]
+
+[ext_resource type="PackedScene" uid="uid://srsx0nh1y4bg" path="res://gun/revolver.glb" id="1_p7yj2"]
+[ext_resource type="Script" uid="uid://bh5few3j2802l" path="res://enemy/svraka/svraka_revolver.gd" id="1_qt61e"]
+[ext_resource type="PackedScene" uid="uid://72fsfevqbdoj" path="res://enemy/svraka/shot/queued_shot.tscn" id="2_l0erl"]
+
+[node name="SvrakaRevolver" type="Node3D"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+script = ExtResource("1_qt61e")
+queued_shot_scene = ExtResource("2_l0erl")
+
+[node name="revolver2" parent="." instance=ExtResource("1_p7yj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98023e-08, -5.96046e-08, 0)
