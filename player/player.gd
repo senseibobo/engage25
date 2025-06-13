@@ -90,11 +90,11 @@ func _turn_filter_off():
 
 func _svraka_filter_on():
 	SceneManager.instance.add_borders()
-	black_and_white_filter.red = false
+	black_and_white_filter.red = true
 	black_and_white_filter.fade_in()
 
 func _svraka_filter_off():
 	SceneManager.instance.remove_borders()
-	black_and_white_filter.red = false
+	black_and_white_filter.red = true
 	black_and_white_filter.fade_out()
 	

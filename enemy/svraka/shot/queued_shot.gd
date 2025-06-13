@@ -7,7 +7,7 @@ extends Node3D
 
 func _ready() -> void:
 	TimeManager.svraka_shoot_state_started.connect(trigger_shot)
-	scale.z = 20
+	scale.z = 1#20
 
 
 func trigger_shot():

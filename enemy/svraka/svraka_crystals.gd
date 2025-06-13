@@ -5,7 +5,7 @@ extends Node3D
 signal all_crystals_destroyed
 
 
-const CRYSTAL_COUNT: int = 3
+const CRYSTAL_COUNT: int = 6
 
 
 @export var crystal_scene: PackedScene

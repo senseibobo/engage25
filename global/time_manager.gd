@@ -231,12 +231,14 @@ func end_game():
 
 
 func start_queue_state():
+	Engine.time_scale = 1.0
 	state = State.QUEUE
 	current_time = 0.0
 	queue_state_started.emit()
 
 
 func start_svraka_shoot_state():
+	Engine.time_scale = 0.02
 	state = State.SVRAKA_SHOOT
 	current_time = 0.0
 	svraka_shoot_state_started.emit()

@@ -81,7 +81,7 @@ func _process_shoot(delta: float):
 	var dir_to_player: Vector3 = global_position.direction_to(Player.instance.global_position)
 	dir_to_player.y = 0.0
 	dir_to_player = dir_to_player.normalized()
-	var target_position: Vector3 = Player.instance.global_position - dir_to_player * distance_from_player
+	var target_position: Vector3 = Player.instance.global_position - dir_to_player * distance_from_player + Vector3.UP*3.0
 	global_position = lerp(global_position, target_position, 3*delta)
 	look_at(Player.instance.global_position)
 	rotation *= Vector3(0,1,0)
