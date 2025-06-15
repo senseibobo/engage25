@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://chd1upbe5xojx"]
+
+[ext_resource type="Script" uid="uid://cmm8ptca2k47r" path="res://objects/tumbleweed/tumbleweed.gd" id="1_pytjt"]
+[ext_resource type="Texture2D" uid="uid://nsjtj7nkaxpn" path="res://objects/tumbleweed/tumbleweed.png" id="2_t3xu6"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_t3xu6"]
+bounce = 0.87
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_t3xu6"]
+radius = 1.38813
+
+[node name="Tumbleweed" type="RigidBody3D" node_paths=PackedStringArray("sprite")]
+physics_material_override = SubResource("PhysicsMaterial_t3xu6")
+script = ExtResource("1_pytjt")
+sprite = NodePath("Sprite3D")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture = ExtResource("2_t3xu6")
+region_enabled = true
+region_rect = Rect2(41.76, 137.769, 400, 400)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_t3xu6")

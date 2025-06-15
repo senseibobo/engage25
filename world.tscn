@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b7vgpd4kpouig"]
+[gd_scene load_steps=26 format=3 uid="uid://b7vgpd4kpouig"]
 
 [ext_resource type="Script" uid="uid://8ncpskd1s7rt" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://kg818nwbxmg8" path="res://player/player.tscn" id="1_f3sb7"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bxj64hsencoi7" path="res://audioplayer/audio_stream_player.gd" id="8_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://cpdc6maqulp15" path="res://enemy/svraka/svraka_fight.tscn" id="9_k3n1d"]
 [ext_resource type="PackedScene" uid="uid://cvl4g55wh1pph" path="res://enemy/svraka/svraka_enemy.tscn" id="10_wse8f"]
+[ext_resource type="PackedScene" uid="uid://chd1upbe5xojx" path="res://objects/tumbleweed/tumbleweed.tscn" id="11_ic0uy"]
 
 [sub_resource type="Gradient" id="Gradient_tlwt5"]
 colors = PackedColorArray(0.161265, 0.15403, 2.40654e-08, 1, 1, 1, 1, 1)
@@ -268,3 +269,6 @@ svraka_enemy = NodePath("SvrakaEnemy")
 
 [node name="SvrakaEnemy" parent="SvrakaFight" instance=ExtResource("10_wse8f")]
 transform = Transform3D(-0.724376, 0, -0.689405, 0, 1, 0, 0.689405, 0, -0.724376, 33.2106, -0.338531, 27.9743)
+
+[node name="Tumbleweed" parent="." instance=ExtResource("11_ic0uy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.5404, -3.49011, 246.037)

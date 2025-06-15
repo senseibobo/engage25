@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://72fsfevqbdoj"]
+[gd_scene load_steps=8 format=3 uid="uid://72fsfevqbdoj"]
 
 [ext_resource type="Script" uid="uid://cux35e65skk6l" path="res://enemy/svraka/shot/queued_shot.gd" id="1_wkn1m"]
 [ext_resource type="PackedScene" uid="uid://bqvsewesggndk" path="res://shot/shot.tscn" id="2_erg1u"]
 [ext_resource type="Texture2D" uid="uid://drmr4722ydefw" path="res://dotted.png" id="2_wvkld"]
+[ext_resource type="AudioStream" uid="uid://cqjyyqwhv0jfd" path="res://sounds/shoot.ogg" id="4_erg1u"]
+[ext_resource type="AudioStream" uid="uid://dd2ulae01f7x2" path="res://sounds/cock.ogg" id="5_ji5s6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wvkld"]
 transparency = 1
@@ -12,9 +14,11 @@ albedo_color = Color(1, 0, 0, 0.580392)
 [sub_resource type="QuadMesh" id="QuadMesh_erg1u"]
 size = Vector2(100, 0.1)
 
-[node name="QueuedShot" type="Node3D"]
+[node name="QueuedShot" type="Node3D" node_paths=PackedStringArray("shot_player", "queue_player")]
 script = ExtResource("1_wkn1m")
 shot_scene = ExtResource("2_erg1u")
+shot_player = NodePath("ShotPlayer")
+queue_player = NodePath("QueuePlayer")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, -0.519141)
@@ -37,3 +41,9 @@ mesh = SubResource("QuadMesh_erg1u")
 transform = Transform3D(1.91069e-15, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, -1, 0, -4.37114e-08, 0, 0, -50)
 material_override = SubResource("StandardMaterial3D_wvkld")
 mesh = SubResource("QuadMesh_erg1u")
+
+[node name="ShotPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_erg1u")
+
+[node name="QueuePlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_ji5s6")
